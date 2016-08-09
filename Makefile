@@ -3,8 +3,8 @@ CFLAGS=-c -Wall -std=c++11
 
 all: scheduling
 
-scheduling: scheduling.o Algorithm1.o Network.o Link.o Node.o
-	$(CC) scheduling.o Algorithm1.o Network.o Link.o Node.o -o scheduling
+scheduling: scheduling.o Algorithm1.o Algorithm2.o Network.o Link.o Node.o
+	$(CC) scheduling.o Algorithm1.o Algorithm2.o Network.o Link.o Node.o -o scheduling
 
 scheduling.o: scheduling.cc
 	$(CC) $(CFLAGS) scheduling.cc
@@ -12,6 +12,9 @@ scheduling.o: scheduling.cc
 Algorithm1.o: Algorithm1.cc
 	$(CC) $(CFLAGS) Algorithm1.cc
 
+Algorithm2.o: Algorithm2.cc
+	$(CC) $(CFLAGS) Algorithm2.cc
+	
 Network.o: Network.cc
 	$(CC) $(CFLAGS) Network.cc
 
