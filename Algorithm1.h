@@ -20,17 +20,17 @@ private:
 	vector<uint64_t> feasible_sets;
 	Network* network;
 	
-	void print_currset();
-	void clr_currset();
+	void find_fsets();
 	void decode_int(uint64_t);
-	double calculate_sinr(Link*);
+	void update_interference();	
+	double calculate_interference(Node*, Node*);
+	bool is_feasible();	
 	bool primary_test();
 	bool secondary_test();
-	bool is_feasible();
-	void find_fsets();
-	void update_interference();
-	double calculate_interference(Node*, Node*);
-	
+	double calculate_sinr(Link*);				
+	void clr_currset();
+	void print_currset();
+		
 public:
 	Algorithm1(Network*);
 	vector<uint64_t> get_fsets();
