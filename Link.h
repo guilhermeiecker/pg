@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <stdint.h>		// uint64_t
 #include <math.h>
 #include "Node.h"
@@ -33,6 +34,7 @@ public:
 	void set_interf(vector<double> interf);	// interf setter
 	
 	void add_interf(double);// add new interference
+	void prt_interf();// print interference vector of a specific link
 	void del_interf();		// delete  interference
 	void clr_interf();		// clear   interference
 };

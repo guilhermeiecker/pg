@@ -23,6 +23,7 @@ private:
 	void find_fsets(uint64_t);
 	void add_link(uint64_t);
 	double calculate_interference(Node*, Node*);
+	void print_interf();
 	bool is_feasible();
 	bool primary_test();
 	bool secondary_test();

@@ -16,13 +16,13 @@ void Algorithm2::find_fsets(uint64_t x)
 		cout << "Testing combination " << x << "... " << endl;
 		limit = (uint64_t)log2(x & ~(x - 1));					// n&~(n-1) gives the closest power of 2 that is less than n - to get the index, use log2
 		add_link(limit);
-		cout << "link " << limit << " added" << endl;
+		//cout << "link " << limit << " added" << endl;
 		if ((current_set.size() < 2)||(is_feasible())) {							// if combination n is feasible
 			feasible_sets.push_back(x);						// if this iteration is called, then n is feasible and needs to be pushed into fsets
 			for (uint64_t i = 0; i < limit; i++)
 				find_fsets(x + (uint64_t)pow(2, i));	// calls setFsets for all kids, if there's any
 		}
-		cout << "link " << limit << " removed" << endl;
+		//cout << "link " << limit << " removed" << endl;
 		del_link(limit);
 	}
 }
@@ -30,26 +30,39 @@ void Algorithm2::find_fsets(uint64_t x)
 void Algorithm2::add_link(uint64_t index)
 {
 	if (!current_set.empty()) {
+		double interfAB, interfBA;
 		for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i) 
 		{
-			network->get_link(index)->add_interf(calculate_interference((*i)->get_sender(), network->get_link(index)->get_recver()));
-			(*i)->add_interf(calculate_interference(network->get_link(index)->get_sender(), (*i)->get_recver()));
+			interfAB = calculate_interference((*i)->get_sender(), network->get_link(index)->get_recver());
+			interfBA = calculate_interference(network->get_link(index)->get_sender(), (*i)->get_recver());
+			
+			network->get_link(index)->add_interf(interfAB);
+			(*i)->add_interf(interfBA);
 		}
 	}
 	network->get_link(index)->get_sender()->inc_degree();       // increments sender degree
 	network->get_link(index)->get_recver()->inc_degree();       // increments recver degree
 	current_set.push_back(network->get_link(index));
+	print_interf();
 }
 
 double Algorithm2::calculate_interference(Node* a, Node* b)
 {
-        double dist = a->distance(*b);
-        if (dist > network->d0)
-                return pow(10.0, network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0) / 10.0);
-        else
-                return pow(10.0, network->tpower_dBm - network->l0_dB / 10.0);
+    double dist = a->distance(*b);
+    cout << "distance from d(" << a->get_id() << "," << b->get_id() << ")=" << dist << endl; 
+    if (dist > network->d0)
+            return pow(10.0, ((network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0)) / 10.0));
+    else
+            return pow(10.0, network->tpower_dBm - network->l0_dB / 10.0);
 }
 
+void Algorithm2::print_interf()
+{
+	cout << "Printing interference vector for set " << it << "..." << endl;
+	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
+		(*i)->prt_interf();
+	cout << endl;
+}
 bool Algorithm2::is_feasible()
 {
 	if (primary_test() && secondary_test())
@@ -86,7 +99,7 @@ bool Algorithm2::secondary_test()
 	{
 		sinr = calculate_sinr(*i);
 		cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
-		if(sinr < network->beta_dB)
+		if(sinr < network->beta_mW)
 		{
     		cout << "Failed!" << endl;
 			return false;
@@ -103,7 +116,7 @@ double Algorithm2::calculate_sinr(Link* l)
     {
     	interference = interference + *i;
     }
-    return l->get_rpower() / (network->noise_dBm + interference);
+    return l->get_rpower() / (network->noise_mW + interference);
 }
 
 void Algorithm2::del_link(uint64_t index)

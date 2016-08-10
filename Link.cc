@@ -65,6 +65,14 @@ void Link::add_interf(double _n)
 	interf.push_back(_n);
 }
 
+void Link::prt_interf()
+{
+	cout << "Interference vector for link " << id << "..." << endl;
+	for(vector<double>::iterator i = interf.begin(); i != interf.end(); ++i)
+		cout << "\t" << *i;
+	cout << endl;
+}
+
 void Link::del_interf()
 {
 	interf.pop_back();

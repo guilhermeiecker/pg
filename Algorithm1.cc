@@ -4,7 +4,7 @@
 
 void Algorithm1::find_fsets()
 {
-	cout << "Finding feasible sets..." << endl;
+	cout << "Finding feasible sets..." << endl << endl;
 	uint64_t inc;
 	uint64_t limit = (uint64_t)pow(2, m);
 	for(it = 1; it < limit; it++)
@@ -82,11 +82,11 @@ void Algorithm1::update_interference()
 
 double Algorithm1::calculate_interference(Node* a, Node* b)
 {
-        double dist = a->distance(*b);
-        if (dist > network->d0)
-                return pow(10.0, network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0) / 10.0);
-        else
-                return pow(10.0, network->tpower_dBm - network->l0_dB / 10.0);
+    double dist = a->distance(*b);
+    if (dist > network->d0)
+            return pow(10.0, ((network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0)) / 10.0));
+    else
+            return pow(10.0, network->tpower_dBm - network->l0_dB / 10.0);
 }
 
 bool Algorithm1::is_feasible()
@@ -120,7 +120,7 @@ bool Algorithm1::secondary_test()
 	{
 		sinr = calculate_sinr(*i);
 		cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
-		if(sinr < network->beta_dB)
+		if(sinr < network->beta_mW)
 			return false;
 	}
 	cout << "OK!" << endl;
@@ -134,7 +134,7 @@ double Algorithm1::calculate_sinr(Link* l)
     {
     	interference = interference + *i;
     }
-    return l->get_rpower() / (network->noise_dBm + interference);
+    return l->get_rpower() / (network->noise_mW + interference);
 }
 
 void Algorithm1::clr_currset()
@@ -175,9 +175,10 @@ void Algorithm1::print_fsets()
 	cout << "Printing feasible sets of links..." << endl;
 	for (vector<uint64_t>::iterator i = feasible_sets.begin(); i != feasible_sets.end(); ++i)
 	{
-		index = 0;
-		decode_int(*i);
-		print_currset();
-		clr_currset();
+		cout << *i << endl;
+		//index = 0;
+		//decode_int(*i);
+		//print_currset();
+		//clr_currset();
 	}
 }
