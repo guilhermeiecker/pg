@@ -34,6 +34,7 @@ public:
 	void set_interf(vector<double> interf);	// interf setter
 	
 	void add_interf(double);// add new interference
+	double clc_interf();
 	void prt_interf();// print interference vector of a specific link
 	void del_interf();		// delete  interference
 	void clr_interf();		// clear   interference

@@ -129,12 +129,7 @@ bool Algorithm1::secondary_test()
 
 double Algorithm1::calculate_sinr(Link* l)
 {
-	double interference = 0.0;
-    for (vector<double>::iterator i = l->get_interf().begin(); i != l->get_interf().end(); ++i) 
-    {
-    	interference = interference + *i;
-    }
-    return l->get_rpower() / (network->noise_mW + interference);
+    return l->get_rpower() / (network->noise_mW + l->clc_interf());
 }
 
 void Algorithm1::clr_currset()

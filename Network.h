@@ -24,12 +24,12 @@ private:
 public:
 	const double bandwidth = 20e06;																	// Bandwidth (MHz)
 	const double noise_mW = 1380e-23 * 290 * bandwidth;												// Noise-floor (mW)
-	const double noise_dBm = 10 * log10(noise_mW);												// Noise-floor (dBm)
+	const double noise_dBm = 10 * log10(noise_mW);													// Noise-floor (dBm)
 	const double d0 = 1.0;																			// Reference distance of Log-distance propagation model (m)
 	const double l0_dB = 0.0;																		// Loss at the reference distance (dB)   
 	const double alpha = 4.0;																		// Path loss exponent of Log-distance propagation model (Default: 4.0)
 	const double beta_dB = 25.0;																	// Minimum SINR needed to decode a transmission (dB) (Default: 25.0)
-	const double beta_mW = pow(10, beta_dB / 10.0);														// Minimum SINR needed to decode a transmission (mW)
+	const double beta_mW = pow(10, beta_dB / 10.0);													// Minimum SINR needed to decode a transmission (mW)
 	const double tpower_dBm = 10 * log10(tpower);													// Transmission power (dBm)
 	const double max_range = d0*pow(10, (tpower_dBm - noise_dBm - beta_dB - l0_dB) / (10 * alpha));	// Maximum communication range (m) (considering only noise-floor)
 	

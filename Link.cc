@@ -65,6 +65,14 @@ void Link::add_interf(double _n)
 	interf.push_back(_n);
 }
 
+double Link::clc_interf()
+{
+	double result = 0.0;
+	for(vector<double>::iterator i = interf.begin(); i != interf.end(); ++i)
+		result = result + *i;
+	return result;
+}
+
 void Link::prt_interf()
 {
 	cout << "Interference vector for link " << id << "..." << endl;

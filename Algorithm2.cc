@@ -36,6 +36,8 @@ void Algorithm2::add_link(uint64_t index)
 			interfAB = calculate_interference((*i)->get_sender(), network->get_link(index)->get_recver());
 			interfBA = calculate_interference(network->get_link(index)->get_sender(), (*i)->get_recver());
 			
+			//cout << "I(" << index << "," << (*i)->get_id() << ")=" << interfAB << "\t";
+			//cout << "I(" << (*i)->get_id() << "," << index << ")=" << interfBA << endl;
 			network->get_link(index)->add_interf(interfAB);
 			(*i)->add_interf(interfBA);
 		}
@@ -43,13 +45,13 @@ void Algorithm2::add_link(uint64_t index)
 	network->get_link(index)->get_sender()->inc_degree();       // increments sender degree
 	network->get_link(index)->get_recver()->inc_degree();       // increments recver degree
 	current_set.push_back(network->get_link(index));
-	print_interf();
+	//print_interf();
 }
 
 double Algorithm2::calculate_interference(Node* a, Node* b)
 {
     double dist = a->distance(*b);
-    cout << "distance from d(" << a->get_id() << "," << b->get_id() << ")=" << dist << endl; 
+    //cout << "distance from d(" << a->get_id() << "," << b->get_id() << ")=" << dist << endl; 
     if (dist > network->d0)
             return pow(10.0, ((network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0)) / 10.0));
     else
@@ -98,7 +100,7 @@ bool Algorithm2::secondary_test()
 	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
 		sinr = calculate_sinr(*i);
-		cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
+		//cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
 		if(sinr < network->beta_mW)
 		{
     		cout << "Failed!" << endl;
@@ -111,12 +113,7 @@ bool Algorithm2::secondary_test()
 
 double Algorithm2::calculate_sinr(Link* l)
 {
-	double interference = 0.0;
-    for (vector<double>::iterator i = l->get_interf().begin(); i != l->get_interf().end(); ++i) 
-    {
-    	interference = interference + *i;
-    }
-    return l->get_rpower() / (network->noise_mW + interference);
+    return l->get_rpower() / (network->noise_mW + l->clc_interf());
 }
 
 void Algorithm2::del_link(uint64_t index)
