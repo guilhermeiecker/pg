@@ -1,10 +1,10 @@
 CC=g++
-CFLAGS=-c -Wall -std=c++11
+CFLAGS=-c -Wall -std=c++11 -lpthread
 
 all: scheduling
 
 scheduling: scheduling.o Algorithm1.o Algorithm2.o Algorithm3.o Network.o Link.o Node.o
-	$(CC) scheduling.o Algorithm1.o Algorithm2.o Algorithm3.o Network.o Link.o Node.o -o scheduling
+	$(CC) scheduling.o Algorithm1.o Algorithm2.o Algorithm3.o Network.o Link.o Node.o -lpthread -o scheduling
 
 scheduling.o: scheduling.cc
 	$(CC) $(CFLAGS) scheduling.cc

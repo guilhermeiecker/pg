@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <vector>
 #include <math.h>
+#include <thread> 
 #include "Node.h"
 #include "Link.h"
 #include "Network.h"
@@ -15,6 +16,9 @@
 class Algorithm3
 {
 private:
+	bool intrf_test_end, intrf_test_val,
+		 masks_test_end, masks_test_val,
+		 result;
 	uint64_t it, index, n, m;
 	vector<Link*> current_set;
 	vector<uint64_t> fsets;
@@ -26,7 +30,8 @@ private:
 	double calculate_interference(Node*, Node*);
 	void print_interf();
 	bool is_feasible();
-	bool masks_test();
+	void intrf_test();
+	void masks_test();
 	bool primary_test();
 	bool secondary_test();
 	double calculate_sinr(Link*);

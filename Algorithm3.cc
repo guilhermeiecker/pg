@@ -71,18 +71,43 @@ bool Algorithm3::is_feasible()
 		cout << "Single link... OK!" << endl;
 		return true;
 	}
-	if(!masks_test())
-		return false;
+	
+	std::thread first (&Algorithm3::masks_test, this);	
+	std::thread second(&Algorithm3::intrf_test, this);
+
+	
+	first.join();
+	second.join();
+	
+	masks_test_end = false;
+	intrf_test_end = false;
+	
+	if((intrf_test_val == false)||((masks_test_val == false)))
+		result = false;
+	else
+		result = true;
+		
+	return result;
+}
+
+void Algorithm3::intrf_test()
+{
 	if((primary_test())&&(secondary_test()))
-		return true;
+	{
+		intrf_test_end = true;
+		intrf_test_val = true;		
+		return;
+	}
 	else
 	{
-		masks.push_back(it);
-		return false;
+		intrf_test_end = true;
+		intrf_test_val = false;	
+		masks.push_back(it);		
+		return;
 	}
 }
 
-bool Algorithm3::masks_test()
+void Algorithm3::masks_test()
 {
 	cout << "Testing masks patterns...";
 	for(vector<uint64_t>::iterator i = masks.begin(); i != masks.end(); ++i)
@@ -90,11 +115,15 @@ bool Algorithm3::masks_test()
 		if((it & *i) == *i)
 		{
 		    cout << "Failed! (Found " << *i << " in " << it << ")" << endl;
-			return false;
+		    masks_test_end = true;
+		    masks_test_val = false;
+			return;
 		}
 	}
 	cout << "OK!" << endl;
-	return true;
+    masks_test_end = true;
+    masks_test_val = true;	
+	return;
 }
 
 bool Algorithm3::primary_test()
