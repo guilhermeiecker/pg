@@ -10,11 +10,11 @@ void Algorithm1::find_fsets()
 	for(it = 1; it < limit; it++)
 	{
 		index = 0;
-		cout << "Decoding integer " << it << endl;
+		cout << "Decoding integer " << it << "..." << endl;
 		decode_int(it);
 		update_interference();
 		cout << "Checking feasibility..." << endl;
-		if ((current_set.size() < 2)||(is_feasible()))
+		if (is_feasible())
 		{
 			inc = 0;
 			feasible_sets.push_back(it);
@@ -71,10 +71,7 @@ void Algorithm1::update_interference()
 		for (vector<Link*>::iterator j = current_set.begin(); j != current_set.end(); ++j)
 		{
 			if(i!=j)
-			{
 				(*i)->add_interf(calculate_interference((*j)->get_sender(), (*i)->get_recver()));
-				(*j)->add_interf(calculate_interference((*i)->get_sender(), (*j)->get_recver()));
-			}
 		}
 	}
 		
@@ -91,6 +88,11 @@ double Algorithm1::calculate_interference(Node* a, Node* b)
 
 bool Algorithm1::is_feasible()
 {
+	if(current_set.size() < 2)
+	{
+		cout << "Single link... OK!" << endl;
+		return true;
+	}
 	if((primary_test())&&(secondary_test()))
 		return true;
 	else
@@ -114,14 +116,17 @@ bool Algorithm1::primary_test()
 
 bool Algorithm1::secondary_test()
 {
-	cout << "Testing secondary interference..." << endl;
+	cout << "Testing secondary interference...";
 	double sinr;
 	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
 		sinr = calculate_sinr(*i);
-		cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
+		//cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
 		if(sinr < network->beta_mW)
+		{
+			cout << "Failed!" << endl;
 			return false;
+		}
 	}
 	cout << "OK!" << endl;
 	return true;
@@ -129,6 +134,8 @@ bool Algorithm1::secondary_test()
 
 double Algorithm1::calculate_sinr(Link* l)
 {
+	//l->prt_interf();
+	//cout << l->get_rpower() << "/(" << network->noise_mW << " + " << l->clc_interf() << ")" << endl;
     return l->get_rpower() / (network->noise_mW + l->clc_interf());
 }
 
@@ -155,7 +162,7 @@ void Algorithm1::print_currset()
 
 Algorithm1::Algorithm1(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
 {
-	cout << "Initializing..." << endl;
+	cout << "Initializing Algorithm 1..." << endl;
 	find_fsets();
 	cout << "Feasible sets found." << endl;
 }

@@ -16,19 +16,18 @@ void Algorithm2::find_fsets(uint64_t x)
 		cout << "Testing combination " << x << "... " << endl;
 		limit = (uint64_t)log2(x & ~(x - 1));					// n&~(n-1) gives the closest power of 2 that is less than n - to get the index, use log2
 		add_link(limit);
-		//cout << "link " << limit << " added" << endl;
-		if ((current_set.size() < 2)||(is_feasible())) {							// if combination n is feasible
+		if (is_feasible()) {							// if combination n is feasible
 			feasible_sets.push_back(x);						// if this iteration is called, then n is feasible and needs to be pushed into fsets
 			for (uint64_t i = 0; i < limit; i++)
 				find_fsets(x + (uint64_t)pow(2, i));	// calls setFsets for all kids, if there's any
 		}
-		//cout << "link " << limit << " removed" << endl;
 		del_link(limit);
 	}
 }
 
 void Algorithm2::add_link(uint64_t index)
 {
+	//cout << "Adding link " << index << endl;
 	if (!current_set.empty()) {
 		double interfAB, interfBA;
 		for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i) 
@@ -67,7 +66,12 @@ void Algorithm2::print_interf()
 }
 bool Algorithm2::is_feasible()
 {
-	if (primary_test() && secondary_test())
+	if(current_set.size() < 2)
+	{
+		cout << "Single link... OK!" << endl;
+		return true;
+	}
+	if((primary_test())&&(secondary_test()))
 		return true;
 	else
 		return false;
@@ -75,7 +79,7 @@ bool Algorithm2::is_feasible()
 
 bool Algorithm2::primary_test()
 {
-	cout << "Testing primary interference..." << endl;
+	cout << "Testing primary interference...";
 	if (current_set.size() > n / 2)
 	{
 		cout << "Failed!" << endl;
@@ -95,7 +99,7 @@ bool Algorithm2::primary_test()
 
 bool Algorithm2::secondary_test()
 {
-	cout << "Testing secondary interference..." << endl;
+	cout << "Testing secondary interference...";
 	double sinr;
 	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
@@ -118,6 +122,7 @@ double Algorithm2::calculate_sinr(Link* l)
 
 void Algorithm2::del_link(uint64_t index)
 {
+	//cout << "Deleting link " << index << endl;
 	current_set.pop_back();
 	network->get_link(index)->get_sender()->dec_degree();       // increments sender degree
 	network->get_link(index)->get_recver()->dec_degree();       // increments recver degree
@@ -129,7 +134,7 @@ void Algorithm2::del_link(uint64_t index)
 // public member functions
 Algorithm2::Algorithm2(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
 {
-	cout << "Initializing..." << endl;
+	cout << "Initializing Algorithm 2..." << endl;
 	find_fsets(0);
 	cout << "Feasible sets found." << endl;
 }
