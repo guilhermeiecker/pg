@@ -4,16 +4,16 @@
 
 void Algorithm1::find_fsets()
 {
-	cout << "Finding feasible sets..." << endl << endl;
+	//cout << "Finding feasible sets..." << endl << endl;
 	uint64_t inc;
 	uint64_t limit = (uint64_t)pow(2, m);
 	for(it = 1; it < limit; it++)
 	{
 		index = 0;
-		cout << "Decoding integer " << it << "..." << endl;
+		//cout << "Decoding integer " << it << "..." << endl;
 		decode_int(it);
 		update_interference();
-		cout << "Checking feasibility..." << endl;
+		//cout << "Checking feasibility..." << endl;
 		if (is_feasible())
 		{
 			inc = 0;
@@ -22,7 +22,7 @@ void Algorithm1::find_fsets()
 		else
 			inc = ((it&~(it-1)) - 1);
 		it = it + inc;
-		cout << "Clearing current set..." << endl << endl;
+		//cout << "Clearing current set..." << endl << endl;
 		clr_currset();
 	}
 }
@@ -36,7 +36,7 @@ void Algorithm1::decode_int(uint64_t x)
 	{
 		if(q==0)
 		{
-			cout << endl << "ERROR: Impossible combination of q and r!" << endl;
+			//cout << endl << "ERROR: Impossible combination of q and r!" << endl;
 			return;
 		}
 		else
@@ -90,7 +90,7 @@ bool Algorithm1::is_feasible()
 {
 	if(current_set.size() < 2)
 	{
-		cout << "Single link... OK!" << endl;
+		//cout << "Single link... OK!" << endl;
 		return true;
 	}
 	if((primary_test())&&(secondary_test()))
@@ -101,41 +101,41 @@ bool Algorithm1::is_feasible()
 
 bool Algorithm1::primary_test()
 {
-	cout << "Testing primary interference... ";
+	//cout << "Testing primary interference... ";
 	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
 		if (((*i)->get_sender()->get_degree() > 1) || ((*i)->get_recver()->get_degree() > 1))
 		{
-			cout << "Failed!" << endl;
+			//cout << "Failed!" << endl;
 			return false;
 		}
 	}
-	cout << "OK!" << endl;
+	//cout << "OK!" << endl;
 	return true;
 }
 
 bool Algorithm1::secondary_test()
 {
-	cout << "Testing secondary interference...";
+	//cout << "Testing secondary interference...";
 	double sinr;
 	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
 		sinr = calculate_sinr(*i);
-		//cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
+		////cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
 		if(sinr < network->beta_mW)
 		{
-			cout << "Failed!" << endl;
+			//cout << "Failed!" << endl;
 			return false;
 		}
 	}
-	cout << "OK!" << endl;
+	//cout << "OK!" << endl;
 	return true;
 }
 
 double Algorithm1::calculate_sinr(Link* l)
 {
 	//l->prt_interf();
-	//cout << l->get_rpower() << "/(" << network->noise_mW << " + " << l->clc_interf() << ")" << endl;
+	////cout << l->get_rpower() << "/(" << network->noise_mW << " + " << l->clc_interf() << ")" << endl;
     return l->get_rpower() / (network->noise_mW + l->clc_interf());
 }
 
@@ -162,9 +162,9 @@ void Algorithm1::print_currset()
 
 Algorithm1::Algorithm1(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
 {
-	cout << "Initializing Algorithm 1..." << endl;
+	//cout << "Initializing Algorithm 1..." << endl;
 	find_fsets();
-	cout << "Feasible sets found." << endl;
+	//cout << "Feasible sets found." << endl;
 }
 
 vector<uint64_t> Algorithm1::get_fsets()
@@ -174,10 +174,10 @@ vector<uint64_t> Algorithm1::get_fsets()
 
 void Algorithm1::print_fsets()
 {
-	cout << "Printing feasible sets of links..." << endl;
+	//cout << "Printing feasible sets of links..." << endl;
 	for (vector<uint64_t>::iterator i = feasible_sets.begin(); i != feasible_sets.end(); ++i)
 	{
-		cout << *i << endl;
+		//cout << *i << endl;
 		//index = 0;
 		//decode_int(*i);
 		//print_currset();

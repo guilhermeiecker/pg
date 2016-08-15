@@ -1,5 +1,5 @@
 /*
-** Algorithm 3: Iterative + Parallel masks test
+** Algorithm 3: Recursive + Sequential masks test
 **
 */
 
@@ -12,28 +12,29 @@
 #include "Link.h"
 #include "Network.h"
 
-class Algorithm3
+class Algorithm5
 {
 private:
 	uint64_t it, index, n, m;
 	vector<Link*> current_set;
-	vector<uint64_t> feasible_sets;
+	vector<uint64_t> fsets;
+	vector<uint64_t> masks; // or patterns?
 	Network* network;
 	
-	void find_fsets();
-	void decode_int(uint64_t);
-	void update_interference();	
+	void find_fsets(uint64_t);
+	void add_link(uint64_t);
 	double calculate_interference(Node*, Node*);
-	bool is_feasible();	
+	void print_interf();
+	bool is_feasible();
+	bool masks_test();
 	bool primary_test();
 	bool secondary_test();
-	double calculate_sinr(Link*);				
-	void clr_currset();
-	void print_currset();
-		
+	double calculate_sinr(Link*);
+	void del_link(uint64_t);
+	
 public:
-	Algorithm3(Network*);
+	Algorithm5(Network*);
 	vector<uint64_t> get_fsets();
 	void print_fsets();
+	void print_masks();
 };
-

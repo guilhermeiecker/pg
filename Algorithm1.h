@@ -1,5 +1,5 @@
 /*
-** Algorithm 1: 
+** Algorithm 1: Simple Iterative
 **
 */
 

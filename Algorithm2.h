@@ -1,5 +1,5 @@
 /*
-** Algorithm 2: 
+** Algorithm 2: Iterative + Sequential masks test
 **
 */
 
@@ -20,18 +20,20 @@ private:
 	vector<uint64_t> feasible_sets;
 	Network* network;
 	
-	void find_fsets(uint64_t);
-	void add_link(uint64_t);
+	void find_fsets();
+	void decode_int(uint64_t);
+	void update_interference();	
 	double calculate_interference(Node*, Node*);
-	void print_interf();
-	bool is_feasible();
+	bool is_feasible();	
 	bool primary_test();
 	bool secondary_test();
-	double calculate_sinr(Link*);
-	void del_link(uint64_t);
-	
+	double calculate_sinr(Link*);				
+	void clr_currset();
+	void print_currset();
+		
 public:
 	Algorithm2(Network*);
 	vector<uint64_t> get_fsets();
 	void print_fsets();
 };
+
