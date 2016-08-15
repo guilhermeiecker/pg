@@ -1,6 +1,9 @@
 CC=g++
 CFLAGS=-c -Wall -std=c++11 -lpthread
 
+network: scheduling.o Network.o Link.o Node.o
+	$(CC) scheduling.o Network.o Link.o Node.o -lpthread -o network
+	
 recursive: scheduling.o Algorithm4.o Algorithm5.o Algorithm6.o Network.o Link.o Node.o
 	$(CC) scheduling.o Algorithm4.o Algorithm5.o Algorithm6.o Network.o Link.o Node.o -lpthread -o recursive
 
@@ -44,3 +47,6 @@ Node.o: Node.cc
 
 clean:
 	rm *.o scheduling recursive iterative
+	
+cn:
+	rm *.o network

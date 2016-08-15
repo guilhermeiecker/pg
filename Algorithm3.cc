@@ -93,21 +93,68 @@ bool Algorithm3::is_feasible()
 		//cout << "Single link... OK!" << endl;
 		return true;
 	}
-	if((primary_test())&&(secondary_test()))
-		return true;
+	
+	std::thread second(&Algorithm3::intrf_test, this);		
+	std::thread first (&Algorithm3::masks_test, this);
+	
+	first.join();
+	second.join();
+		
+	if((intrf_test_val == false)||((masks_test_val == false)))
+		result = false;
 	else
-		return false;
+		result = true;
+		
+	masks_test_end = false;
+	intrf_test_end = false;
+	
+	masks_test_val = true;
+	intrf_test_val = true;
+	
+	return result;
+}
+
+void Algorithm3::intrf_test()
+{
+	if((primary_test())&&(secondary_test()))
+	{
+		intrf_test_end = true;
+		intrf_test_val = true;		
+		return;
+		//std::terminate();
+	}
+	else
+	{
+		intrf_test_end = true;
+		intrf_test_val = false;	
+		masks.push_back(it);		
+		return;
+		//std::terminate();
+	}
 }
 
 bool Algorithm3::primary_test()
 {
-	//cout << "Testing primary interference... ";
-	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
+	//cout << "Testing primary interference...";
+	if (current_set.size() > n / 2)
 	{
-		if (((*i)->get_sender()->get_degree() > 1) || ((*i)->get_recver()->get_degree() > 1))
+		//cout << "Failed!" << endl;
+		return false;
+	}
+	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
+	{
+		if((masks_test_end==true)&&(masks_test_val==false))
 		{
-			//cout << "Failed!" << endl;
+			//cout << "Masks test has finished first" << endl;
 			return false;
+		}
+		else
+		{
+			if(((*i)->get_sender()->get_degree() > 1)||((*i)->get_recver()->get_degree() > 1))
+			{
+				//cout << "Failed!" << endl;
+		        return false;
+		    }
 		}
 	}
 	//cout << "OK!" << endl;
@@ -120,16 +167,55 @@ bool Algorithm3::secondary_test()
 	double sinr;
 	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
-		sinr = calculate_sinr(*i);
-		////cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
-		if(sinr < network->beta_mW)
+		if((masks_test_end==true)&&(masks_test_val==false))
 		{
-			//cout << "Failed!" << endl;
+			//cout << "Masks test has finished first" << endl;
 			return false;
 		}
+		else
+		{
+			sinr = calculate_sinr(*i);
+			////cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
+			if(sinr < network->beta_mW)
+			{
+				//cout << "Failed!" << endl;
+				return false;
+			}	
+		}	
 	}
 	//cout << "OK!" << endl;
 	return true;
+}
+
+void Algorithm3::masks_test()
+{
+	//cout << "Testing masks patterns...";
+	for(vector<uint64_t>::iterator i = masks.begin(); i != masks.end(); ++i)
+	{
+		if(!intrf_test_end)
+		{
+			if((it & *i) == *i)
+			{
+				//cout << "Failed! (Found " << *i << " in " << it << ")" << endl;
+				masks_test_end = true;
+				masks_test_val = false;
+				return;
+				//std::terminate();
+			}
+		}
+		else
+		{
+			//cout << "Interference test has finished first" << endl;
+			return;
+			//std::terminate();
+		}
+
+	}
+	//cout << "OK!" << endl;
+    masks_test_end = true;
+    masks_test_val = true;	
+	return;
+	//std::terminate();
 }
 
 double Algorithm3::calculate_sinr(Link* l)

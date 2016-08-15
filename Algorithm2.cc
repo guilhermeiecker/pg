@@ -93,10 +93,30 @@ bool Algorithm2::is_feasible()
 		//cout << "Single link... OK!" << endl;
 		return true;
 	}
+	if(!masks_test())
+		return false;
 	if((primary_test())&&(secondary_test()))
 		return true;
 	else
+	{
+		masks.push_back(it);
 		return false;
+	}
+}
+
+bool Algorithm2::masks_test()
+{
+	//cout << "Testing masks patterns...";
+	for(vector<uint64_t>::iterator i = masks.begin(); i != masks.end(); ++i)
+	{
+		if((it & *i) == *i)
+		{
+		    //cout << "Failed! (Found " << *i << " in " << it << ")" << endl;
+			return false;
+		}
+	}
+	//cout << "OK!" << endl;
+	return true;
 }
 
 bool Algorithm2::primary_test()
@@ -162,9 +182,9 @@ void Algorithm2::print_currset()
 
 Algorithm2::Algorithm2(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
 {
-	//cout << "Initializing Algorithm 1..." << endl;
+	cout << "Initializing Algorithm 2..." << endl;
 	find_fsets();
-	//cout << "Feasible sets found." << endl;
+	cout << "Feasible sets found." << endl;
 }
 
 vector<uint64_t> Algorithm2::get_fsets()
