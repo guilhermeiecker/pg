@@ -228,9 +228,9 @@ vector<uint64_t> Algorithm6::get_fsets()
 
 void Algorithm6::print_fsets()
 {
-	cout << "Printing feasible sets of links..." << endl;
+	cout << "Printing fsets for Algorithm 6..." << endl;
 	for (vector<uint64_t>::iterator i = fsets.begin(); i != fsets.end(); ++i)
-		cout << *i << "\t";
+		cout << *i << " ";
 	cout << endl;
 }
 

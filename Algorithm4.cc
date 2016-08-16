@@ -146,7 +146,8 @@ vector<uint64_t> Algorithm4::get_fsets()
 
 void Algorithm4::print_fsets()
 {
-	cout << "Printing feasible sets of links..." << endl;
+	cout << "Printing fsets for Algorithm 4..." << endl;
 	for (vector<uint64_t>::iterator i = feasible_sets.begin(); i != feasible_sets.end(); ++i)
-		cout << *i << endl;
+		cout << *i << " ";
+	cout << endl;
 }

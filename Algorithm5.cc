@@ -166,9 +166,9 @@ vector<uint64_t> Algorithm5::get_fsets()
 
 void Algorithm5::print_fsets()
 {
-	cout << "Printing feasible sets of links..." << endl;
+	cout << "Printing fsets for Algorithm 5..." << endl;
 	for (vector<uint64_t>::iterator i = fsets.begin(); i != fsets.end(); ++i)
-		cout << *i << "\t";
+		cout << *i << " ";
 	cout << endl;
 }
 

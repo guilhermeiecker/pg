@@ -174,13 +174,14 @@ vector<uint64_t> Algorithm1::get_fsets()
 
 void Algorithm1::print_fsets()
 {
-	//cout << "Printing feasible sets of links..." << endl;
+	cout << "Printing fsets for Algorithm 1..." << endl;
 	for (vector<uint64_t>::iterator i = feasible_sets.begin(); i != feasible_sets.end(); ++i)
 	{
-		//cout << *i << endl;
+		cout << *i << " ";
 		//index = 0;
 		//decode_int(*i);
 		//print_currset();
 		//clr_currset();
 	}
+	cout << endl;
 }

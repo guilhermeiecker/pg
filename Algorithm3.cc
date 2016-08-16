@@ -248,9 +248,9 @@ void Algorithm3::print_currset()
 
 Algorithm3::Algorithm3(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
 {
-	//cout << "Initializing Algorithm 1..." << endl;
+	cout << "Initializing Algorithm 3..." << endl;
 	find_fsets();
-	//cout << "Feasible sets found." << endl;
+	cout << "Feasible sets found." << endl;
 }
 
 vector<uint64_t> Algorithm3::get_fsets()
@@ -260,13 +260,14 @@ vector<uint64_t> Algorithm3::get_fsets()
 
 void Algorithm3::print_fsets()
 {
-	//cout << "Printing feasible sets of links..." << endl;
+	cout << "Printing fsets for Algorithm 3..." << endl;
 	for (vector<uint64_t>::iterator i = feasible_sets.begin(); i != feasible_sets.end(); ++i)
 	{
-		//cout << *i << endl;
+		cout << *i << " ";
 		//index = 0;
 		//decode_int(*i);
 		//print_currset();
 		//clr_currset();
 	}
+	cout << endl;
 }
