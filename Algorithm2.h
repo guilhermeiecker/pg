@@ -15,6 +15,9 @@
 class Algorithm2
 {
 private:
+	bool prima_test_end, prima_test_val,
+		 secon_test_end, secon_test_val,
+		 masks_test_end, masks_test_val;
 	uint64_t it, index, n, m;
 	vector<Link*> current_set;
 	vector<uint64_t> feasible_sets;
@@ -26,9 +29,9 @@ private:
 	void update_interference();	
 	double calculate_interference(Node*, Node*);
 	bool is_feasible();
-	bool masks_test();
-	bool primary_test();
-	bool secondary_test();
+	void masks_test();
+	void primary_test();
+	void secondary_test();
 	double calculate_sinr(Link*);				
 	void clr_currset();
 	void print_currset();

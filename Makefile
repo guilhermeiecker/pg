@@ -1,19 +1,10 @@
 CC=g++
-CFLAGS=-c -Wall -std=c++11 -lpthread
+CFLAGS=-c -Wall -std=c++11 -fopenmp
 
 all: scheduling
 
-network: scheduling.o Network.o Link.o Node.o
-	$(CC) scheduling.o Network.o Link.o Node.o -lpthread -o network
-	
-recursive: scheduling.o Algorithm4.o Algorithm5.o Algorithm6.o Network.o Link.o Node.o
-	$(CC) scheduling.o Algorithm4.o Algorithm5.o Algorithm6.o Network.o Link.o Node.o -lpthread -o recursive
-
-iterative: scheduling.o Algorithm1.o Algorithm2.o Algorithm3.o Network.o Link.o Node.o
-	$(CC) scheduling.o Algorithm1.o Algorithm2.o Algorithm3.o Network.o Link.o Node.o -lpthread -o iterative
-
 scheduling: scheduling.o Algorithm1.o Algorithm2.o Algorithm3.o Algorithm4.o Algorithm5.o Algorithm6.o Network.o Link.o Node.o
-	$(CC) scheduling.o Algorithm1.o Algorithm2.o Algorithm3.o Algorithm4.o Algorithm5.o Algorithm6.o Network.o Link.o Node.o -lpthread -o scheduling
+	$(CC) scheduling.o Algorithm1.o Algorithm2.o Algorithm3.o Algorithm4.o Algorithm5.o Algorithm6.o Network.o Link.o Node.o -o scheduling -fopenmp
 
 scheduling.o: scheduling.cc
 	$(CC) $(CFLAGS) scheduling.cc
@@ -47,12 +38,3 @@ Node.o: Node.cc
 
 clean:
 	rm *.o scheduling
-	
-ci:
-	rm *.o iterative
-	
-cr:
-	rm *.o recursive
-	
-cn:
-	rm *.o network

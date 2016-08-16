@@ -1,5 +1,5 @@
 /*
-** Algorithm 3: Recursive + Sequential masks test
+** Algorithm 6: Recursive + Parallel masks test without interruption
 **
 */
 
@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <vector>
 #include <math.h>
+#include <omp.h>
 #include "Node.h"
 #include "Link.h"
 #include "Network.h"
@@ -15,6 +16,9 @@
 class Algorithm5
 {
 private:
+	bool prima_test_end, prima_test_val,
+		 secon_test_end, secon_test_val,
+		 masks_test_end, masks_test_val;
 	uint64_t it, index, n, m;
 	vector<Link*> current_set;
 	vector<uint64_t> fsets;
@@ -26,9 +30,9 @@ private:
 	double calculate_interference(Node*, Node*);
 	void print_interf();
 	bool is_feasible();
-	bool masks_test();
-	bool primary_test();
-	bool secondary_test();
+	void masks_test();
+	void primary_test();
+	void secondary_test();
 	double calculate_sinr(Link*);
 	void del_link(uint64_t);
 	

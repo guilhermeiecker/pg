@@ -93,43 +93,91 @@ bool Algorithm1::is_feasible()
 		//cout << "Single link... OK!" << endl;
 		return true;
 	}
-	if((primary_test())&&(secondary_test()))
-		return true;
-	else
+	
+	primary_test();
+	secondary_test();
+
+	prima_test_end = false;
+	secon_test_end = false;
+
+	if((prima_test_val == false)||(secon_test_val == false))
+	{
+		prima_test_val = true;
+		secon_test_val = true;
 		return false;
+	}
+	else
+	{
+		prima_test_val = true;
+		secon_test_val = true;
+		return true;
+	}
 }
 
-bool Algorithm1::primary_test()
+void Algorithm1::primary_test()
 {
-	//cout << "Testing primary interference... ";
-	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
+	//cout << "Testing primary interference...";
+	if (current_set.size() > n / 2)
 	{
-		if (((*i)->get_sender()->get_degree() > 1) || ((*i)->get_recver()->get_degree() > 1))
+		//cout << "Failed!" << endl;
+		prima_test_val = false;
+		prima_test_end = true;
+		return;
+	}
+	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
+	{
+		if((secon_test_end==true)&&(secon_test_val==false))
 		{
-			//cout << "Failed!" << endl;
-			return false;
+			//cout << "Masks test has finished first" << endl;
+			prima_test_val = true;
+			prima_test_end = true;
+			return;
+		}
+		else
+		{
+			if(((*i)->get_sender()->get_degree() > 1)||((*i)->get_recver()->get_degree() > 1))
+			{
+				//cout << "Failed!" << endl;
+				prima_test_val = false;
+				prima_test_end = true;
+		        return;
+		    }
 		}
 	}
 	//cout << "OK!" << endl;
-	return true;
+	prima_test_val = true;
+	prima_test_end = true;
+	return;
 }
 
-bool Algorithm1::secondary_test()
+void Algorithm1::secondary_test()
 {
-	//cout << "Testing secondary interference...";
 	double sinr;
 	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
-		sinr = calculate_sinr(*i);
-		////cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
-		if(sinr < network->beta_mW)
+		if(((prima_test_end==true)&&(prima_test_val==false)))
 		{
-			//cout << "Failed!" << endl;
-			return false;
+			//cout << "Masks test has finished first" << endl;
+			secon_test_val = true;
+			secon_test_end = true;
+			return;
 		}
+		else
+		{
+			sinr = calculate_sinr(*i);
+			if(sinr < network->beta_mW)
+			{
+				//cout << "Failed!" << endl;
+				secon_test_val = false;
+				secon_test_end = true;
+				return;
+			}	
+		}	
 	}
 	//cout << "OK!" << endl;
-	return true;
+	secon_test_val = true;
+	secon_test_end = true;
+	return;
 }
 
 double Algorithm1::calculate_sinr(Link* l)

@@ -73,42 +73,39 @@ bool Algorithm6::is_feasible()
 		return true;
 	}
 	
-	std::thread second(&Algorithm6::intrf_test, this);		
-	std::thread first (&Algorithm6::masks_test, this);	
-	
-	first.join();
-	second.join();
-
-	if((intrf_test_val == false)||((masks_test_val == false)))
-		result = false;
-	else
-		result = true;
-		
-	masks_test_end = false;
-	intrf_test_end = false;
-	
-	masks_test_val = true;
-	intrf_test_val = true;
-	
-	return result;
-}
-
-void Algorithm6::intrf_test()
-{
-	if((primary_test())&&(secondary_test()))
+	#pragma omp sections
 	{
-		intrf_test_end = true;
-		intrf_test_val = true;		
-		return;
-		//std::terminate();
+		#pragma omp section 
+		{ 	
+			masks_test();
+		}
+		#pragma omp section
+		{
+			primary_test();
+		}
+		#pragma omp section
+		{
+			secondary_test();
+		}
+	}
+
+	masks_test_end = false;
+	prima_test_end = false;
+	secon_test_end = false;
+
+	if((masks_test_val == false)||(prima_test_val == false)||(secon_test_val == false))
+	{
+		masks_test_val = true;
+		prima_test_val = true;
+		secon_test_val = true;
+		return false;
 	}
 	else
 	{
-		intrf_test_end = true;
-		intrf_test_val = false;	
-		masks.push_back(it);		
-		return;
-		//std::terminate();
+		masks_test_val = true;
+		prima_test_val = true;
+		secon_test_val = true;
+		return true;
 	}
 }
 
@@ -117,7 +114,7 @@ void Algorithm6::masks_test()
 	//cout << "Testing masks patterns...";
 	for(vector<uint64_t>::iterator i = masks.begin(); i != masks.end(); ++i)
 	{
-		if(!intrf_test_end)
+		if((!prima_test_end)||(!secon_test_end))
 		{
 			if((it & *i) == *i)
 			{
@@ -125,14 +122,14 @@ void Algorithm6::masks_test()
 				masks_test_end = true;
 				masks_test_val = false;
 				return;
-				//std::terminate();
 			}
 		}
 		else
 		{
 			//cout << "Interference test has finished first" << endl;
+		    masks_test_end = true;
+   			masks_test_val = true;
 			return;
-			//std::terminate();
 		}
 
 	}
@@ -140,61 +137,74 @@ void Algorithm6::masks_test()
     masks_test_end = true;
     masks_test_val = true;	
 	return;
-	//std::terminate();
 }
 
-bool Algorithm6::primary_test()
+void Algorithm6::primary_test()
 {
 	//cout << "Testing primary interference...";
 	if (current_set.size() > n / 2)
 	{
 		//cout << "Failed!" << endl;
-		return false;
+		prima_test_val = false;
+		prima_test_end = true;
+		return;
 	}
 	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
 		if((masks_test_end==true)&&(masks_test_val==false))
 		{
 			//cout << "Masks test has finished first" << endl;
-			return false;
+			prima_test_val = true;
+			prima_test_end = true;
+			return;
 		}
 		else
 		{
 			if(((*i)->get_sender()->get_degree() > 1)||((*i)->get_recver()->get_degree() > 1))
 			{
 				//cout << "Failed!" << endl;
-		        return false;
+				prima_test_val = false;
+				prima_test_end = true;
+		        return;
 		    }
 		}
 	}
 	//cout << "OK!" << endl;
-	return true;
+	prima_test_val = true;
+	prima_test_end = true;
+	return;
 }
 
-bool Algorithm6::secondary_test()
+void Algorithm6::secondary_test()
 {
 	//cout << "Testing secondary interference...";
 	double sinr;
 	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
-		if((masks_test_end==true)&&(masks_test_val==false))
+		if(((masks_test_end==true)&&(masks_test_val==false))||
+		   ((prima_test_end==true)&&(prima_test_val==false)))
 		{
 			//cout << "Masks test has finished first" << endl;
-			return false;
+			secon_test_val = true;
+			secon_test_end = true;
+			return;
 		}
 		else
 		{
 			sinr = calculate_sinr(*i);
-			////cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
 			if(sinr < network->beta_mW)
 			{
 				//cout << "Failed!" << endl;
-				return false;
+				secon_test_val = false;
+				secon_test_end = true;
+				return;
 			}	
 		}	
 	}
 	//cout << "OK!" << endl;
-	return true;
+	secon_test_val = true;
+	secon_test_end = true;
+	return;
 }
 
 double Algorithm6::calculate_sinr(Link* l)

@@ -93,63 +93,129 @@ bool Algorithm2::is_feasible()
 		//cout << "Single link... OK!" << endl;
 		return true;
 	}
-	if(!masks_test())
+	
+	masks_test();
+	primary_test();
+	secondary_test();
+
+	masks_test_end = false;
+	prima_test_end = false;
+	secon_test_end = false;
+
+	if((masks_test_val == false)||(prima_test_val == false)||(secon_test_val == false))
+	{
+		masks_test_val = true;
+		prima_test_val = true;
+		secon_test_val = true;
 		return false;
-	if((primary_test())&&(secondary_test()))
-		return true;
+	}
 	else
 	{
-		masks.push_back(it);
-		return false;
+		masks_test_val = true;
+		prima_test_val = true;
+		secon_test_val = true;
+		return true;
 	}
 }
 
-bool Algorithm2::masks_test()
+void Algorithm2::masks_test()
 {
 	//cout << "Testing masks patterns...";
 	for(vector<uint64_t>::iterator i = masks.begin(); i != masks.end(); ++i)
 	{
-		if((it & *i) == *i)
+		if((!prima_test_end)||(!secon_test_end))
 		{
-		    //cout << "Failed! (Found " << *i << " in " << it << ")" << endl;
-			return false;
+			if((it & *i) == *i)
+			{
+				//cout << "Failed! (Found " << *i << " in " << it << ")" << endl;
+				masks_test_end = true;
+				masks_test_val = false;
+				return;
+			}
 		}
+		else
+		{
+			//cout << "Interference test has finished first" << endl;
+		    masks_test_end = true;
+   			masks_test_val = true;
+			return;
+		}
+
 	}
 	//cout << "OK!" << endl;
-	return true;
+    masks_test_end = true;
+    masks_test_val = true;	
+	return;
 }
 
-bool Algorithm2::primary_test()
+void Algorithm2::primary_test()
 {
-	//cout << "Testing primary interference... ";
-	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
+	//cout << "Testing primary interference...";
+	if (current_set.size() > n / 2)
 	{
-		if (((*i)->get_sender()->get_degree() > 1) || ((*i)->get_recver()->get_degree() > 1))
+		//cout << "Failed!" << endl;
+		prima_test_val = false;
+		prima_test_end = true;
+		return;
+	}
+	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
+	{
+		if((masks_test_end==true)&&(masks_test_val==false))
 		{
-			//cout << "Failed!" << endl;
-			return false;
+			//cout << "Masks test has finished first" << endl;
+			prima_test_val = true;
+			prima_test_end = true;
+			return;
+		}
+		else
+		{
+			if(((*i)->get_sender()->get_degree() > 1)||((*i)->get_recver()->get_degree() > 1))
+			{
+				//cout << "Failed!" << endl;
+				masks.push_back(it);				
+				prima_test_val = false;
+				prima_test_end = true;
+		        return;
+		    }
 		}
 	}
 	//cout << "OK!" << endl;
-	return true;
+	prima_test_val = true;
+	prima_test_end = true;
+	return;
 }
 
-bool Algorithm2::secondary_test()
+void Algorithm2::secondary_test()
 {
 	//cout << "Testing secondary interference...";
 	double sinr;
 	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
-		sinr = calculate_sinr(*i);
-		////cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
-		if(sinr < network->beta_mW)
+		if(((masks_test_end==true)&&(masks_test_val==false))||
+		   ((prima_test_end==true)&&(prima_test_val==false)))
 		{
-			//cout << "Failed!" << endl;
-			return false;
+			//cout << "Masks test has finished first" << endl;
+			secon_test_val = true;
+			secon_test_end = true;
+			return;
 		}
+		else
+		{
+			sinr = calculate_sinr(*i);
+			if(sinr < network->beta_mW)
+			{
+				//cout << "Failed!" << endl;
+				masks.push_back(it);
+				secon_test_val = false;
+				secon_test_end = true;
+				return;
+			}	
+		}	
 	}
 	//cout << "OK!" << endl;
-	return true;
+	secon_test_val = true;
+	secon_test_end = true;
+	return;
 }
 
 double Algorithm2::calculate_sinr(Link* l)

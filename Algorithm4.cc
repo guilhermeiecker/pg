@@ -17,7 +17,7 @@ void Algorithm4::find_fsets(uint64_t x)
 		limit = (uint64_t)log2(x & ~(x - 1));					// n&~(n-1) gives the closest power of 2 that is less than n - to get the index, use log2
 		add_link(limit);
 		if (is_feasible()) {							// if combination n is feasible
-			feasible_sets.push_back(x);						// if this iteration is called, then n is feasible and needs to be pushed into fsets
+			fsets.push_back(x);						// if this iteration is called, then n is feasible and needs to be pushed into fsets
 			for (uint64_t i = 0; i < limit; i++)
 				find_fsets(x + (uint64_t)pow(2, i));	// calls setFsets for all kids, if there's any
 		}
@@ -39,9 +39,6 @@ void Algorithm4::add_link(uint64_t index)
 			////cout << "I(" << (*i)->get_id() << "," << index << ")=" << interfBA << endl;
 			network->get_link(index)->add_interf(interfAB);
 			(*i)->add_interf(interfBA);
-			
-			network->get_link(index)->inc_interference(interfAB);
-			(*i)->inc_interference(interfBA);
 		}
 	}
 	network->get_link(index)->get_sender()->inc_degree();       // increments sender degree
@@ -67,6 +64,7 @@ void Algorithm4::print_interf()
 		(*i)->prt_interf();
 	//cout << endl;
 }
+
 bool Algorithm4::is_feasible()
 {
 	if(current_set.size() < 2)
@@ -74,53 +72,97 @@ bool Algorithm4::is_feasible()
 		//cout << "Single link... OK!" << endl;
 		return true;
 	}
-	if((primary_test())&&(secondary_test()))
-		return true;
-	else
+	
+	primary_test();
+	secondary_test();
+
+	prima_test_end = false;
+	secon_test_end = false;
+
+	if((prima_test_val == false)||(secon_test_val == false))
+	{
+		prima_test_val = true;
+		secon_test_val = true;
 		return false;
+	}
+	else
+	{
+		prima_test_val = true;
+		secon_test_val = true;
+		return true;
+	}
 }
 
-bool Algorithm4::primary_test()
+void Algorithm4::primary_test()
 {
 	//cout << "Testing primary interference...";
 	if (current_set.size() > n / 2)
 	{
 		//cout << "Failed!" << endl;
-		return false;
+		prima_test_val = false;
+		prima_test_end = true;
+		return;
 	}
 	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
-	    if(((*i)->get_sender()->get_degree() > 1)||((*i)->get_recver()->get_degree() > 1))
-	    {
-    		//cout << "Failed!" << endl;
-            return false;
-        }
+		if((secon_test_end==true)&&(secon_test_val==false))
+		{
+			//cout << "Masks test has finished first" << endl;
+			prima_test_val = true;
+			prima_test_end = true;
+			return;
+		}
+		else
+		{
+			if(((*i)->get_sender()->get_degree() > 1)||((*i)->get_recver()->get_degree() > 1))
+			{
+				//cout << "Failed!" << endl;
+				prima_test_val = false;
+				prima_test_end = true;
+		        return;
+		    }
+		}
 	}
 	//cout << "OK!" << endl;
-	return true;
+	prima_test_val = true;
+	prima_test_end = true;
+	return;
 }
 
-bool Algorithm4::secondary_test()
+void Algorithm4::secondary_test()
 {
 	//cout << "Testing secondary interference...";
 	double sinr;
 	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
-		sinr = calculate_sinr(*i);
-		////cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
-		if(sinr < network->beta_mW)
+		if(((prima_test_end==true)&&(prima_test_val==false)))
 		{
-    		//cout << "Failed!" << endl;
-			return false;
-		}		
+			//cout << "Masks test has finished first" << endl;
+			secon_test_val = true;
+			secon_test_end = true;
+			return;
+		}
+		else
+		{
+			sinr = calculate_sinr(*i);
+			if(sinr < network->beta_mW)
+			{
+				//cout << "Failed!" << endl;
+				secon_test_val = false;
+				secon_test_end = true;
+				return;
+			}	
+		}	
 	}
 	//cout << "OK!" << endl;
-	return true;
+	secon_test_val = true;
+	secon_test_end = true;
+	return;
 }
 
 double Algorithm4::calculate_sinr(Link* l)
 {
-    return l->get_rpower() / (network->noise_mW + l->get_interference());
+    return l->get_rpower() / (network->noise_mW + l->clc_interf());
 }
 
 void Algorithm4::del_link(uint64_t index)
@@ -129,14 +171,9 @@ void Algorithm4::del_link(uint64_t index)
 	current_set.pop_back();
 	network->get_link(index)->get_sender()->dec_degree();       // increments sender degree
 	network->get_link(index)->get_recver()->dec_degree();       // increments recver degree
-	
-	network->get_link(index)->set_interference(0.0);			// zeroes total interference
-	network->get_link(index)->clr_interf();						// clear interference vector
+	network->get_link(index)->clr_interf();
 	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
-	{
-			(*i)->dec_interference((*i)->get_interf().back());
 		    (*i)->del_interf();
-	}
 }
 
 // public member functions
@@ -149,13 +186,13 @@ Algorithm4::Algorithm4(Network* g): n(g->get_nodes().size()), m(g->get_links().s
 
 vector<uint64_t> Algorithm4::get_fsets()
 {
-	return feasible_sets;
+	return fsets;
 }
 
 void Algorithm4::print_fsets()
 {
 	cout << "Printing fsets for Algorithm 4..." << endl;
-	for (vector<uint64_t>::iterator i = feasible_sets.begin(); i != feasible_sets.end(); ++i)
+	for (vector<uint64_t>::iterator i = fsets.begin(); i != fsets.end(); ++i)
 		cout << *i << " ";
 	cout << endl;
 }

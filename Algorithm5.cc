@@ -27,7 +27,7 @@ void Algorithm5::find_fsets(uint64_t x)
 
 void Algorithm5::add_link(uint64_t index)
 {
-	//cout << "Adding link " << index << endl;
+	////cout << "Adding link " << index << endl;
 	if (!current_set.empty()) {
 		double interfAB, interfBA;
 		for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i) 
@@ -35,8 +35,8 @@ void Algorithm5::add_link(uint64_t index)
 			interfAB = calculate_interference((*i)->get_sender(), network->get_link(index)->get_recver());
 			interfBA = calculate_interference(network->get_link(index)->get_sender(), (*i)->get_recver());
 			
-			//cout << "I(" << index << "," << (*i)->get_id() << ")=" << interfAB << "\t";
-			//cout << "I(" << (*i)->get_id() << "," << index << ")=" << interfBA << endl;
+			////cout << "I(" << index << "," << (*i)->get_id() << ")=" << interfAB << "\t";
+			////cout << "I(" << (*i)->get_id() << "," << index << ")=" << interfBA << endl;
 			network->get_link(index)->add_interf(interfAB);
 			(*i)->add_interf(interfBA);
 		}
@@ -50,7 +50,7 @@ void Algorithm5::add_link(uint64_t index)
 double Algorithm5::calculate_interference(Node* a, Node* b)
 {
     double dist = a->distance(*b);
-    //cout << "distance from d(" << a->get_id() << "," << b->get_id() << ")=" << dist << endl; 
+    ////cout << "distance from d(" << a->get_id() << "," << b->get_id() << ")=" << dist << endl; 
     if (dist > network->d0)
             return pow(10.0, ((network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0)) / 10.0));
     else
@@ -62,8 +62,9 @@ void Algorithm5::print_interf()
 	//cout << "Printing interference vector for set " << it << "..." << endl;
 	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 		(*i)->prt_interf();
-	cout << endl;
+	//cout << endl;
 }
+
 bool Algorithm5::is_feasible()
 {
 	if(current_set.size() < 2)
@@ -71,68 +72,129 @@ bool Algorithm5::is_feasible()
 		//cout << "Single link... OK!" << endl;
 		return true;
 	}
-	if(!masks_test())
+	
+	masks_test();
+	primary_test();
+	secondary_test();
+
+	masks_test_end = false;
+	prima_test_end = false;
+	secon_test_end = false;
+
+	if((masks_test_val == false)||(prima_test_val == false)||(secon_test_val == false))
+	{
+		masks_test_val = true;
+		prima_test_val = true;
+		secon_test_val = true;
 		return false;
-	if((primary_test())&&(secondary_test()))
-		return true;
+	}
 	else
 	{
-		masks.push_back(it);
-		return false;
+		masks_test_val = true;
+		prima_test_val = true;
+		secon_test_val = true;
+		return true;
 	}
 }
 
-bool Algorithm5::masks_test()
+void Algorithm5::masks_test()
 {
 	//cout << "Testing masks patterns...";
 	for(vector<uint64_t>::iterator i = masks.begin(); i != masks.end(); ++i)
 	{
-		if((it & *i) == *i)
+		if((!prima_test_end)||(!secon_test_end))
 		{
-		    //cout << "Failed! (Found " << *i << " in " << it << ")" << endl;
-			return false;
+			if((it & *i) == *i)
+			{
+				//cout << "Failed! (Found " << *i << " in " << it << ")" << endl;
+				masks_test_end = true;
+				masks_test_val = false;
+				return;
+			}
 		}
+		else
+		{
+			//cout << "Interference test has finished first" << endl;
+		    masks_test_end = true;
+   			masks_test_val = true;
+			return;
+		}
+
 	}
 	//cout << "OK!" << endl;
-	return true;
+    masks_test_end = true;
+    masks_test_val = true;	
+	return;
 }
 
-bool Algorithm5::primary_test()
+void Algorithm5::primary_test()
 {
 	//cout << "Testing primary interference...";
 	if (current_set.size() > n / 2)
 	{
 		//cout << "Failed!" << endl;
-		return false;
+		prima_test_val = false;
+		prima_test_end = true;
+		return;
 	}
 	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
-	    if(((*i)->get_sender()->get_degree() > 1)||((*i)->get_recver()->get_degree() > 1))
-	    {
-    		//cout << "Failed!" << endl;
-            return false;
-        }
+		if((masks_test_end==true)&&(masks_test_val==false))
+		{
+			//cout << "Masks test has finished first" << endl;
+			prima_test_val = true;
+			prima_test_end = true;
+			return;
+		}
+		else
+		{
+			if(((*i)->get_sender()->get_degree() > 1)||((*i)->get_recver()->get_degree() > 1))
+			{
+				//cout << "Failed!" << endl;
+				masks.push_back(it);				
+				prima_test_val = false;
+				prima_test_end = true;
+		        return;
+		    }
+		}
 	}
 	//cout << "OK!" << endl;
-	return true;
+	prima_test_val = true;
+	prima_test_end = true;
+	return;
 }
 
-bool Algorithm5::secondary_test()
+void Algorithm5::secondary_test()
 {
 	//cout << "Testing secondary interference...";
 	double sinr;
 	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
 	{
-		sinr = calculate_sinr(*i);
-		//cout << "SINR(" << (*i)->get_id() << "," << it << ")=" << sinr << endl;
-		if(sinr < network->beta_mW)
+		if(((masks_test_end==true)&&(masks_test_val==false))||
+		   ((prima_test_end==true)&&(prima_test_val==false)))
 		{
-    		//cout << "Failed!" << endl;
-			return false;
-		}		
+			//cout << "Masks test has finished first" << endl;
+			secon_test_val = true;
+			secon_test_end = true;
+			return;
+		}
+		else
+		{
+			sinr = calculate_sinr(*i);
+			if(sinr < network->beta_mW)
+			{
+				//cout << "Failed!" << endl;
+				masks.push_back(it);
+				secon_test_val = false;
+				secon_test_end = true;
+				return;
+			}	
+		}	
 	}
 	//cout << "OK!" << endl;
-	return true;
+	secon_test_val = true;
+	secon_test_end = true;
+	return;
 }
 
 double Algorithm5::calculate_sinr(Link* l)
@@ -142,7 +204,7 @@ double Algorithm5::calculate_sinr(Link* l)
 
 void Algorithm5::del_link(uint64_t index)
 {
-	//cout << "Deleting link " << index << endl;
+	////cout << "Deleting link " << index << endl;
 	current_set.pop_back();
 	network->get_link(index)->get_sender()->dec_degree();       // increments sender degree
 	network->get_link(index)->get_recver()->dec_degree();       // increments recver degree
