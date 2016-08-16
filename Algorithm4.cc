@@ -39,6 +39,9 @@ void Algorithm4::add_link(uint64_t index)
 			////cout << "I(" << (*i)->get_id() << "," << index << ")=" << interfBA << endl;
 			network->get_link(index)->add_interf(interfAB);
 			(*i)->add_interf(interfBA);
+			
+			network->get_link(index)->inc_interference(interfAB);
+			(*i)->inc_interference(interfBA);
 		}
 	}
 	network->get_link(index)->get_sender()->inc_degree();       // increments sender degree
@@ -117,7 +120,7 @@ bool Algorithm4::secondary_test()
 
 double Algorithm4::calculate_sinr(Link* l)
 {
-    return l->get_rpower() / (network->noise_mW + l->clc_interf());
+    return l->get_rpower() / (network->noise_mW + l->get_interference());
 }
 
 void Algorithm4::del_link(uint64_t index)
@@ -126,9 +129,14 @@ void Algorithm4::del_link(uint64_t index)
 	current_set.pop_back();
 	network->get_link(index)->get_sender()->dec_degree();       // increments sender degree
 	network->get_link(index)->get_recver()->dec_degree();       // increments recver degree
-	network->get_link(index)->clr_interf();
+	
+	network->get_link(index)->set_interference(0.0);			// zeroes total interference
+	network->get_link(index)->clr_interf();						// clear interference vector
 	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
+	{
+			(*i)->dec_interference((*i)->get_interf().back());
 		    (*i)->del_interf();
+	}
 }
 
 // public member functions

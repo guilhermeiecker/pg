@@ -8,7 +8,7 @@
 #include "Algorithm6.h"
 
 int main() {
-	Network n(16, 1570, 300.0);
+	Network n(4, 530, 300.0);
 	
 	clock_t t1, t2, t3, t4, t5, t6, t7;
 	/*

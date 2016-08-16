@@ -38,10 +38,10 @@ void Network::set_links()
 				else 
 					pr = pow(10.0, ((tpower_dBm - l0_dB) / 10.0));
 				// choose a direction in the selected edge
-				if (coin == 0)
+				//if (coin == 0)
 					links.push_back(Link(&(*i), &(*j), index++, dist, pr));
-				else
-					links.push_back(Link(&(*j), &(*i), index++, dist, pr));
+				//else
+				//	links.push_back(Link(&(*j), &(*i), index++, dist, pr));
 					
 				cout << "link " << links.back().get_id() << "(" << links.back().get_sender()->get_id() << "," << links.back().get_recver()->get_id() << ")\td=" << links.back().get_dist() << "\trpower=" << pr << " mW" << endl;
 			}
