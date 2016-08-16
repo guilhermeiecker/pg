@@ -3,9 +3,15 @@ CFLAGS=-c -Wall -std=c++11 -fopenmp
 
 all: scheduling
 
+tester: network-tester.o Network.o Link.o Node.o
+	$(CC) network-tester.o Network.o Link.o Node.o -o tester
+	
 scheduling: scheduling.o Algorithm1.o Algorithm2.o Algorithm3.o Algorithm4.o Algorithm5.o Algorithm6.o Network.o Link.o Node.o
 	$(CC) scheduling.o Algorithm1.o Algorithm2.o Algorithm3.o Algorithm4.o Algorithm5.o Algorithm6.o Network.o Link.o Node.o -o scheduling -fopenmp
 
+network-tester.o: network-tester.cc
+	$(CC) $(CFLAGS) network-tester.cc
+	
 scheduling.o: scheduling.cc
 	$(CC) $(CFLAGS) scheduling.cc
 
@@ -26,7 +32,7 @@ Algorithm5.o: Algorithm5.cc
 	
 Algorithm6.o: Algorithm6.cc
 	$(CC) $(CFLAGS) Algorithm6.cc
-		
+	
 Network.o: Network.cc
 	$(CC) $(CFLAGS) Network.cc
 
@@ -38,3 +44,6 @@ Node.o: Node.cc
 
 clean:
 	rm *.o scheduling
+	
+ct:
+	rm *.o tester

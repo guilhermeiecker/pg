@@ -7,8 +7,8 @@
 #include "Algorithm5.h"
 #include "Algorithm6.h"
 
-int main() {
-	Network n(16, 1570, 300.0);
+int main(int argc, char** argv) {
+	Network n(atoi(argv[1]), strtod(argv[2], NULL), strtod(argv[3], NULL));
 	
 	clock_t t1, t2, t3, t4, t5, t6, t7;
 	
@@ -33,12 +33,13 @@ int main() {
 	cout << "Algorithm 5 Time Elapse: " << ((double)(t6 - t5))/CLOCKS_PER_SEC << " seconds" << endl;
 	cout << "Algorithm 6 Time Elapse: " << ((double)(t7 - t6))/CLOCKS_PER_SEC << " seconds" << endl;
 	
+	/*	
 	a1.print_fsets();
 	a2.print_fsets();
 	a3.print_fsets();
 	a4.print_fsets();
 	a5.print_fsets();
 	a6.print_fsets();
-	
+	*/
 	return 0;
 }
