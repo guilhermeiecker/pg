@@ -16,28 +16,28 @@
 class Algorithm1
 {
 private:
-	bool prima_test_end, prima_test_val,
-		 secon_test_end, secon_test_val;
 	uint64_t it, inc, limit, index, n, m;
-	vector<Link*> current_set;
-	vector<uint64_t> feasible_sets;
+	vector<Link*> cset;
+	vector<uint64_t> fset;
 	Network* network;
 	
 	void decode_int(uint64_t);
 	void update_interference();	
 	double calculate_interference(Node*, Node*);
 	bool is_feasible();	
-	void primary_test();
-	void secondary_test();
+	bool primary_test();
+	bool secondary_test();
 	double calculate_sinr(Link*);				
-	void clr_currset();
-	void print_currset();
+	void clear_cset();
+	void print_cset();
 		
 public:
 	Algorithm1(Network*);
-	void find_fsets();
-	vector<uint64_t> get_fsets();
-	void print_fsets();
-	void clear_fsets();
+	void find_fset();
+	vector<uint64_t> get_fset();
+	void print_fset();
+	void clear_fset();
 };
+
+
 
