@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <vector>
 #include <math.h>
+#include <limits>
 #include "Node.h"
 #include "Link.h"
 #include "Network.h"
@@ -17,7 +18,7 @@ class Algorithm1
 private:
 	bool prima_test_end, prima_test_val,
 		 secon_test_end, secon_test_val;
-	uint64_t it, index, n, m;
+	uint64_t it, inc, limit, index, n, m;
 	vector<Link*> current_set;
 	vector<uint64_t> feasible_sets;
 	Network* network;

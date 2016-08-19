@@ -1,19 +1,14 @@
 #include "Algorithm1.h"
 
-// private member functions
+int __builtin_popcount (uint64_t x);
 
 void Algorithm1::find_fsets()
 {
-	//cout << "Finding feasible sets..." << endl << endl;
-	uint64_t inc;
-	uint64_t limit = (uint64_t)pow(2, m);
 	for(it = 1; it < limit; it++)
 	{
 		index = 0;
-		//cout << "Decoding integer " << it << "..." << endl;
 		decode_int(it);
 		update_interference();
-		//cout << "Checking feasibility..." << endl;
 		if (is_feasible())
 		{
 			inc = 0;
@@ -21,8 +16,9 @@ void Algorithm1::find_fsets()
 		}
 		else
 			inc = ((it&~(it-1)) - 1);
+		if(it + inc < it)
+			return;
 		it = it + inc;
-		//cout << "Clearing current set..." << endl << endl;
 		clr_currset();
 	}
 }
@@ -210,9 +206,7 @@ void Algorithm1::print_currset()
 
 Algorithm1::Algorithm1(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
 {
-	//cout << "Initializing Algorithm 1..." << endl;
-	//find_fsets();
-	//cout << "Feasible sets found." << endl;
+	limit = (m < 64) ? ((uint64_t)pow(2,m) - 1) : (numeric_limits<uint64_t>::max());
 }
 
 vector<uint64_t> Algorithm1::get_fsets()
@@ -226,10 +220,6 @@ void Algorithm1::print_fsets()
 	for (vector<uint64_t>::iterator i = feasible_sets.begin(); i != feasible_sets.end(); ++i)
 	{
 		cout << *i << " ";
-		//index = 0;
-		//decode_int(*i);
-		//print_currset();
-		//clr_currset();
 	}
 	cout << endl;
 }
