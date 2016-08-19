@@ -226,9 +226,9 @@ void Algorithm6::del_link(uint64_t index)
 // public member functions
 Algorithm6::Algorithm6(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
 {
-	cout << "Initializing Algorithm 6..." << endl;
-	find_fsets(0);
-	cout << "Feasible sets found." << endl;
+	//cout << "Initializing Algorithm 6..." << endl;
+	//find_fsets(0);
+	//cout << "Feasible sets found." << endl;
 }
 
 vector<uint64_t> Algorithm6::get_fsets()
@@ -251,3 +251,5 @@ void Algorithm6::print_masks()
 		cout << *i << "\t";
 	cout << endl;
 }
+
+void Algorithm6::clear_fsets() { fsets.clear(); masks.clear();}

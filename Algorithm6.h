@@ -25,7 +25,6 @@ private:
 	vector<uint64_t> masks; // or patterns?
 	Network* network;
 	
-	void find_fsets(uint64_t);
 	void add_link(uint64_t);
 	double calculate_interference(Node*, Node*);
 	void print_interf();
@@ -38,7 +37,9 @@ private:
 	
 public:
 	Algorithm6(Network*);
+	void find_fsets(uint64_t);
 	vector<uint64_t> get_fsets();
 	void print_fsets();
 	void print_masks();
+	void clear_fsets();
 };

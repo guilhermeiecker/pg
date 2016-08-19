@@ -216,9 +216,9 @@ void Algorithm5::del_link(uint64_t index)
 // public member functions
 Algorithm5::Algorithm5(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
 {
-	cout << "Initializing Algorithm 5..." << endl;
-	find_fsets(0);
-	cout << "Feasible sets found." << endl;
+	//cout << "Initializing Algorithm 5..." << endl;
+	//find_fsets(0);
+	//cout << "Feasible sets found." << endl;
 }
 
 vector<uint64_t> Algorithm5::get_fsets()
@@ -241,3 +241,5 @@ void Algorithm5::print_masks()
 		cout << *i << "\t";
 	cout << endl;
 }
+
+void Algorithm5::clear_fsets() { fsets.clear(); masks.clear();}

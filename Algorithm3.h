@@ -25,7 +25,6 @@ private:
 	vector<uint64_t> masks;
 	Network* network;
 	
-	void find_fsets();
 	void decode_int(uint64_t);
 	void update_interference();	
 	double calculate_interference(Node*, Node*);
@@ -39,7 +38,9 @@ private:
 		
 public:
 	Algorithm3(Network*);
+	void find_fsets();
 	vector<uint64_t> get_fsets();
 	void print_fsets();
+	void clear_fsets();
 };
 

@@ -260,9 +260,9 @@ void Algorithm3::print_currset()
 
 Algorithm3::Algorithm3(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
 {
-	cout << "Initializing Algorithm 3..." << endl;
-	find_fsets();
-	cout << "Feasible sets found." << endl;
+	//cout << "Initializing Algorithm 3..." << endl;
+	//find_fsets();
+	//cout << "Feasible sets found." << endl;
 }
 
 vector<uint64_t> Algorithm3::get_fsets()
@@ -283,3 +283,5 @@ void Algorithm3::print_fsets()
 	}
 	cout << endl;
 }
+
+void Algorithm3::clear_fsets() { feasible_sets.clear(); masks.clear();}

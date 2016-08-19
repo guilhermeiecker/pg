@@ -179,9 +179,9 @@ void Algorithm4::del_link(uint64_t index)
 // public member functions
 Algorithm4::Algorithm4(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
 {
-	cout << "Initializing Algorithm 4..." << endl;
-	find_fsets(0);
-	cout << "Feasible sets found." << endl;
+	//cout << "Initializing Algorithm 4..." << endl;
+	//find_fsets(0);
+	//cout << "Feasible sets found." << endl;
 }
 
 vector<uint64_t> Algorithm4::get_fsets()
@@ -196,3 +196,5 @@ void Algorithm4::print_fsets()
 		cout << *i << " ";
 	cout << endl;
 }
+
+void Algorithm4::clear_fsets() { fsets.clear(); }

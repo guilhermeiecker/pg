@@ -12,11 +12,11 @@ vector<Link> Network::get_links()
 
 void Network::set_nodes()
 {
-	cout << "Initializing node vector..." << endl;
+	//cout << "Initializing node vector..." << endl;
 	for (uint64_t i = 0; i < num_nodes; i++)
 	{
 		nodes.push_back(Node(i, area_side));
-		cout << "Node id: " << nodes.back().get_id() << ",\t(" << nodes.back().get_x() << "," << nodes.back().get_y() << ")\tdegree=" << nodes.back().get_degree() << endl;
+		//cout << "Node id: " << nodes.back().get_id() << ",\t(" << nodes.back().get_x() << "," << nodes.back().get_y() << ")\tdegree=" << nodes.back().get_degree() << endl;
 	}
 	cout << endl;
 }
@@ -25,7 +25,7 @@ void Network::set_links()
 {
 	srand (time(NULL));
 	uint64_t index = 0;
-	cout << "Initializing link vector..." << endl;
+	//cout << "Initializing link vector..." << endl;
 	for (vector<Node>::iterator i = nodes.begin(); i != nodes.end(); ++i) {
 		for (vector<Node>::iterator j = i + 1; j != nodes.end(); ++j) {
 			int coin = ((int) random())%2;
@@ -43,7 +43,7 @@ void Network::set_links()
 				//else
 				//	links.push_back(Link(&(*j), &(*i), index++, dist, pr));
 					
-				cout << "link " << links.back().get_id() << "(" << links.back().get_sender()->get_id() << "," << links.back().get_recver()->get_id() << ")\td=" << links.back().get_dist() << "\trpower=" << pr << " mW" << endl;
+				//cout << "link " << links.back().get_id() << "(" << links.back().get_sender()->get_id() << "," << links.back().get_recver()->get_id() << ")\td=" << links.back().get_dist() << "\trpower=" << pr << " mW" << endl;
 			}
 		}
 	}

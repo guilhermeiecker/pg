@@ -210,9 +210,9 @@ void Algorithm1::print_currset()
 
 Algorithm1::Algorithm1(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
 {
-	cout << "Initializing Algorithm 1..." << endl;
-	find_fsets();
-	cout << "Feasible sets found." << endl;
+	//cout << "Initializing Algorithm 1..." << endl;
+	//find_fsets();
+	//cout << "Feasible sets found." << endl;
 }
 
 vector<uint64_t> Algorithm1::get_fsets()
@@ -233,3 +233,5 @@ void Algorithm1::print_fsets()
 	}
 	cout << endl;
 }
+
+void Algorithm1::clear_fsets() { feasible_sets.clear(); }

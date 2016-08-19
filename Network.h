@@ -35,12 +35,12 @@ public:
 	
 	Network(uint64_t _n = 100, double _a = 3000.0, double _p = 300.0) : num_nodes(_n), area_side(_a), tpower(_p)
 	{
-		cout << "Initializing network..." << endl;
-		cout << "\tmax_range=\t" << max_range << endl << 
-				"\tnoise_mW=\t" << noise_mW << endl <<
-				"\tnoise_dBm=\t" << noise_dBm << endl <<
-				"\ttpower_dBm=\t\t" << tpower_dBm << endl <<
-				"\tbeta_mw=\t\t" << beta_mW << endl << endl;
+		//cout << "Initializing network..." << endl;
+		//cout << "\tmax_range=\t" << max_range << endl << 
+		//		"\tnoise_mW=\t" << noise_mW << endl <<
+		//		"\tnoise_dBm=\t" << noise_dBm << endl <<
+		//		"\ttpower_dBm=\t\t" << tpower_dBm << endl <<
+		//		"\tbeta_mw=\t\t" << beta_mW << endl << endl;
 		set_nodes();
 		set_links();
 	}

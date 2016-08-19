@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-c -Wall -std=c++11 -fopenmp
 
 all: scheduling
-
+	
 tester: network-tester.o Network.o Link.o Node.o
 	$(CC) network-tester.o Network.o Link.o Node.o -o tester
 	
@@ -11,7 +11,7 @@ scheduling: scheduling.o Algorithm1.o Algorithm2.o Algorithm3.o Algorithm4.o Alg
 
 network-tester.o: network-tester.cc
 	$(CC) $(CFLAGS) network-tester.cc
-	
+		
 scheduling.o: scheduling.cc
 	$(CC) $(CFLAGS) scheduling.cc
 
