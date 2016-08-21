@@ -2,10 +2,10 @@
 
 void Algorithm1::find_fset()
 {
-	for(it = 1; it < limit; it++)
+	for(it = 1; it <= limit; it++)
 	{
 		index = 0;
-		decode_int(it);
+		decode(it);
 		if (is_feasible())
 		{
 			inc = 0;
@@ -20,7 +20,7 @@ void Algorithm1::find_fset()
 	}
 }
 
-void Algorithm1::decode_int(uint64_t x)
+void Algorithm1::decode(uint64_t x)
 {
 	uint64_t q = x / 2;
 	uint64_t r = x % 2;
@@ -32,7 +32,7 @@ void Algorithm1::decode_int(uint64_t x)
 		else
 		{
 			index++;
-			decode_int(q);
+			decode(q);
 		}
 	}
 	else
@@ -45,7 +45,7 @@ void Algorithm1::decode_int(uint64_t x)
 		else
 		{
 			index++;
-			decode_int(q);
+			decode(q);
 		}
 	}
 }

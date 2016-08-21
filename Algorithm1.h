@@ -21,7 +21,7 @@ private:
 	vector<uint64_t> fset;
 	Network* network;
 	
-	void decode_int(uint64_t);
+	void decode(uint64_t);
 	void update_interference();	
 	double calculate_interference(Node*, Node*);
 	bool is_feasible();	

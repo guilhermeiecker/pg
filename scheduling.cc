@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
 	name = name + argv[1] + "m" + argv[2] + ".txt";
 	f.open(name);
 	
-	Network n((uint64_t)atoi(argv[1]), (double)atof(argv[3]), 350.0);
+	Network n((uint64_t)atoi(argv[1]), (double)atof(argv[3]), 300.0);
 
 	Algorithm1* a1 = new Algorithm1(&n);
 	Algorithm2* a2 = new Algorithm2(&n);
@@ -32,11 +32,11 @@ int main(int argc, char** argv) {
 	{
 		cout << "Round " << i << "..." << endl;
 		t1 = clock();
-		a1->find_fset();
+		a1->find_fset(); 
 		t2 = clock();
 		a2->find_fsets();
 		t3 = clock();
-		a3->find_fsets();
+		a3->find_fset();
 		t4 = clock();
 		a4->find_fsets(0);
 		t5 = clock();
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
 		
 		a1->clear_fset();
 		a2->clear_fsets();
-		a3->clear_fsets();
+		a3->clear_fset();
 		a4->clear_fsets();
 		a5->clear_fsets();
 		a6->clear_fsets();
@@ -63,7 +63,9 @@ int main(int argc, char** argv) {
 	f.close();
 	
 	a1->find_fset();
-	a1->print_fset();
+	a1->print_fset();	
+	a3->find_fset();
+	a3->print_fset();
 	
 	return 0;
 }
