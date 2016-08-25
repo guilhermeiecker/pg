@@ -25,29 +25,29 @@ void Algorithm1::decode(uint64_t x)
 	uint64_t q = x / 2;
 	uint64_t r = x % 2;
 
-	if(r==0)
-	{
-		if(q==0)
-			return;
-		else
-		{
-			index++;
-			decode(q);
-		}
-	}
-	else
+	if(r==1)
 	{
 		cset.push_back(network->get_link(index));
 		cset.back()->get_sender()->inc_degree();
 		cset.back()->get_recver()->inc_degree(); 
-		if(q==0)
-			return;
-		else
-		{
-			index++;
-			decode(q);
-		}
 	}
+	if(q>0)
+	{
+		index++;
+		decode(q);
+	}
+}
+
+bool Algorithm1::is_feasible()
+{
+	if(cset.size() < 2)
+		return true;
+	if(cset.size() > n/2)
+		return false;
+	update_interference();
+	if(primary_test()&&secondary_test())
+		return true;
+	return false;
 }
 
 void Algorithm1::update_interference()
@@ -60,28 +60,15 @@ void Algorithm1::update_interference()
 				(*i)->add_interf(calculate_interference((*j)->get_sender(), (*i)->get_recver()));
 		}
 	}
-		
 }
 
 double Algorithm1::calculate_interference(Node* a, Node* b)
 {
-    double dist = a->distance(*b);
-    if (dist > network->d0)
-            return pow(10.0, ((network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0)) / 10.0));
-    else
-            return pow(10.0, network->tpower_dBm - network->l0_dB / 10.0);
-}
-
-bool Algorithm1::is_feasible()
-{
-	if(cset.size() < 2)
-		return true;
-	if(cset.size() > n/2)
-		return false;
-	update_interference();
-	if(!primary_test()||!secondary_test())
-		return false;
-	return true;
+	double dist = a->distance(*b);
+		if (dist > network->d0)
+			return pow(10.0, ((network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0)) / 10.0));
+	else
+		return pow(10.0, network->tpower_dBm - network->l0_dB / 10.0);
 }
 
 bool Algorithm1::primary_test()

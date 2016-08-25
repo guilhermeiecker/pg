@@ -1,275 +1,159 @@
 #include "Algorithm2.h"
 
-// private member functions
-
-void Algorithm2::find_fsets()
+void Algorithm2::find_fset()
 {
-	//cout << "Finding feasible sets..." << endl << endl;
-	uint64_t inc;
-	uint64_t limit = (uint64_t)pow(2, m);
-	for(it = 1; it < limit; it++)
+	for(it = 1; it <= limit; it++)
 	{
 		index = 0;
-		//cout << "Decoding integer " << it << "..." << endl;
-		decode_int(it);
-		update_interference();
-		//cout << "Checking feasibility..." << endl;
+		decode(it);
 		if (is_feasible())
 		{
 			inc = 0;
-			feasible_sets.push_back(it);
+			fset.push_back(it);
 		}
-		else
+		else 
 			inc = ((it&~(it-1)) - 1);
+		if(it + inc < it) 
+			return;
 		it = it + inc;
-		//cout << "Clearing current set..." << endl << endl;
-		clr_currset();
+		clear_cset();
 	}
 }
 
-void Algorithm2::decode_int(uint64_t x)
+void Algorithm2::decode(uint64_t x)
 {
 	uint64_t q = x / 2;
 	uint64_t r = x % 2;
 
-	if(r==0)
+	if(r==1)
 	{
-		if(q==0)
-		{
-			//cout << endl << "ERROR: Impossible combination of q and r!" << endl;
-			return;
-		}
-		else
-		{
-			index++;
-			decode_int(q);
-		}
+		cset.push_back(network->get_link(index));
+		cset.back()->get_sender()->inc_degree();
+		cset.back()->get_recver()->inc_degree(); 
 	}
-	else
+	if(q>0)
 	{
-		current_set.push_back(network->get_link(index));	//add link to current set
-		current_set.back()->get_sender()->inc_degree();		//update sender degree
-		current_set.back()->get_recver()->inc_degree();		//update recver degree 
-		if(q==0)
-		{
-			return;
-		}
-		else
-		{
-			index++;
-			decode_int(q);
-		}
+		index++;
+		decode(q);
 	}
+}
+
+bool Algorithm2::is_feasible()
+{
+	if(cset.size() < 2)
+		return true;
+	if(cset.size() > n/2)
+		return false;
+	update_interference();
+	if(masks_test()&&primary_test()&&secondary_test())
+		return true;
+	return false;
 }
 
 void Algorithm2::update_interference()
 {
-	if(current_set.size()<2)
-		return;
-	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
+	for (vector<Link*>::iterator i = cset.begin(); i != cset.end(); ++i)
 	{
-		for (vector<Link*>::iterator j = current_set.begin(); j != current_set.end(); ++j)
+		for (vector<Link*>::iterator j = cset.begin(); j != cset.end(); ++j)
 		{
 			if(i!=j)
 				(*i)->add_interf(calculate_interference((*j)->get_sender(), (*i)->get_recver()));
 		}
 	}
-		
 }
 
 double Algorithm2::calculate_interference(Node* a, Node* b)
 {
-    double dist = a->distance(*b);
-    if (dist > network->d0)
-            return pow(10.0, ((network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0)) / 10.0));
-    else
-            return pow(10.0, network->tpower_dBm - network->l0_dB / 10.0);
-}
-
-bool Algorithm2::is_feasible()
-{
-	if(current_set.size() < 2)
-	{
-		//cout << "Single link... OK!" << endl;
-		return true;
-	}
-	
-	masks_test();
-	primary_test();
-	secondary_test();
-
-	masks_test_end = false;
-	prima_test_end = false;
-	secon_test_end = false;
-
-	if((masks_test_val == false)||(prima_test_val == false)||(secon_test_val == false))
-	{
-		masks_test_val = true;
-		prima_test_val = true;
-		secon_test_val = true;
-		return false;
-	}
+	double dist = a->distance(*b);
+	if (dist > network->d0)
+		return pow(10.0, ((network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0)) / 10.0));
 	else
-	{
-		masks_test_val = true;
-		prima_test_val = true;
-		secon_test_val = true;
-		return true;
-	}
+		return pow(10.0, network->tpower_dBm - network->l0_dB / 10.0);
 }
 
-void Algorithm2::masks_test()
+bool Algorithm2::masks_test()
 {
-	//cout << "Testing masks patterns...";
-	for(vector<uint64_t>::iterator i = masks.begin(); i != masks.end(); ++i)
+	for(vector<uint64_t>::iterator i = mset.begin(); i != mset.end(); ++i)
 	{
-		if((!prima_test_end)||(!secon_test_end))
-		{
 			if((it & *i) == *i)
-			{
-				//cout << "Failed! (Found " << *i << " in " << it << ")" << endl;
-				masks_test_end = true;
-				masks_test_val = false;
-				return;
-			}
-		}
-		else
-		{
-			//cout << "Interference test has finished first" << endl;
-		    masks_test_end = true;
-   			masks_test_val = true;
-			return;
-		}
-
+				return false;
 	}
-	//cout << "OK!" << endl;
-    masks_test_end = true;
-    masks_test_val = true;	
-	return;
+	return true;
 }
 
-void Algorithm2::primary_test()
+bool Algorithm2::primary_test()
 {
-	//cout << "Testing primary interference...";
-	if (current_set.size() > n / 2)
+	for (vector<Link*>::iterator i = cset.begin(); i != cset.end(); ++i)
 	{
-		//cout << "Failed!" << endl;
-		prima_test_val = false;
-		prima_test_end = true;
-		return;
-	}
-	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
-	{
-		if((masks_test_end==true)&&(masks_test_val==false))
+		if(((*i)->get_sender()->get_degree() > 1)||((*i)->get_recver()->get_degree() > 1))
 		{
-			//cout << "Masks test has finished first" << endl;
-			prima_test_val = true;
-			prima_test_end = true;
-			return;
-		}
-		else
-		{
-			if(((*i)->get_sender()->get_degree() > 1)||((*i)->get_recver()->get_degree() > 1))
-			{
-				//cout << "Failed!" << endl;
-				masks.push_back(it);				
-				prima_test_val = false;
-				prima_test_end = true;
-		        return;
-		    }
+			mset.push_back(it);
+	    return false;
 		}
 	}
-	//cout << "OK!" << endl;
-	prima_test_val = true;
-	prima_test_end = true;
-	return;
+	return true;
 }
 
-void Algorithm2::secondary_test()
+bool Algorithm2::secondary_test()
 {
-	//cout << "Testing secondary interference...";
 	double sinr;
-	for(vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
+	for(vector<Link*>::iterator i = cset.begin(); i != cset.end(); ++i)
 	{
-		if(((masks_test_end==true)&&(masks_test_val==false))||
-		   ((prima_test_end==true)&&(prima_test_val==false)))
+		sinr = calculate_sinr(*i);
+		if(sinr < network->beta_mW)
 		{
-			//cout << "Masks test has finished first" << endl;
-			secon_test_val = true;
-			secon_test_end = true;
-			return;
+			mset.push_back(it);
+			return false;
 		}
-		else
-		{
-			sinr = calculate_sinr(*i);
-			if(sinr < network->beta_mW)
-			{
-				//cout << "Failed!" << endl;
-				masks.push_back(it);
-				secon_test_val = false;
-				secon_test_end = true;
-				return;
-			}	
-		}	
 	}
-	//cout << "OK!" << endl;
-	secon_test_val = true;
-	secon_test_end = true;
-	return;
+	return true;
 }
 
 double Algorithm2::calculate_sinr(Link* l)
 {
-	//l->prt_interf();
-	////cout << l->get_rpower() << "/(" << network->noise_mW << " + " << l->clc_interf() << ")" << endl;
-    return l->get_rpower() / (network->noise_mW + l->clc_interf());
+   return l->get_rpower() / (network->noise_mW + l->clc_interf());
 }
 
-void Algorithm2::clr_currset()
+void Algorithm2::clear_cset()
 {
-	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
+	for (vector<Link*>::iterator i = cset.begin(); i != cset.end(); ++i)
 	{
 		(*i)->get_sender()->dec_degree(); 
 		(*i)->get_recver()->dec_degree();
 		(*i)->clr_interf();
 	}
-	current_set.clear();
+	cset.clear();
 }
 
-void Algorithm2::print_currset()
+void Algorithm2::print_cset()
 {
 	cout << "(";
-	for (vector<Link*>::iterator i = current_set.begin(); i != current_set.end(); ++i)
+	for (vector<Link*>::iterator i = cset.begin(); i != cset.end(); ++i)
 		cout << " " << (*i)->get_id();
 	cout << " )" << endl;
 }
 
-// public member functions
 
 Algorithm2::Algorithm2(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
 {
-	//cout << "Initializing Algorithm 2..." << endl;
-	//find_fsets();
-	//cout << "Feasible sets found." << endl;
+	limit = (m < 64) ? ((uint64_t)pow(2,m) - 1) : (numeric_limits<uint64_t>::max());
 }
 
-vector<uint64_t> Algorithm2::get_fsets()
+vector<uint64_t> Algorithm2::get_fset()
 {
-	return feasible_sets;
+	return fset;
 }
 
-void Algorithm2::print_fsets()
+void Algorithm2::print_fset()
 {
-	cout << "Printing fsets for Algorithm 2..." << endl;
-	for (vector<uint64_t>::iterator i = feasible_sets.begin(); i != feasible_sets.end(); ++i)
-	{
+	cout << "Printing fset for Algorithm 1..." << endl;
+	for (vector<uint64_t>::iterator i = fset.begin(); i != fset.end(); ++i)
 		cout << *i << " ";
-		//index = 0;
-		//decode_int(*i);
-		//print_currset();
-		//clr_currset();
-	}
 	cout << endl;
 }
 
-void Algorithm2::clear_fsets() { feasible_sets.clear(); masks.clear();}
+void Algorithm2::clear_fset() 
+{ 
+	fset.clear();
+	mset.clear(); 
+}

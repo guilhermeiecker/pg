@@ -1,14 +1,5 @@
-/*
-** Algorithm 1: Simple Iterative
-**
-*/
-
 #pragma once
 
-#include <stdint.h>
-#include <vector>
-#include <math.h>
-#include <limits>
 #include "Node.h"
 #include "Link.h"
 #include "Network.h"
