@@ -1,6 +1,8 @@
-#include "Algorithm2.h"
+#include "Algorithm3.h"
 
-void Algorithm2::find_fset()
+// private member functions
+
+void Algorithm3::find_fset()
 {
 	for(it = 1; it <= limit; it++)
 	{
@@ -20,7 +22,7 @@ void Algorithm2::find_fset()
 	}
 }
 
-void Algorithm2::decode(uint64_t x)
+void Algorithm3::decode(uint64_t x)
 {
 	uint64_t q = x / 2;
 	uint64_t r = x % 2;
@@ -38,19 +40,56 @@ void Algorithm2::decode(uint64_t x)
 	}
 }
 
-bool Algorithm2::is_feasible()
+bool Algorithm3::is_feasible()
 {
 	if(cset.size() < 2)
 		return true;
 	if(cset.size() > n/2)
 		return false;
 	update_interference();
-	if(masks_test()&&primary_test()&&secondary_test())
+	
+	mtest_val = true;
+	ptest_val = true;
+	stest_val = true;
+	stop = false;
+	
+	/*
+	#pragma omp parallel num_threads(2) shared(stop)
+	{
+		int num = omp_get_thread_num();
+		switch(num)
+		{
+			case 0:
+				masks_test();
+				break;
+			case 1:
+				primary_test();
+				secondary_test();
+				break;
+		}
+	}*/
+	
+	//#pragma omp parallel sections num_threads(2)	// checar se funciona em um pc mais potente
+	#pragma omp sections nowait
+	{
+		#pragma omp section 
+		{ 	
+			masks_test();
+		}
+		#pragma omp section
+		{
+			primary_test();
+			secondary_test();
+		}
+	}
+	
+	if((mtest_val)&&(ptest_val)&&(stest_val))
 		return true;
+		
 	return false;
 }
 
-void Algorithm2::update_interference()
+void Algorithm3::update_interference()
 {
 	for (vector<Link*>::iterator i = cset.begin(); i != cset.end(); ++i)
 	{
@@ -62,59 +101,76 @@ void Algorithm2::update_interference()
 	}
 }
 
-double Algorithm2::calculate_interference(Node* a, Node* b)
+double Algorithm3::calculate_interference(Node* a, Node* b)
 {
-	double dist = a->distance(*b);
-	if (dist > network->d0)
-		return pow(10.0, ((network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0)) / 10.0));
-	else
-		return pow(10.0, network->tpower_dBm - network->l0_dB / 10.0);
+    double dist = a->distance(*b);
+    if (dist > network->d0)
+            return pow(10.0, ((network->tpower_dBm - network->l0_dB - 10 * network->alpha*log10(dist / network->d0)) / 10.0));
+    else
+            return pow(10.0, network->tpower_dBm - network->l0_dB / 10.0);
 }
 
-bool Algorithm2::masks_test()
+void Algorithm3::masks_test()
 {
 	for(vector<uint64_t>::iterator i = mset.begin(); i != mset.end(); ++i)
 	{
+		if(stop)
+			return;
 		if((it & *i) == *i)
-			return false;
+		{
+			mtest_val = false;
+			stop = true;
+			return;
+		}
 	}
-	return true;
+    mtest_val = true;	
+	return;
 }
 
-bool Algorithm2::primary_test()
+void Algorithm3::primary_test()
 {
 	for (vector<Link*>::iterator i = cset.begin(); i != cset.end(); ++i)
 	{
+		if(stop)
+			return;
 		if(((*i)->get_sender()->get_degree() > 1)||((*i)->get_recver()->get_degree() > 1))
 		{
-			mset.push_back(it);
-	    return false;
-		}
+			mset.push_back(it);				
+			ptest_val = false;
+			stop = true;
+			return;
+    }
 	}
-	return true;
+	ptest_val = true;
+	return;
 }
 
-bool Algorithm2::secondary_test()
+void Algorithm3::secondary_test()
 {
 	double sinr;
 	for(vector<Link*>::iterator i = cset.begin(); i != cset.end(); ++i)
 	{
+		if(stop)
+			return;
 		sinr = calculate_sinr(*i);
 		if(sinr < network->beta_mW)
 		{
 			mset.push_back(it);
-			return false;
-		}
+			stest_val = false;
+			stop = true;
+			return;
+		}	
 	}
-	return true;
+	stest_val = true;
+	return;
 }
 
-double Algorithm2::calculate_sinr(Link* l)
+double Algorithm3::calculate_sinr(Link* l)
 {
 	return l->get_rpower() / (network->noise_mW + l->clc_interf());
 }
 
-void Algorithm2::clear_cset()
+void Algorithm3::clear_cset()
 {
 	for (vector<Link*>::iterator i = cset.begin(); i != cset.end(); ++i)
 	{
@@ -125,7 +181,7 @@ void Algorithm2::clear_cset()
 	cset.clear();
 }
 
-void Algorithm2::print_cset()
+void Algorithm3::print_cset()
 {
 	cout << "(";
 	for (vector<Link*>::iterator i = cset.begin(); i != cset.end(); ++i)
@@ -134,26 +190,26 @@ void Algorithm2::print_cset()
 }
 
 
-Algorithm2::Algorithm2(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
+Algorithm3::Algorithm3(Network* g): n(g->get_nodes().size()), m(g->get_links().size()), network(g)
 {
 	limit = (m < 64) ? ((uint64_t)pow(2,m) - 1) : (numeric_limits<uint64_t>::max());
 }
 
-vector<uint64_t> Algorithm2::get_fset()
+vector<uint64_t> Algorithm3::get_fset()
 {
 	return fset;
 }
 
-void Algorithm2::print_fset()
+void Algorithm3::print_fset()
 {
-	cout << "Printing fset for Algorithm 1..." << endl;
+	cout << "Printing fset for Algorithm 3..." << endl;
 	for (vector<uint64_t>::iterator i = fset.begin(); i != fset.end(); ++i)
 		cout << *i << " ";
 	cout << endl;
 }
 
-void Algorithm2::clear_fset() 
+void Algorithm3::clear_fset() 
 { 
-	fset.clear();
-	mset.clear(); 
+	fset.clear(); 
+	mset.clear();
 }

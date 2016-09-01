@@ -62,7 +62,8 @@ bool Algorithm6::is_feasible()
 	stest_val = true;
 	stop = false;
 	
-	#pragma omp parallel num_threads(3)
+	/*
+	#pragma omp parallel num_threads(2)
 	{
 		int num = omp_get_thread_num();
 		switch(num)
@@ -72,15 +73,13 @@ bool Algorithm6::is_feasible()
 				break;
 			case 1:
 				primary_test();
-				break;
-			case 2:
 				secondary_test();
 				break;
 		}
-	}
-	/*
-	#pragma omp parallel sections num_threads(3)	// checar se funciona em um pc mais potente
-	//#pragma omp sections nowait
+	}*/
+	
+	//#pragma omp parallel sections num_threads(2)	// checar se funciona em um pc mais potente
+	#pragma omp sections nowait
 	{
 		#pragma omp section 
 		{ 	
@@ -89,13 +88,10 @@ bool Algorithm6::is_feasible()
 		#pragma omp section
 		{
 			primary_test();
-		}
-		#pragma omp section
-		{
 			secondary_test();
 		}
 	}
-*/
+
 	if((mtest_val)&&(ptest_val)&&(stest_val))
 		return true;
 		
