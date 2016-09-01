@@ -34,6 +34,7 @@ bool check_content(vector< vector<uint64_t> > f)
 }
 
 int main(int argc, char** argv) {
+	clock_t t2, tt2, t5, tt5;
 	Network n(atoi(argv[1]), strtod(argv[2], NULL), 300.0);
 	
 	Algorithm1 a1(&n);
@@ -45,10 +46,16 @@ int main(int argc, char** argv) {
 
 	cout << "finding sets" << endl;
 	a1.find_fset();cout << "Algo1 OK" << endl;
-	a2.find_fset();cout << "Algo2 OK" << endl;
+	t2 = clock();
+	a2.find_fset(); 
+	tt2 = clock();
+	cout << "Total=" << (double)(tt2 - t2)/CLOCKS_PER_SEC << "\tAlgo2 OK" << endl;
 	a3.find_fset();cout << "Algo3 OK" << endl;
 	a4.find_fset(0);cout << "Algo4 OK" << endl;
-	a5.find_fset(0);cout << "Algo5 OK" << endl;
+	t5 = clock();
+	a5.find_fset(0); 
+	tt5 = clock();
+	cout << "Total=" << (double)(tt5 - t5)/CLOCKS_PER_SEC << "\tAlgo5 OK" << endl;
 	a6.find_fset(0);cout << "Algo6 OK" << endl;
 	
 	vector< vector<uint64_t> > fs;
@@ -69,11 +76,11 @@ int main(int argc, char** argv) {
 		cout << "Size OK!" << endl;
 	else
 		cout << "Size not OK!" << endl;
-	/*
+	
 	if(check_content(fs))
 		cout << "Content OK!" << endl;
 	else
 		cout << "Content not OK!" << endl;
-	*/
+	
 	return 0;
 }

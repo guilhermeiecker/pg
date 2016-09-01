@@ -9,6 +9,10 @@ void Algorithm5::find_fset(uint64_t x)
 		limit = m;
 		for (uint64_t i = 0; i < limit; i++)
 			find_fset(x + (uint64_t)pow(2, i));
+		
+		cout << "MT=" << mt_total << "\t";
+		cout << "PT=" << pt_total << "\t";
+		cout << "ST=" << st_total << "\t";
 	}
 	else
 	{
@@ -56,35 +60,56 @@ bool Algorithm5::is_feasible()
 		return true;
 	if(cset.size() > n/2)
 		return false;
-	if(masks_test()&&primary_test()&&secondary_test())
+
+	mt_t1 = clock();
+	masks_test();
+	mt_t2 = clock();
+
+	pt_t1 = clock();
+	primary_test();
+	pt_t2 = clock();
+	
+	st_t1 = clock();
+	secondary_test();
+	st_t2 = clock();
+
+	mt_total = mt_total + (double)(mt_t2 - mt_t1)/CLOCKS_PER_SEC;
+	pt_total = pt_total + (double)(pt_t2 - pt_t1)/CLOCKS_PER_SEC;
+	st_total = st_total + (double)(st_t2 - st_t1)/CLOCKS_PER_SEC;
+
+	if(mt_val&&pt_val&&st_val)
 		return true;
 	return false;
 }
 
-bool Algorithm5::masks_test()
+void Algorithm5::masks_test()
 {
 	for(vector<uint64_t>::iterator i = mset.begin(); i != mset.end(); ++i)
 	{
 		if((it & *i) == *i)
-			return false;
+		{
+			mt_val = false;
+			return;
+		}
 	}
-	return true;
+	mt_val = true;
 }
 
-bool Algorithm5::primary_test()
+void Algorithm5::primary_test()
 {
 	for (vector<Link*>::iterator i = cset.begin(); i != cset.end(); ++i)
 	{
 		if(((*i)->get_sender()->get_degree() > 1)||((*i)->get_recver()->get_degree() > 1))
 		{
 			mset.push_back(it);
-	    return false;
+			pt_val = false;
+	    return;
 		}
 	}
-	return true;
+	pt_val = true;
 }
 
-bool Algorithm5::secondary_test()
+void Algorithm5::secondary_test()
 {
 	double sinr;
 	for(vector<Link*>::iterator i = cset.begin(); i != cset.end(); ++i)
@@ -93,10 +118,11 @@ bool Algorithm5::secondary_test()
 		if(sinr < network->beta_mW)
 		{
 			mset.push_back(it);
-			return false;
+			st_val = false;
+			return;
 		}
 	}
-	return true;
+	st_val = true;
 }
 
 double Algorithm5::calculate_sinr(Link* l)
