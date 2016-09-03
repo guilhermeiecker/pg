@@ -24,7 +24,6 @@ int main(int argc, char** argv) {
 	tp= TPOWER;
 	s = A[(uint64_t)log2(n) - 2][(uint64_t)log2(m) - 2];
 	
-	cout << s << endl;
 	if(s != 0.0)
 	{
 		Network* g = new Network(n, s, tp);
@@ -33,8 +32,12 @@ int main(int argc, char** argv) {
 		t = clock();
 		a->find_fset();
 		tt = clock();
-
+			
 		cout << fixed << setprecision(6) << ((double)(tt - t))/CLOCKS_PER_SEC;
+	}
+	else
+	{
+		cout << "-";
 	}
 	
 	return 0;

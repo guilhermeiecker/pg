@@ -1,10 +1,12 @@
+#include <iomanip>
+
 #include "Network.h"
-#include "Algorithm1.h"
+#include "Algorithm2.h"
 
 #define TPOWER 300.0
 
 int main(int argc, char** argv) {
-	uint64_t n, m, r;
+	uint64_t n, m;
 	double tp, s;
 	clock_t t, tt;
 
@@ -19,32 +21,24 @@ int main(int argc, char** argv) {
 	
 	n = (uint64_t)atoi(argv[1]);
 	m = (uint64_t)atoi(argv[2]);
-	r = (uint64_t)atoi(argv[3]);
 	tp= TPOWER;
 	s = A[(uint64_t)log2(n) - 2][(uint64_t)log2(m) - 2];
 	
-	Network* g = new Network(n, s, tp);
-	Algorithm1* a = new Algorithm1(g);
-	
-	t = clock();
-	a->find_fset();
-	tt = clock();
-	
-	if(n==4)
+	if(s != 0.0)
 	{
-		cout << "n\tm\t";
-		for (int i = 1; i <= 30; i++)
-			cout << "r" << i << "\t";
-		cout << endl;
+		Network* g = new Network(n, s, tp);
+		Algorithm2* a = new Algorithm2(g);
+	
+		t = clock();
+		a->find_fset();
+		tt = clock();
+			
+		cout << fixed << setprecision(6) << ((double)(tt - t))/CLOCKS_PER_SEC;
 	}
-
-	if(r==1)
-		cout << n << "\t" << m;
-
-	cout << "\t" << ((double)(tt - t))/CLOCKS_PER_SEC;
-
-	if(r==30)
-		cout << endl;
-
+	else
+	{
+		cout << "-";
+	}
+	
 	return 0;
 }

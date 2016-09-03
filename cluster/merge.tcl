@@ -1,25 +1,21 @@
 #! /usr/bin/tclsh
 # vim: autoindent shiftwidth=2 softtabstop=2 tabstop=2 :
 
-set MAXRUNS 3;
+set VAL_ALGOS {1 2 3 4 5 6}
+set MAXRUNS 30
+set RUN 1
 
-set VAL_ALGOS {1}
-set VAL_NODES {4 8 16 32 64}
-set VAL_LINKS {4 8 16 32}
+exec printf "algorithm\tn\tm" >> resultado.txt
 
-puts stderr "uhulll" 
+while {$RUN <= $MAXRUNS} {
+	exec printf "\tr$RUN" >> resultado.txt
+	incr RUN
+}
+
+exec printf "\n" >> resultado.txt
+ 
 foreach ALGO $VAL_ALGOS {
-	#exec cat > /homesim/guilherme/resultado-$ALGO.txt
-	foreach NODE $VAL_NODES {
-		foreach LINK $VAL_LINKS {
-			set RUN 1
-			while {$RUN <= $MAXRUNS} {
-				puts stdout "merging file /homesim/guilherme/resultado-$ALGO-$NODE-$LINK-$RUN.txt"
-				exec cat /homesim/guilherme/resultado-$ALGO-$NODE-$LINK-$RUN.txt >> /homesim/guilherme/resultado-$ALGO.txt
-				exec echo "\t" >> /homesim/guilherme/resultado-$ALGO.txt
-				incr RUN
-			}
-			exec echo "\n" >> /homesim/guilherme/resultado-$ALGO.txt
-		}
-	}
-}      
+	puts stdout "merging file resultado-$ALGO.txt"
+	exec cat resultado-$ALGO.txt >> resultado.txt
+	exec printf "\n" >> resultado-$ALGO.txt
+}
