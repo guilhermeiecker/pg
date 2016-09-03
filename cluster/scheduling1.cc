@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
 	uint64_t n, m;
 	double tp, s;
 	clock_t t, tt;
-
+	
 	const double A[6][5] = {
 		{530.0,   0.0,     0.0,     0.0,    0.0},
 		{1600.0,  1000.0,  590.0,   0.0,    0.0},

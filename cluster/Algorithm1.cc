@@ -2,18 +2,19 @@
 
 void Algorithm1::find_fset()
 {
-	for(it = 1; it <= limit; it++)
+	it = 1;
+	while(it <= limit)
 	{
 		index = 0;
 		decode(it);
 		if (is_feasible())
 		{
-			inc = 0;
+			inc = 1;
 			fset.push_back(it);
 		}
 		else 
-			inc = ((it&~(it-1)) - 1);
-		if(it + inc < it) 
+			inc = (it&~(it-1));
+		if(it + inc < it)
 			return;
 		it = it + inc;
 		clear_cset();
