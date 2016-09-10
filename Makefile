@@ -1,33 +1,27 @@
 CC=g++
-CFLAGS=-Wall -std=c++11 -fopenmp
-OBJECTS= scheduling.o Algorithm1.o Algorithm2.o Algorithm3.o Algorithm4.o Algorithm5.o Algorithm6.o Network.o Link.o Node.o
+CFLAGS=-Wall -std=c++11
 
-all: scheduling
-	
-scheduling: $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o scheduling
-		
-scheduling.o: scheduling.cc
-	$(CC) $(CFLAGS) -c scheduling.cc
+OBJITE= iterative.o Iterative.o Network.o Link.o Node.o
+OBJREC= recursive.o Recursive.o Network.o Link.o Node.o
 
-Algorithm1.o: Algorithm1.cc
-	$(CC) $(CFLAGS) -c Algorithm1.cc
+iterative: $(OBJITE)
+	$(CC) $(CFLAGS) $(OBJITE) -o iterative
 
-Algorithm2.o: Algorithm2.cc
-	$(CC) $(CFLAGS) -c Algorithm2.cc
-	
-Algorithm3.o: Algorithm3.cc
-	$(CC) $(CFLAGS) -c Algorithm3.cc
-	
-Algorithm4.o: Algorithm4.cc
-	$(CC) $(CFLAGS) -c Algorithm4.cc
+recursive: $(OBJREC)
+	$(CC) $(CFLAGS) $(OBJREC) -o recursive
 
-Algorithm5.o: Algorithm5.cc
-	$(CC) $(CFLAGS) -c Algorithm5.cc
-	
-Algorithm6.o: Algorithm6.cc
-	$(CC) $(CFLAGS) -c Algorithm6.cc
-	
+iterative.o: iterative.cc
+	$(CC) $(CFLAGS) -c iterative.cc
+
+recursive.o: recursive.cc
+	$(CC) $(CFLAGS) -c recursive.cc
+
+Iterative.o: Iterative.cc
+	$(CC) $(CFLAGS) -c Iterative.cc
+
+Recursive.o: Recursive.cc
+	$(CC) $(CFLAGS) -c Recursive.cc
+
 Network.o: Network.cc
 	$(CC) $(CFLAGS) -c Network.cc
 
@@ -38,4 +32,4 @@ Node.o: Node.cc
 	$(CC) $(CFLAGS) -c Node.cc
 
 clean:
-	rm $(OBJECTS) scheduling
+	rm *.o iterative recursive
