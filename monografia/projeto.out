@@ -1,0 +1,41 @@
+\BOOKMARK [0][-]{chapter*.2}{Lista de Figuras}{}% 1
+\BOOKMARK [0][-]{chapter*.3}{Lista de Tabelas}{}% 2
+\BOOKMARK [0][-]{chapter*.4}{Lista de Abreviaturas}{}% 3
+\BOOKMARK [0][-]{chapter.1}{Introdu\347\343o}{}% 4
+\BOOKMARK [1][-]{section.1.1}{Organiza\347\343o do Texto}{chapter.1}% 5
+\BOOKMARK [0][-]{chapter.2}{Modelagem}{}% 6
+\BOOKMARK [1][-]{section.2.1}{\301rvore de Combina\347\365es}{chapter.2}% 7
+\BOOKMARK [1][-]{section.2.2}{Modelos de Interfer\352ncia}{chapter.2}% 8
+\BOOKMARK [2][-]{subsection.2.2.1}{Modelo de Interfer\352ncia Prim\341ria}{section.2.2}% 9
+\BOOKMARK [1][-]{section.2.3}{Modelo de Interfer\352ncia Secund\341ria}{chapter.2}% 10
+\BOOKMARK [2][-]{subsection.2.3.1}{Inviabilidade Heredit\341ria}{section.2.3}% 11
+\BOOKMARK [1][-]{section.2.4}{Algoritmo de Viabilidade}{chapter.2}% 12
+\BOOKMARK [2][-]{subsection.2.4.1}{Algoritmo para o Teste de Interfer\352ncia Prim\341ria}{section.2.4}% 13
+\BOOKMARK [2][-]{subsection.2.4.2}{Algoritmo para o Teste de Interfer\352ncia Secund\341ria}{section.2.4}% 14
+\BOOKMARK [2][-]{subsection.2.4.3}{Algoritmo para o Teste de Viabilidade}{section.2.4}% 15
+\BOOKMARK [1][-]{section.2.5}{Exemplo}{chapter.2}% 16
+\BOOKMARK [0][-]{chapter.3}{Algoritmo Iterativo}{}% 17
+\BOOKMARK [1][-]{section.3.1}{Introdu\347\343o}{chapter.3}% 18
+\BOOKMARK [1][-]{section.3.2}{Codificando Combina\347\365es em Inteiros}{chapter.3}% 19
+\BOOKMARK [1][-]{section.3.3}{Percorrendo a \301rvore Iterativamente}{chapter.3}% 20
+\BOOKMARK [1][-]{section.3.4}{\215Podando\216 a \301rvore de Combina\347\365es}{chapter.3}% 21
+\BOOKMARK [1][-]{section.3.5}{Decodificando um Conjunto de Enlaces}{chapter.3}% 22
+\BOOKMARK [2][-]{subsection.3.5.1}{Algoritmo Decodificador}{section.3.5}% 23
+\BOOKMARK [2][-]{subsection.3.5.2}{Prova de Corretude}{section.3.5}% 24
+\BOOKMARK [2][-]{subsection.3.5.3}{An\341lise de Complexidade}{section.3.5}% 25
+\BOOKMARK [1][-]{section.3.6}{Descri\347\343o do Algoritmo}{chapter.3}% 26
+\BOOKMARK [2][-]{subsection.3.6.1}{Algoritmo Iterativo para Enumera\347\343o de Conjuntos de Enlaces Vi\341veis \(IECEV\)}{section.3.6}% 27
+\BOOKMARK [2][-]{subsection.3.6.2}{Prova de Corretude}{section.3.6}% 28
+\BOOKMARK [2][-]{subsection.3.6.3}{An\341lise de Complexidade}{section.3.6}% 29
+\BOOKMARK [1][-]{section.3.7}{Conclus\343o}{chapter.3}% 30
+\BOOKMARK [0][-]{chapter.4}{Algoritmo Recursivo}{}% 31
+\BOOKMARK [1][-]{section.4.1}{Introdu\347\343o}{chapter.4}% 32
+\BOOKMARK [1][-]{section.4.2}{Percorrendo a \301rvore Recursivamente}{chapter.4}% 33
+\BOOKMARK [1][-]{section.4.3}{\215Podando\216 a \301rvore de Combina\347\365es}{chapter.4}% 34
+\BOOKMARK [1][-]{section.4.4}{Reaproveitando C\341lculos}{chapter.4}% 35
+\BOOKMARK [1][-]{section.4.5}{Descri\347\343o do Algoritmo}{chapter.4}% 36
+\BOOKMARK [2][-]{subsection.4.5.1}{Algoritmo Recursiva para Enumera\347\343o de Conjuntos de Enlaces Vi\341veis \(RECEV\)}{section.4.5}% 37
+\BOOKMARK [2][-]{subsection.4.5.2}{Prova de Corretude}{section.4.5}% 38
+\BOOKMARK [2][-]{subsection.4.5.3}{An\341lise da Complexidade}{section.4.5}% 39
+\BOOKMARK [1][-]{section.4.6}{Conclus\343o}{chapter.4}% 40
+\BOOKMARK [0][-]{chapter*.17}{Refer\352ncias Bibliogr\341ficas}{}% 41

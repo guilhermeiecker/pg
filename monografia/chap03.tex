@@ -1,0 +1,156 @@
+\chapter{Algoritmo Iterativo}
+\label{cap:iterativo}
+
+\section{Introdução}
+
+O projeto do algoritmo iterativo é baseado na ideia da árvore de combinações e nos modelos de interferência apresentados.
+
+\section{Codificando Combinações em Inteiros}
+
+A primeira abstração a ser feita é considerar as combinações de enlaces como números binários. Nesses números, cada bit está relacionado à pertinência de um enlace específico àquela combinação. Consequentemente, também é possível representar a combinação de enlaces como um número inteiro sem sinal resultado da conversão do número na base 2 para a base 10. A seguir, essa modelagem é apresentada fazendo uso de uma linguagem mais formal, visando permitir algumas manipulações matemáticas importantes ao funcionamento do algoritmo.
+
+Seja o grafo direcionado $G=(V,E)$. As m arestas em E são enumeradas como $e_0, e_1, e_2, ..., e_{m-1}$. Seja $B$ um número inteiro na base 2 com $m$ bits. Os bits em $B$ são enumerados como $b_0, b_1, b_2, ..., b_{m-1}$. Seja uma combinação de arestas $C$ tal que $C in E$. O número $B(C)$ codifica a combinação $C$ quando:
+
+\[ b_i =
+\begin{cases}
+	1	& \quad	\text{se, e somente se, } e_i \in C \\
+	0	& \quad	\text{se, e somente se, } e_i \notin C \\
+  \end{cases}
+\]
+
+Essa ideia de codificação é estendida para toda a árvore de combinações. Ao fazer isso, todos os $2^m$ vértices da árvore serão codificados em inteiros.
+
+% Figura 3.1: Exemplo de Árvore de Combinações codificada
+
+Na Figura 3.1 é ilustrada uma árvore de combinações para uma rede com $E=\{a,b,c,d\}$, ou seja, $m=4$. Na imagem, todos os $2^4 = 16$ vértices possuem sua identificação principal na primeira linha, o valor codificado na base 2 na linha de baixo e o valor convertido para a base 10 entre parênteses na última linha.
+
+É possível verificar duas consequências diretas da codificação, que em um primeiro momento podem parecer triviais, mas são o arcabouço do projeto do algoritmo. A primeira está relacionada a maneira de percorrer a árvore e a segunda está relacionada a maneira de ``podar'' a árvore.
+
+\section{Percorrendo a Árvore Iterativamente}
+
+No exemplo da Figura 3.1, foi visto que, para uma rede com $4$ enlaces, tem-se uma árvore de combinações com $16$ vértices. A árvore é estruturada da raiz ($C=\emptyset$ ou $B(C)=0$) à sua folha de maior altura ($C=E$ ou $B(C)=15$). De forma geral, para um grafo com $m$ enlaces, a árvore possui $2^m$ vértices, partindo de $B=0$ e chegando a $B=2^m-1$.
+
+Na árvore codificada, a ordem em que os enlaces são considerados é muito importante porque os índices dos bits de $B(C)$ são estritamente relacionados aos enlaces $e$, consequentemente, cada combinação $C$ é codificada unicamente por um número $B$.
+
+Sabendo disso, é possível percorrer a árvore de combinações simplesmente realizando uma contagem que vai de $0$ até $2^m -1$. Ou seja, todo vértice codificado $B>0$ é alcançado a partir da soma de um outro nó codificado mais $1$.
+
+% Figura 3.2: Exemplo de como percorrer a Árvore de Combinações através da contagem
+
+Figura 3.2 mostra como a árvore do exemplo anterior é percorrida através da contagem. Comparado com o método de busca adotado na seção 2.3, é importante ressaltar que a ordem em que os vértices são visitados é totalmente diferente. Essa nova ordem é consistente com uma contagem que somente é alcançável devido a codificação aqui introduzida.
+
+\section{“Podando” a Árvore de Combinações}
+
+Diferente do caso anterior, a vantagem em codificar as combinações para a atividade de ``poda'' da árvore não é tão trivial. Contudo, o método de busca baseado na contagem será usado para detectar alguns padrões que ajudam a “podar” a árvore de maneira eficiente. Mais uma vez, a correspondência entre $E$ e $B$ é muito importante e sua ordem, uma vez arbitrada, deve ser mantida no decorrer do processo. 
+
+Dado um inteiro $B$, seus bits $b_i$ podem fornecer mais informações úteis além da pertinência do enlace $e_i$ ao conjunto $C$. Considere o caso em que $b_i^*$ é o bit ativo menos significativo, ou seja, é o bit 1 mais à direita. Nesse caso, o índice $i$ de $b_i^*$ também representa o número de filhos que $B$ tem na árvore, ou seja, quantas combinações são consequências diretas, ou descendentes diretos, de $C$. Em termos de bits, $i$ representa os números que são resultantes da variação dos bits $0$ à direita de $b_i^*$ em $B$.
+
+Isso significa que $b_i^*$ tem muito a dizer sobre os descendentes de $B$. Especificamente, se essa ideia for aplicada de maneira recursiva aos filhos $B'$ de $B$, seus $b_i^*$’s vão indicar o número de netos de $B$ e assim por diante. Ao final da recursão, podemos ver que uma combinação $C$ codificada em $B$ tal que $b_i^*$ é o bit ativo menos significativo tem exatamente $2^i–1$ descendentes.
+
+No capítulo 2, baseado na ideia de inviabilidade hereditária, o termo “podar” a árvore foi definido como o ato de ignorar os descendentes de uma combinação não viável ao percorrer uma árvore. Para o presente caso, como uma contagem está sendo feita, um termo mais adequado seria “saltar”. Portanto, uma vez que uma combinação codificada $B(C)$ não for viável, um “salto” na contagem será realizado sobre todos os seus descendentes.
+
+Como o número de descendentes de uma combinação B é facilmente determinável usando $b_i^*$, caso seja necessário realizar um “salto” na contagem devido a inviabilidade de $B$, basta incrementar a contagem com o número de descendentes mais $1$. Ou seja, se $B$ não é viável, a próxima combinação a ser testada será $B + 2^i$, onde $i$ é o índice do bit ativo menos significativo.
+
+% Figura 3.3: Exemplo de contagem com “saltos”
+
+Um exemplo de cenário em que os “saltos” ocorrem é ilustrado na Figura 3.3. Na rede do exemplo, sabe-se que as combinações $4$ e $12$ não são viáveis. Por isso, todos os descendentes de $4$ e de $12$ serão ignorados na contagem, resultando na sequência $0, 1, 2, 3, 4, 8, 9, 10, 11, 12$. Até esse ponto, as combinações de enlaces viáveis ainda não estão sendo listadas, apenas está sendo mostrada a sequência de enlaces visitados na contagem.
+
+\section{Decodificando um Conjunto de Enlaces}
+
+Mesmo que agora seja possível percorrer a árvore e “saltar” sobre os descendentes de uma combinação inviável, não pode-se testar a viabilidade de um conjunto de enlaces usando apenas um número inteiro. É preciso decodificar o número inteiro em um conjunto de enlaces para que os nós da rede envolvidos sejam conhecidos e, finalmente, permitir a realização dos testes. A seguir, um algoritmo recursivo para decodificar um inteiro em um conjunto de enlaces é apresentado. Vale ressaltar que o processo de decodificação é o responsável por não ser preciso instanciar toda uma árvore de combinações. Com ele, é suficiente conhecer o conjunto de enlaces $E$ e os índices dos bits de $B$ para realizar os testes de interferência.
+
+\subsection{Algoritmo Decodificador}
+
+\begin{algorithm}[h]
+	\SetVline
+	{\bf input:} Número inteiro$B$, número inteiro $I$, conjunto de arestas $E(G)$\\
+	$Q \leftarrow B/2$\\
+	$R \leftarrow B\%2$\\
+	\If{($R=1$)}{
+		$C \leftarrow C \cup \{e_I\}$\\
+	}
+	\If{($Q>0$)}{
+		$I \leftarrow I + 1$\\
+		DECODIFICADOR(Q, I, E(G))\\
+	}
+\caption{Algoritmo DECODIFICADOR}
+\label{alg:decodificador}
+\end{algorithm}
+
+\subsection{Prova de Corretude}
+
+O algoritmo apresentado nada mais é do que uma versão recursiva do algoritmo padrão de conversão de um número na base 10 para a base 2 com uma modificação para permitir a captura dos enlaces pertencentes ao conjunto.
+
+Nesse algoritmo existem duas variáveis de controle, $Q$ e $R$, que são, respectivamente, o quociente e o resto da divisão inteira entre os números $B$ e 2. Se $R=1$, temos $b_I=1$ e, consequentemente, o enlace $e_I$ pertence à combinação $C$ decodificada a partir do inteiro $B$. Reciprocamente, se $b_I=0$, então o enlace $e_I$ não pertence a $C$. A variável $Q$ controla a parada do algoritmo. Enquanto $Q>0$, o processo continua incrementando o valor de $I$ e verificando a pertinência dos enlaces com novos índices $I$. Quando $Q=0$, o processo de conversão é finalizado.
+
+Quando $R=1$, então a condição na linha 3 é satisfeita e o enlace com índice $I$ é adicionado ao conjunto decodificado na linha 4. Portanto, ao final da recursão, $C$ será o conjunto de enlaces decodificado apropriadamente.
+
+\subsection{Análise de Complexidade}
+
+\subsubsection{Complexidade de Espaço}
+
+O(m)
+
+\subsubsection{Complexidade de Tempo}
+
+Todas as linhas do algoritmo são $O(1)$. Contudo, como trata-se de um algoritmo recursivo, a função Decodificador será chamada o número de vezes equivalente ao índice do bit ativo mais significativo. No pior caso, teremos $m-1$ chamadas da função, o que define sua complexidade de tempo como $O(m)$.
+
+\section{Descrição do Algoritmo}
+
+Finalmente, agora que os métodos de como percorrer a árvore de combinações, “saltar” sobre os descendentes das combinações inviáveis e decodificar os inteiros para realizar os testes de interferência são conhecidos, é possível descrever o algoritmo iterativo para enumeração de conjuntos de enlaces viáveis.
+
+\subsection{Algoritmo Iterativo para Enumeração de Conjuntos de Enlaces Viáveis (IECEV)}
+
+\begin{algorithm}[h]
+	\SetVline
+	{\bf input:} Grafo direcionado $G=(V,E)$\\
+	{\bf output:} Conjuntos de Enlaces Viáveis $F$\\
+	$F \leftarrow \emptyset$\\
+	$C \leftarrow \emptyset$\\
+	$B \leftarrow 0$\\
+	$I \leftarrow 0$\\
+	\While{$B<2^m$}{
+		$C \leftarrow DECODIFICADOR(B, 0, E(G))$\\
+		\If{$VIAVEL(C)$}{
+			$F \leftarrow F \cup {B}$\\
+			$I \leftarrow 1$\\
+		}
+		\Else{
+			$I \leftarrow 2^i$\\
+		}
+		$B \leftarrow B + I$\\
+	}
+\caption{Algoritmo IECEV}
+\label{alg:iterativo}
+\end{algorithm}
+
+\subsection{Prova de Corretude}
+
+	De acordo com o que foi provado na seção 3.2, o laço instanciado na linha 5 e o incremento feito na linha 12 representam uma contagem e, de fato, fazem o algoritmo percorrer todas as combinações de enlaces. Caso uma combinação seja viável, ela passará no teste da linha 7 e será adicionada ao resultado final na linha 8.
+
+Os “saltos” demonstrados na seção 4.3 são baseados na variável $I$, usada como incremento à variável $B$. Pelo algoritmo, $I$ somente possui dois valores possíveis. 
+
+\[ I =
+\begin{cases}
+	1	& \quad	\text{se, e somente se, } B \text{ é viável} \\
+	2^i	& \quad	\text{caso contrário} \\
+  \end{cases}
+\]
+
+Essa seleção de valores é gerenciada pela condicional das linhas 7 e 10.
+
+Pela característica do problema, como mencionado nos capítulos anteriores, todos os $2^i$ descendentes de uma combinação inviável certamente também são inviáveis. Portanto, os “saltos” apenas tem o papel de agilizar o processo e não interferem no resultado final do algoritmo.
+
+Conclui-se que, de fato, o algoritmo retorna todos os conjuntos de enlaces viáveis.
+
+\subsection{Análise de Complexidade}
+
+\subsubsection{Complexidade de Espaço}
+
+$O(2^m)$
+
+\subsubsection{Complexidade de Tempo}
+
+	As linhas 1-4, 7-12 são $O(1)$. A função de decodificação na linha 6 é $O(m)$ e o teste de viabilidade na linha 7 é $O(m^2)$. O laço principal das linhas 5-12 é $O(2^mm^2)$ pois a cada uma das $2^m$ iterações (no pior caso), a função de decodificação e o teste de viabilidade são chamados com complexidade de $O(m) + O(m^2) = O(m^2)$. De maneira geral, a complexidade de tempo total é  $O(2^mm^2)$. 
+Contudo, esse valor de complexidade é muito exagerado uma vez que, devido aos saltos, a contagem cobrirá apenas uma parte das $2^m$ combinações. Nesse caso, o números de conjuntos avaliados na contagem é $O(|F|)$, onde $|F|$ é a quantidade conjuntos viáveis da rede. Além disso, como será discutido no Capítulo 5, o $m^2$ pode ser simplificado por $n^2$. Portanto, a complexidade é $O(|F|n^2)$.
+
+\section{Conclusão}

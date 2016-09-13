@@ -1,0 +1,54 @@
+\select@language {brazil}
+\contentsline {chapter}{Lista de Figuras}{vi}{chapter*.2}
+\contentsline {chapter}{Lista de Tabelas}{vii}{chapter*.3}
+\contentsline {chapter}{Lista de Abreviaturas}{viii}{chapter*.4}
+\contentsline {chapter}{\numberline {1}Introdu\IeC {\c c}\IeC {\~a}o}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Organiza\IeC {\c c}\IeC {\~a}o do Texto}{2}{section.1.1}
+\contentsline {chapter}{\numberline {2}Modelagem}{3}{chapter.2}
+\contentsline {section}{\numberline {2.1}\IeC {\'A}rvore de Combina\IeC {\c c}\IeC {\~o}es}{3}{section.2.1}
+\contentsline {section}{\numberline {2.2}Modelos de Interfer\IeC {\^e}ncia}{4}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Modelo de Interfer\IeC {\^e}ncia Prim\IeC {\'a}ria}{4}{subsection.2.2.1}
+\contentsline {section}{\numberline {2.3}Modelo de Interfer\IeC {\^e}ncia Secund\IeC {\'a}ria}{5}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Inviabilidade Heredit\IeC {\'a}ria}{6}{subsection.2.3.1}
+\contentsline {section}{\numberline {2.4}Algoritmo de Viabilidade}{7}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Algoritmo para o Teste de Interfer\IeC {\^e}ncia Prim\IeC {\'a}ria}{7}{subsection.2.4.1}
+\contentsline {subsubsection}{Prova de Corretude}{7}{section*.5}
+\contentsline {subsubsection}{An\IeC {\'a}lise da Complexidade}{7}{section*.6}
+\contentsline {subsection}{\numberline {2.4.2}Algoritmo para o Teste de Interfer\IeC {\^e}ncia Secund\IeC {\'a}ria}{7}{subsection.2.4.2}
+\contentsline {subsubsection}{Prova de Corretude}{7}{section*.7}
+\contentsline {subsubsection}{An\IeC {\'a}lise da Complexidade}{8}{section*.8}
+\contentsline {subsection}{\numberline {2.4.3}Algoritmo para o Teste de Viabilidade}{8}{subsection.2.4.3}
+\contentsline {subsubsection}{Prova de Corretude}{8}{section*.9}
+\contentsline {subsubsection}{An\IeC {\'a}lise da Complexidade}{8}{section*.10}
+\contentsline {section}{\numberline {2.5}Exemplo}{8}{section.2.5}
+\contentsline {chapter}{\numberline {3}Algoritmo Iterativo}{10}{chapter.3}
+\contentsline {section}{\numberline {3.1}Introdu\IeC {\c c}\IeC {\~a}o}{10}{section.3.1}
+\contentsline {section}{\numberline {3.2}Codificando Combina\IeC {\c c}\IeC {\~o}es em Inteiros}{10}{section.3.2}
+\contentsline {section}{\numberline {3.3}Percorrendo a \IeC {\'A}rvore Iterativamente}{11}{section.3.3}
+\contentsline {section}{\numberline {3.4}\IeC {\textquotedblleft }Podando\IeC {\textquotedblright } a \IeC {\'A}rvore de Combina\IeC {\c c}\IeC {\~o}es}{11}{section.3.4}
+\contentsline {section}{\numberline {3.5}Decodificando um Conjunto de Enlaces}{12}{section.3.5}
+\contentsline {subsection}{\numberline {3.5.1}Algoritmo Decodificador}{13}{subsection.3.5.1}
+\contentsline {subsection}{\numberline {3.5.2}Prova de Corretude}{13}{subsection.3.5.2}
+\contentsline {subsection}{\numberline {3.5.3}An\IeC {\'a}lise de Complexidade}{13}{subsection.3.5.3}
+\contentsline {subsubsection}{Complexidade de Espa\IeC {\c c}o}{13}{section*.11}
+\contentsline {subsubsection}{Complexidade de Tempo}{13}{section*.12}
+\contentsline {section}{\numberline {3.6}Descri\IeC {\c c}\IeC {\~a}o do Algoritmo}{14}{section.3.6}
+\contentsline {subsection}{\numberline {3.6.1}Algoritmo Iterativo para Enumera\IeC {\c c}\IeC {\~a}o de Conjuntos de Enlaces Vi\IeC {\'a}veis (IECEV)}{14}{subsection.3.6.1}
+\contentsline {subsection}{\numberline {3.6.2}Prova de Corretude}{14}{subsection.3.6.2}
+\contentsline {subsection}{\numberline {3.6.3}An\IeC {\'a}lise de Complexidade}{15}{subsection.3.6.3}
+\contentsline {subsubsection}{Complexidade de Espa\IeC {\c c}o}{15}{section*.13}
+\contentsline {subsubsection}{Complexidade de Tempo}{15}{section*.14}
+\contentsline {section}{\numberline {3.7}Conclus\IeC {\~a}o}{15}{section.3.7}
+\contentsline {chapter}{\numberline {4}Algoritmo Recursivo}{16}{chapter.4}
+\contentsline {section}{\numberline {4.1}Introdu\IeC {\c c}\IeC {\~a}o}{16}{section.4.1}
+\contentsline {section}{\numberline {4.2}Percorrendo a \IeC {\'A}rvore Recursivamente}{16}{section.4.2}
+\contentsline {section}{\numberline {4.3}\IeC {\textquotedblleft }Podando\IeC {\textquotedblright } a \IeC {\'A}rvore de Combina\IeC {\c c}\IeC {\~o}es}{17}{section.4.3}
+\contentsline {section}{\numberline {4.4}Reaproveitando C\IeC {\'a}lculos}{17}{section.4.4}
+\contentsline {section}{\numberline {4.5}Descri\IeC {\c c}\IeC {\~a}o do Algoritmo}{18}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}Algoritmo Recursiva para Enumera\IeC {\c c}\IeC {\~a}o de Conjuntos de Enlaces Vi\IeC {\'a}veis (RECEV)}{18}{subsection.4.5.1}
+\contentsline {subsection}{\numberline {4.5.2}Prova de Corretude}{18}{subsection.4.5.2}
+\contentsline {subsection}{\numberline {4.5.3}An\IeC {\'a}lise da Complexidade}{18}{subsection.4.5.3}
+\contentsline {subsubsection}{Complexidade de Espa\IeC {\c c}o}{18}{section*.15}
+\contentsline {subsubsection}{Complexidade de Tempo}{18}{section*.16}
+\contentsline {section}{\numberline {4.6}Conclus\IeC {\~a}o}{19}{section.4.6}
+\contentsline {chapter}{Refer\^encias Bibliogr\'aficas}{20}{chapter*.17}

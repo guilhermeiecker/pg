@@ -1,0 +1,24 @@
+\begin{thebibliography}{2}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+\newcommand{\enquote}[1]{``#1''}
+
+\bibitem[\MakeUppercase{{Cisco}}({2014}){Cisco}]{ciscoforecast}
+\MakeUppercase{{Cisco}}.
+\newblock \enquote{Cisco Visual Networking Index: Forecast and Methodology,
+  2013–2018}. .
+\newblock
+  \url{http://www.cisco.com/c/en/us/solutions/collateral/service-provider/ip-ngn-ip-next-generation-network/white_paper_c11-481360.html},
+  jun. {2014}.
+
+\bibitem[\MakeUppercase{{Instituto Nacional de Pesquisas
+  Espaciais}}(){Instituto Nacional de Pesquisas Espaciais}]{elevationdata}
+\MakeUppercase{{Instituto Nacional de Pesquisas Espaciais}}.
+\newblock \enquote{TOPODATA - Banco de Dados Geomorfométricos do Brasil}. .
+\newblock \url{http://www.dsr.inpe.br/topodata/acesso.php}.
+\newblock Acessado em fevereiro de 2015.
+
+\end{thebibliography}

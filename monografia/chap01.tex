@@ -1,0 +1,25 @@
+\chapter{Introdução}
+\label{cap:intro}
+
+O problema de enumeração de conjuntos de enlaces viáveis em redes sem fio surgiu de uma proposta de solução ao problema de escalonamento de enlaces. Neste capítulo, apresentamos o problema de escalonamento de enlaces como motivação, de onde surgiu a necessidade de encontrar e listar os conjuntos de enlaces viáveis, e algumas definições importantes ao longo deste trabalho.
+
+Uma rede mesh é composta por nós que podem se comunicar diretamente através de enlaces de comunicação. Os nós são os componentes da rede onde ocorre a computação e eventualmente desejam se comunicar. Um enlace de comunicação, ou simplesmente enlace, é um componente da rede que representa uma conexão física ou lógica entre dois nós.  Uma transmissão ocorre quando um nó, chamado de transmissor, envia mensagens a outro nó, chamado de receptor, através de um enlace de comunicação. Em um dado período de tempo, um enlace está ativo quando há uma transmissão em curso.
+Em redes sem fio, os nós compartilham o meio de transmissão. Por isso, quando existe um cenário com mais de um enlace ativo, é comum que os nós transmissores de um enlace causem interferência nos nós receptores de outro enlace. Em alguns casos, essa interferência pode atrapalhar ou mesmo inviabilizar a troca de mensagens na rede. Portanto, faz-se necessário um mecanismo para organizar os enlaces no tempo com o intuito de reduzir o efeito de tais interferências.
+
+Um conjunto de enlaces ativos é dito viável quando todos os enlaces que o compõem passam nos testes de interferência. No próximo capítulo, os testes serão explicados com detalhes. Por enquanto, podemos pensar que passar nos testes significa que tais enlaces causam pouca ou nenhuma interferência entre si.
+Considerando um período de tempo T no qual diversas transmissões estão acontecendo, T pode ser particionado em um conjunto de slots de tempo $S=\{s_1, s_2, \, \ldots \, , \, s_t\}$ tal que $s_1 \cap s_2 \cap \ldots \cap s_t = \emptyset$ e $s_1 \cup s_2 \cup \ldots \cup s_t = T$. O problema de escalonamento de enlaces consiste em encontrar maneiras de distribuir os enlaces ativos de uma rede em $S$, de forma que os conjuntos de enlaces em cada slot sejam viáveis e o tamanho  de $S$ seja o menor possível.
+
+Existem diversas estratégias para abordar esse problema, algumas delas estão em ~\cite{ciscoforecast, elevationdata}. Nesses casos, tais estratégias baseiam-se em heurísticas que, apesar de serem executadas em tempo factível, podem não apresentar os melhores resultados. Visando desenvolver um algoritmo para resolver o problema de escalonamento de enlaces usando programação linear e encontrar o melhor resultado, é fundamental que todos os conjuntos de enlaces viáveis sejam enumerados para serem usados como restrições de um problema de programação linear.
+Dada uma rede {\it mesh}, como a descrita anteriormente, podemos analisá-la em um dado instante $t$. Em $t$, podemos ver quais enlaces estão estabelecidos e em qual direção a transmissão está ocorrendo. A disposição dos enlaces em cada instante $t$ pode ser interpretada como um grafo direcionado $G=(V, E)$. Nesse grafo, $V$ é o conjunto de nós (vértices) e $E$ é o conjunto de enlaces que possuem uma direção de transmissão específica (arestas direcionadas). 
+
+Um conjunto de enlaces $C$ que desejamos analisar é um subconjunto de E, ou seja $C \subset E$.
+O problema de enumeração de conjuntos de enlaces viáveis consiste em desenvolver um algoritmo capaz de encontrar todos os conjuntos C, tal que C é viável, com o menor tempo para que possa ser  utilizado em aplicações práticas.
+Caso G tenha m enlaces, então teremos um total de $2^m$ conjuntos a serem testados. Com isso, a complexidade de tempo de um algoritmo ingênuo que realiza os testes de interferência sequencialmente para cada conjunto de enlaces possível é $O(2^m)$, ou seja, para m suficientemente grande, ele não termina em tempo factível. Por isso, é preciso que algum método mais inteligente seja adotado.
+
+Nesse trabalho, vamos modelar esse problema usando a ideia de árvore de combinação que vai nos oferecer propriedades fundamentais para obtermos menores  complexidades de tempo. Depois, vamos apresentar dois algoritmos que usam essa propriedade, realizam os testes de maneira mais inteligente e conseguem enumerar todos os conjuntos de enlaces viáveis em tempo factível. Vamos comparar seus desempenhos e analisar as técnicas de implementação e otimização adotadas. Finalmente, apresentamos uma breve conclusão sobre o projeto como um todo e propostas de trabalhos futuros.
+
+
+\section{Organização do Texto}
+
+No Capítulo~\ref{cap:intro}, os principais conceitos e
+

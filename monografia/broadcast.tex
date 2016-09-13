@@ -1,0 +1,1436 @@
+\chapter{Transmissões em \textit{Broadcast} Para Soluções Baseadas Em Sequência de Salto de Canais}
+%\chapter{Mensagens em \textit{Broadcast} para Canais de Controle Utilizando Sequências de Canais}
+\label{cap:broadcast}
+
+%até então os nós depois de se comunicar com seus vizinhos montavam uma sequencia de salto de canais, conforme se possui informações essas sequencias são criadas de maneira mais simples
+%Voltado para o caso de blind rendezvous
+%Primeira abordagem a analise de um único nó enviando para mensagens de {\it broadcast}. 
+%A análise de envio com uma única sequência será apresentada a seguir(sbrc13)
+
+%\section{Introdução}
+%\label{sec:intro_cap_broadcast}
+
+
+
+
+%- falar sobre o sincronismo de slot e sincronismo de sequencia
+
+%- TROCAR ALGORITMOS DE RENDEZVOUS POR BASEADOS EM SEQUENCIA, PARA MELHORAR ENTENDIMENTO
+
+%- VOLTAR A EXPLICAR DA DEFICIENCIA DOS BASEADOS EM SEQUENCIA COM TRANSMISSOES EM BROADCAST
+
+
+
+% talvez seja melhor colocar toda a explicacao aqui, retirar do segundo capitulo
+%\include{formalizacao3}
+
+%%%%%%%%%%%%%%% 
+%%PARTE DA FORMALIZACAO REPETIR FORMULAS ANTERIORES PARA MELHOR ENTENDIMENTO
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PARTE DE BROADCAST, repetir a representacao e colocar a sequencia de broadcast 
+
+%Conforme os algoritmos de sequencia de salto de canais, cada rádio possui sua sequência de saltos de canais atribuída pelo algoritmo da solução, aqui denominada apenas de sequência de canais. A partir da sequência de canais, de todos os rádios vizinhos de um salto de um rádio emissor, queremos construir uma sequência chamada sequência de {\it broadcast}. A sequência de {\it broadcast} será utilizada quando o rádio desejar enviar uma mensagem de {\it broadcast}, ou seja, uma mensagem endereçada a múltiplos destinatários, neste caso os destinários são os vizinhos de um salto do nó emissor. Como a princípio, cada rádio possui sua própria vizinhança, logo, terá sua própria sequência de {\it broadcast}.
+
+%Desejamos que a sequência de {\it broadcast} possua sobreposição com todas ou com a maior quantidade de sequências de salto de canais, dos nós vizinhos de um salto, do nó emissor da mensagem de {\it broadcast}. %Indicarmos por K , onde  o conjunto de nós vizinhos de um nó emissor de uma mensagem em {\it broadcast}.
+
+%Antes de formalizar a sequência de {\it broadcast}, assim como em [quorum], chamamos de $I_{j}({\bf u},{\bf  v})$ a função que indica quando o canal $j$ é um canal de {\it rendezvous} entre duas sequências {\bf u} e {\bf v}, isto é,
+
+%\vspace{0.3cm}
+%$I_{j}({\bf  u},{\bf  v}) =$ $\left \{
+%\begin{array}{l l}
+%1, & se \: \exists \, i \in [0,p-1], (i,j) \in {\bf u} \cap {\bf v},\\
+%0, & outros \, casos
+%\end{array} \right.$
+%\vspace{0.3cm}
+
+
+%\vspace{0.3cm}
+%$I_{j}({\bf  u},{\bf  v}) =$ $\left \{
+%\begin{array}{l l}
+%1, & se \: \exists \, i \in [0,T-1] \: | \: u_i = v_i = j,\\
+%0, & outros \, casos
+%\end{array} \right.$
+%\vspace{0.3cm}
+
+
+%A seguinte função $W_{b}(k)$ representa a sobreposição de uma sequência {\bf b} do nó $k$ emissor com qualquer sequência ${\bf w}$, onde $w \in V_{k}$, em qualquer canal $j$, assim:
+
+%\vspace{0.3cm}
+
+%$W_{{\bf b}}(k) =$ $\left \{
+%\begin{array}{l l}
+%1, & se \: I_{j}({\bf b},{\bf w}) = 1, \: \forall j, com \: {\bf w} \in V_{k}\\
+%0, & outros \, casos
+%\end{array} \right.$  
+
+%\vspace{0.3cm}
+
+%\vspace{0.3cm}
+
+%$W_{{\bf b}}(k) =$ $\left \{
+%\begin{array}{l l}
+%1, & se \sum \limits_{j=0}^{(M-1)}  I_{j}({\bf b},{\bf w}) \geq 1 \: \forall {\bf w}, \: com \: \: {\bf w} \in V_{k}\\
+%0, & outros \, casos
+%\end{array} \right.$  
+
+%\vspace{0.3cm}
+
+%Onde representando $V_{k}$ como o conjunto sequências dos nós vizinhos de um salto do nó $k$, por exemplo:
+
+%\vspace{0.3cm}
+
+%$V_{k} = \{{\bf u},{\bf v}, {\bf s} ,...\}$ com $V_{k} \subseteq S$
+
+%ou
+
+%$V_{k} = \{ v_0, v_1, v_2,...\}$
+
+%\vspace{0.3cm}
+
+
+%Assim cada índice de $V_{k}$ indica a sequência de salto de canais de um vizinho do nó $k$. %A equação $SB_{\bf k}$ indica quantas sobreposições existem entre uma sequência ${\bf b}$ e as sequências dos nós vizinhos de um salto do nó $k$.  
+
+%$SB_{\bf k} = \sum \limits_{i=0}^{|V_{k}|} W_{{\bf b}}(k)$
+
+%\vspace{0.3cm}
+
+%Idealmente se $SB_{\bf k} = |V_{k}|$ a sequência ${\bf b}$ atinge todos os vizinhos de um salto do nó $k$ será é a sequência de {\it broadcast} do nó $k$.
+
+%Idealmente se $W_{{\bf b}}(k) = |V_{k}|$ a sequência ${\bf b}$ atinge todos os vizinhos de um salto do nó $k$, e será a sequência de {\it broadcast} do nó $k$. Caso contrário, a sequência ${\bf b}$ que tiver maior sobreposição com as demais sequências em $V_{k}$ será a sequência de {\it broadcast} do nó $k$. 
+
+
+%PARTE DE BROADCAST
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%-Problema da transmissão de broadcast
+%-questao do gargalo do canal de controle mostrado no proximo capitulo 
+
+%In distributed Cognitive Radio Networks (CRNs), a control channel is required for coordinating spectrum management and channel contention between CRs. The work in~\cite{surveyCCC} categorizes various control channel design schemes. In the {\it sequence-based control channel design}~\cite{surveyCCC}, control channels are allocated according to a random or predetermined channel hopping (CH) sequence. Thus, a control channel is dynamically established by multiple rendezvous among CRs. This design minimizes the impact of UP activity over the control channel due to the spectrum allocation's variation over time. Additionally, this approach allows the simultaneous communication of multiple CRs in the same neighborhood by allocating different CH sequences to each control channel. Numerous works in the literature tackle the rendezvous problem with this design scheme by using different strategies in the construction of the CH sequences~\cite{br,ssch,seqr,quorum,amrcc,mclock,jumpstay}. The work in~\cite{mclock} identifies five different system models under which rendezvous can occur according to system capabilities, spectrum policies and environmental conditions. 
+
+
+%Em uma redes de rádios cognitivos ({\it Cognitive Radio Networks} - CRNs) \abbrev{CRN}{{\it Cognitive Radio Networks}}, um canal de controle torna-se necessário para coordenar a gestão do espectro e contenção de canais entre os RCs. O trabalho em~\cite{surveyCCC} categoriza vários esquemas na forma de estabelecer o canal de controle. Nos esquemas baseados em sequências~\cite{surveyCCC}, canais de controle são alocados de acordo com um sequência de salto de canais. Assim, um canal de controle é dinamicamente estabelecido pelos vários encontros entre os RCs. Este esquema minimiza o impacto da atividade de UPs no canal de controle, devido à variação da alocação do espectro ao longo do tempo.% Alguns trabalhos na literatura enfrentam o problema de {\it rendezvous} com esquemas usando diferentes estratégias na construção das sequências de salto de canais~\cite{br, ssch, seqr, quorum, amrcc, mclock, jumpstay}. %O trabalho em~\cite{mclock} identifica cinco modelos diferentes do sistema em que encontro podem ocorrer de acordo com as capacidades do sistema, políticas de espectro e as condições ambientais.
+
+
+%%%%%
+%% AQUI O TEXTO TRABALHA COMO MULITPOS CANAIS NA SEQUENCIA VISTOS COMO MULTIPLOS CANAIS DE CONTROLE
+%% TALVEZ MANTER POREM DEIXAR BEM CLARO NO CAPITULO CLUSTER 
+
+
+%Neste capítulo, apresentaremos a motivação e proposta de criação da sequência de {\it broadcast}, que pode ser utilizada conjuntamente com qualquer solução que use uma sequência de salto de canais. Mostraremos a formalização de uma sequência de salto de canais e a formalização da sequência de {\it broadscast}. Abordaremos também a questão de sincronismo de início de sequência, que é um pré-requisito de funcionamento para soluções baseadas em sequência de salto de canais que sejam síncronas, além da explicação sobre sincronismo de {\it slots}. Ao fim, apresentaremos os resultados a partir de simulação sobre o uso da sequência de {\it broadcast} frente a abordagem tradicional empregada em soluções baseadas em sequências de salto de canais.    
+
+Nesta segunda parte do trabalho, focamos nas soluções de {\bf protocolos baseados em sequência de salto de canais}, que conforme abordado nos Capítulos~\ref{cap:introducao} e \ref{cap:rendezvous}, possui como uma de suas deficiências a recepção de mensagens em {\it broadcast}. Assim, neste capítulo, apresentaremos a motivação e proposta da criação de uma sequência de {\it broadcast}, que pode ser utilizada conjuntamente com qualquer solução que use uma sequência de salto de canais. Mostraremos a formalização de uma sequência de salto de canais em conjunto com a formalização da sequência de {\it broadscast}. Ao fim, apresentaremos os resultados, a partir de simulações, do uso da sequência de {\it broadcast} frente à abordagem tradicional empregada em soluções baseadas em sequências de salto de canais. %e as conclusões do capítulo.
+
+
+%Abordaremos também a questão de sincronismo de início de sequência, que é um pré-requisito de funcionamento para soluções baseadas em sequência de salto de canais que sejam síncronas, além da explicação sobre sincronismo de {\it slots}. 
+
+\section{Motivação para Sequência de \textit{Broadcast}}         
+
+%Conforme já apresentado, uma forma de se estabelecer o canal de controle é utilizar uma sequência de salto de canais, que pode ser vista como o uso de múltiplos canais de controle.
+
+Como já apresentado, o problema de {\it rendezvous} em RCs pode ser mitigado através da criação de uma sequência de saltos de canais, que determina a ordem com que cada rádio visita os canais disponíveis. Diversas soluções que aplicam a ideia de sequência de salto de canais, classificadas como {\bf protocolos baseados em sequência de salto de canais} foram publicadas, as quais se diferem principalmente quanto à forma de criação das sequências, quanto ao tamanho das sequências e o tempo máximo previsto para o encontro.  
+
+%Em geral, a quantidade de informação que se possui sobre os demais rádios favorece no estabelecimento de uma sequência cujo {\it rendezvous} seja mais rápido. Em casos mais extremos de falta de informação, o {\it rendezvous} torna-se mais difícil e é conhecido como {\it blind rendezvous}. Vale ressaltar, que classificamos como {\it blind rendezvous} trabalhos em que os rádios não possuem informações sobre USs vizinhos, tais como a quantidade de vizinhos de um rádio, canais livres dos nós vizinhos, etc. Porém se alguma informação for agregada posteriormente, desde de que coletada pelo próprio rádio, o trabalho continua sendo caracterizado como {\it blind rendezvous}.  
+
+Em geral, quanto mais informação se possui sobre os demais rádios da rede, mais simples e rápido torna-se o {\it rendezvous}. Em casos mais extremos de falta de informação, o {\it rendezvous} torna-se mais difícil e é conhecido como {\it blind rendezvous}. Vale ressaltar que classificamos como {\it blind rendezvous} trabalhos em que os rádios não possuem informações sobre USs vizinhos, tais como a quantidade de vizinhos de um rádio, canais livres dos nós vizinhos, etc. Porém se alguma informação for agregada posteriormente, desde que coletada pelo próprio rádio, o trabalho continua sendo caracterizado como {\it blind rendezvous}.  
+
+%Classificamos como {\it blind rendezvous} trabalhos que utilizam poucas informações para gerarem suas sequências, como também aqueles que utilizam informações coletadas pelo próprio rádio. Assim, mesmo que alguma informação seja incluída {\it a posteriori}, os algoritmos continuam sendo classificados como {\it blind rendezvous}.  
+
+%Neste capítulo e no próximo, voltaremos a atenção para os casos classificados como {\it blind rendezvous}.
+
+%, ou seja, trabalhos que criam uma sequência de salto de canais porém com uma quantidade de informação restrita. 
+
+%As soluções propostas apresentadas nos Capítulos \ref{cap:cluster} e \ref{cap:semlider}, apesar de criarem sequências de saltos de canais utilizavam informações antes de criarem suas sequências.%, diferentes dos mecanismos de {\it blind rendezvous} que criam as sequências antes de se ter alguma informação. 
+
+
+%A commonly used channel switching technique, mostly employed in multiple channel ad hoc networks, is known as channel hopping (CH). In this technique, the radio repeatedly switches channels according to a certain sequence, which defines the {\it virtual channel} used by the device. This enables a better utilization of the multiple channels and when the CH sequences used by the various radios are chosen appropriately, it allows simultaneous transmissions in {\it virtual channels} that have orthogonal sequences. When employed by cognitive radios, this technique also permits secondary users to communicate even in situations where spectrum opportunities are not the same among all users, such as when secondary users are in the interference ranges of different primary users. This technique requires secondary users to be aware of each other in order to set up a communication link between them. For this, users who want to communicate must be in the same channel at the same point in time.
+
+%Uma técnica de comutação de canal comumente utilizada, principalmente em redes {\it Ad Hoc} com múltiplos canais, é conhecida como o {\it channel hopping} (CH). Nesta técnica, o rádio repetidamente muda de canal de acordo com uma certa sequência, que define o canal {\it virtual} utilizado pelo dispositivo. Isto permite uma melhor utilização dos múltiplos canais e quando as sequências de saltos de canais utilizadas pelos vários rádios são escolhidas de forma adequada, permitem que as transmissões simultâneas em {\ it} canais virtuais em sequências ortogonais. Quando utilizada por rádios cognitivos, esta técnica também permite aos usuários secundários se comunicarem, mesmo em situações onde as oportunidades do espectro não são iguais entre todos os utilizadores, tal como quando os usuários secundárias estão no alcance de interferência de diferentes usuários primários. Esta técnica requer que os usuários secundários estejam cientes um do outro, a fim de estabelecer um enlace de comunicação entre eles. Por isso, os usuários que desejam se comunicar devem estar no mesmo canal no mesmo instante de tempo.
+
+
+%The encounter of two or more radios in a channel is called rendezvous (RV). In the case of cognitive radios, it is assumed that there is no centralized control entity or a dedicated common control channel for the exchange of information about each radio's hopping sequence. This makes the RV process harder, and it is known as blind rendezvous. Several studies in the literature deal with the blind RV problem~\cite{br,seqr,mclock,quorum,ssch,etch}, providing algorithms that generate channel hopping sequences that facilitate the rendezvous between two devices. The objective of these algorithms is to provide an upper bound for the time needed to perform the rendezvous. Some of these algorithms also try to better distribute the overlaps of the different channel hopping sequences in order to allow multiple pairs of devices to rendezvous simultaneously on different channels, reducing contention.
+
+%O encontro de dois ou mais rádios em um canal é chamado de {\it rendezvous} (RV). No caso dos rádios cognitivos, presume-se que não existe uma entidade de controle centralizada ou um canal de controle dedicado comum para a troca de informações sobre a sequência de salto de cada rádio.
+
+
+
+% Isto torna mais difícil o processo de RV, e conhecido como {\it blind rendezvous}.
+
+%Diversos trabalhos na literatura lidam com o problema de {\it blind rendezvous}~\cite{br, seqr, mclock, quorum, ssch, etch}, proporcionando algoritmos que geram uma ou mais sequências de salto de canais que facilitam o encontro entre dois dispositivos. %O objetivo destes algoritmos é fornecer um limite superior ({\it Maximum Time-To-Rendezvous} - MTTR) \abbrev{MTTR}{{\it Maximum Time To Rendezvous}} ao tempo necessário para realizar o encontro. %Alguns destes algoritmos também tentam distribuir melhor as sobreposições de canais nas sequências, criando sequências que favoreçam que pares de dispositivos vizinhos possam se encontrar em diferentes canais reduzindo a contenção.
+
+%However, none of the cited algorithms deal directly with the problem of rendezvous between multiple devices, which would happen in a broadcast transmission. In the case of periodic broadcast transmissions, one solution would be to define a common channel hopping sequence among all the devices for this purpose. Then, the devices would temporarily switch to this sequence when they needed to perform a broadcast transmission. This alternative has several disadvantages related to the interval between periodic broadcasts. Very short intervals would result in a waste of bandwidth and longer intervals would result in higher latency to perform the broadcast. Another disadvantage is the contention that happens when different devices need to perform broadcast in the same channel sequence. The work in \cite{jumpstay} uses this approach for broadcasting messages in a multi-hop and multi-user scenario.
+
+%Conforme Capítulo~\ref{cap:rendezvous}, para o problema de {\it blind rendezvous} uma das maiores deficiências dos {\bf protocolos baseados em sequência de salto de canais} é a falta de um meio que possibilite que alguma informação seja disseminada para todos os rádios, ou mesmo para um grupo de rádios. A troca de informações relacionadas a comunicações entre rádios vizinhos pode evitar problemas de terminais escondidos, como também pode melhorar o aproveitamento na utilização do espectro, dado que esta informação pode auxiliar em uma coordenação no uso de canais entre transmissores e receptores que estão dentro do mesmo alcance. 
+
+
+Conforme capítulos anteriores, uma das maiores deficiências dos {\bf protocolos baseados em sequência de salto de canais} é a falta de um meio que possibilite que alguma informação seja disseminada para todos os rádios, ou mesmo para um grupo de rádios, de forma rápida. Como solução, propomos realizar um {\it rendezvous} entre múltiplos usuários que pode ser conseguido através de uma transmissão em {\it broadcast}. Propomos a construção de uma sequência de {\it broadcast} a ser utilizada pelo rádio quando este desejar transmitir uma mensagem de {\it broadcast}. %, e assim a sequência de {\it broadcast} caracteriza o {\it rendezvous} entre múltiplos dispositivos.
+
+Esta sequência de {\it broadcast} pode ser utilizada para transmitir aos rádios vizinhos do rádio emissor, chamado de {\it broadcaster}, informações de controle sobre a rede de RCs, assim como informações sobre comunicações entre rádios vizinhos. 
+
+A troca de informações relacionadas a comunicações entre rádios vizinhos pode evitar problemas de terminais escondidos, como também pode melhorar o aproveitamento na utilização do espectro, dado que esta informação pode auxiliar em uma coordenação no uso de canais entre transmissores e receptores que estão dentro do mesmo alcance. No entanto, a maioria dos protocolos baseados em sequência não tratam diretamente da questão de {\it rendezvous} entre múltiplos dispositivos ou transmissões em {\it broadcast}.
+
+%Como solução propomos realizar um {\it rendezvous} entre múltiplos usuários e imaginamos uma sequência de {\it broadcast}, caracterizando este {\it rendezvous} entre múltiplos dispositivos. Esta sequência de {\it broadcast} pode ser utilizada para transmitir aos rádios vizinhos do rádio emissor, chamado de {\it broadcaster}, informações de controle sobre a rede de RCs. E assim, evitar problemas relacionados a falta de informação sobre comunicações vizinhas. 
+
+
+% original
+%Como primeira opção de solução pode-se adotar um canal de controle comum aos nós da rede. A partir do canal de controle as comunicações existentes poderiam ser informadas, o que auxiliaria os rádios, porém, este tipo de solução apresenta deficiências. A principal deficiência é o problema de gargalo do canal de controle, que ocorre quando vários rádios transmitem pelo canal ao mesmo tempo.
+
+Como primeira opção de solução pode-se, após os rádios terem se encontrado a partir do uso de sequência de salto de canais, adotar um canal de controle comum aos nós da rede. A partir do canal de controle, informações sobre as comunicações existentes poderiam ser informadas, o que auxiliaria os rádios. Porém, este tipo de solução apresenta deficiências. A principal está relacionada ao problema de gargalo do canal de controle, que ocorre quando vários rádios transmitem pelo canal ao mesmo tempo.
+
+
+%que são resolvidas a partir da adoção de uma solução que aplica uma sequência de salto de canais, ou seja cria-se o ciclo de {\it rendezvous}, apresentado no Capítulo~\ref{cap:rendezvous}. 
+
+% origina-se o chamado ciclo de {\it rendezvous}~\cite{zaw}. Onde no ciclo de {\it rendezvous}, a deficiência de uma solução que por exemplo implementa um CCC recai no uso de uma solução que aplique um protocolo baseado em sequência de salto de canais e vice-versa.
+
+%Conforme Capítulo~\ref{cap:rendezvous}, uma das maiores deficiências dos {\bf protocolos baseados em sequência de salto de canais} ou apenas {\bf protocolos baseados em sequência} é a falta de um meio que possibilite que alguma informação seja disseminada simultaneamente para todos os rádios ou mesmo para um grupo de rádios. Este tipo de meio pode evitar problemas de terminais escondidos multicanais~\cite{zaw} ou mesmo um melhor aproveitamento do espectro, devido a coordenação no uso de canais entre transmissores e receptores dentro do mesmo alcance.
+
+
+%Como solução propomos um {\it rendezvous} de multiplos usuários. Imaginamos uma sequência de {\it broadcast}, caracterizando um {\it rendezvous} entre múltiplos dispositivos. Esta sequência de {\it broadcast} informa para os rádios vizinhos do rádio emissor, chamado de {\it broadcaster} ou mesmo a maioria de rádios vizinhos possível.
+
+%Uma outra opção que propomos é realizar um {\it rendezvous} entre múltiplos usuários, não utilizando algo exclusivo como um CCC. Por exemplo, pode-se enviar a informação de controle através de uma mensagem em {\it broadcast}, ainda contudo, em um ambiente que utilize sequência de salto de canais. No entanto, a maioria dos protocolos baseados em sequência, não trata diretamente da questão do {\it rendezvous} entre múltiplos dispositivos ou transmissões em {\it broadcast}.
+
+%Como solução propomos realizar um {\it rendezvous} entre múltiplos usuários. Imaginamos uma sequência de {\it broadcast}, caracterizando um {\it rendezvous} entre múltiplos dispositivos. Esta sequência de {\it broadcast} pode ser utilizada para transmitir aos rádios vizinhos do rádio emissor, chamado de {\it broadcaster}, informações de controle sobre a rede de RCs. No entanto, a maioria dos protocolos baseados em sequência, não trata diretamente da questão de {\it rendezvous} entre múltiplos dispositivos ou transmissões em {\it broadcast}.
+
+% ou a maioria de rádios vizinhos possível.
+
+%o utilizando algo exclusivo como um CCC. Por exemplo, pode-se enviar a informação de controle através de uma mensagem em {\it broadcast}, ainda contudo, em um ambiente que utilize sequência de salto de canais. 
+
+
+Da literatura, o trabalho~\cite{jumpstay} usa uma abordagem para transmissão de mensagens de {\it broadcast} em um cenário multissalto e multiusuário. Neste trabalho, os autores propõem a ideia de aplicar diversos encontros entre pares de USs, de forma a conseguir um {\it rendezvous} entre todos os nós da rede. Dois USs após terem se encontrado, em um canal comum disponível para ambos, trocam os parâmetros que a solução utiliza para criar a sequência de salto de canais, neste caso uma tupla de 3 valores. Rádios que utilizam os mesmos parâmetros (a mesma tupla) criam sequências de salto de canais idênticas. Além disso, existe um critério de comparação e desempate entre as tuplas. Quando dois USs se encontram, o usuário que possui a tupla com menores parâmetros a atualiza para a tupla com parâmetros maiores. Logo, dois rádios que se encontram, após a aplicação do critério de desempate, passam a utilizar a mesma sequência de salto de canais. Este processo é repetido até que todos os rádios passam a seguir a mesma sequência originada pela tupla de valores maiores. Por fim, já que todos os nós utilizam a mesma sequência, uma transmissão em {\it broadcast} pode ser realizada.
+
+Uma das desvantagens desta solução é o tempo de convergência para a sequência única. Pode-se demorar a convergir, uma vez que não se sabe qual nó possui a tupla de valores maiores, nem a ordem de encontro entre os nós. Assim, alguns nós podem ter que atualizar sua sequência mais que uma vez, visto que podem encontrar outro nó que possua parâmetros de tupla maiores do que a do último nó encontrado até então.   
+
+%Uma outra opção que propomos é realizar um {\it rendezvous} entre múliplos usuários, utilizando algo intermediário entre o uso de um CCC e uma sequência de salto de canais. Como por exemplo, enviar a informação de controle através de uma mensagem em {\it broadcast}, ainda contudo, em um ambiente que utilize sequência de salto de canais. No entanto, a maioria dos protocolos baseados em sequência, não trata diretamente do problema de {\it rendezvous} entre múltiplos dispositivos ou melhor transmissões em {\it broadcast}.
+
+%Uma outra opção é tentar realizar um {\it rendezvous} entre múliplos usuários. Propomos  através de uma transmissão em {\it broadcast}, por exemplo. Ainda mantem-se a sequencia de salto de canais e pa  
+
+
+% utilizando algo intermediário entre o uso de um CCC e uma sequência de salto de canais, como por exemplo enviar a informação de controle através de uma mensagem de {\it broadcast} em um ambiente que utilize sequência de salto de canais.
+
+
+%Como não desejamos usar um CCC, devido suas diversas deficiências, Uma solução que propomos é algo como um meio termo que possibilite. Uma sequência de {\it broadcast}, caracterizando um {\it rendezvous} entre múltiplos dispositivos. Esta sequência de {\it broadcast} para pelo menos os rádios vizinhos do rádio emissor, chamamos de {\it broadcaster} ou mesmo a maioria de rádios vizinhos possível.
+
+
+% que possibilite informar/atingir uma quantidade de vizinhos contudo mantendo o uso da sequência de salto de canais.
+
+%rendezvous multiplos usuários
+
+
+
+
+%Como não desejamos usar um CCC, devido suas diversas deficiências, uma solução que propomos é algo como um meio termo que possibilite. Uma sequência de {\it broadcast}, caracterizando um {\it rendezvous} entre múltiplos dispositivos. Esta sequência de {\it broadcast} para pelo menos os rádios vizinhos do rádio emissor, chamamos de {\it broadcaster} ou mesmo a maioria de rádios vizinhos possível.
+
+%que possibilite {\it rendezvous} entre múltiplos dispositivos, caracterizando uma sequencia de {\it broadcast}. Esta sequência de {\it broadcast} para pelo menos os rádios vizinhos do rádio emissor, chamamos de {\it broadcaster} ou mesmo a maioria de rádios vizinhos possível.
+
+
+De outra forma, pode-se pensar em transmissões em {\it broadcast} periódicas. Assim, pode-se definir uma sequência de salto de canais comum entre todos os dispositivos. Em seguida, os dispositivos mudam temporariamente em intervalos regulares de tempo para essa sequência. Os rádios que possuem informações de controle entram em modo de transmissão, enquanto os demais permanecem em modo de recepção.
+
+Esta alternativa possui desvantagens, relacionadas com a definição do intervalo de tempo estipulado para estas transmissões em {\it broadcast} periódicas. Intervalos muito curtos iriam resultar em um desperdício de largura de banda, enquanto intervalos mais longos resultariam em uma maior latência para realizar a transmissão. Outra desvantagem é a contenção que pode ocorrer quando dispositivos diferentes precisam realizar uma transmissão e estão no mesmo canal. %Neste caso, pode-se ocorrer o mesmo problema de gargalo que acontece ao se utilizar um CCC. 
+
+%For these reasons, we consider that on-demand broadcast transmissions are more convenient. In such case, one way to achieve this would be to repeatedly transmit the broadcast message performing RVs to every neighbor in a one-to-one fashion~\cite{ssch} in hopes of emulating a one-to-N RV. In this paper, we propose a mechanism for performing broadcast transmissions in channel hopping cognitive radio networks. This mechanism aims to facilitate broadcast transmissions using blind one-to-one RV mechanisms taking into account heterogeneous spectrum conditions among secondary users and dynamic spectrum usage carried on by primary users. The mechanism proposed in this paper has as its main characteristic the fact that it is RV mechanism agnostic, i.e., it can be used in combination with any blind one-to-one RV mechanism.
+
+Por estas razões, consideramos que transmissões em {\it broadcast} realizadas sob demanda são mais convenientes. Para tal, uma forma de se proceder é transmitir repetidamente uma mesma mensagem de {\it broadcast}, por todos os {\it slots} de uma sequência, a fim de realizar vários encontros com os nós vizinhos de um modo ``um para um''~\cite {ssch}, com o objetivo de emular um {\it rendezvous} de ``um para $n$''.
+
+Neste capítulo, propomos um mecanismo para executar transmissões em {\it broadcast} em uma rede de rádios cognitivos que usa sequência de salto de canais. Este mecanismo visa facilitar transmissões em {\it broadcast} no modo ``um para um'', levando em conta as condições heterogêneas do espectro entre os usuários secundários e o uso dinâmico do espectro realizado pelos usuários primários. O mecanismo proposto tem como principal característica o fato de ser independente, ou seja, ele pode ser utilizado em combinação com qualquer protocolo baseado em sequência de salto de canais. 
+
+%Antes de apresentarmos o mecanismo, retrataremos a seguir o cenário adotado no atual trabalho, a formalização de uma sequência de salto de canais e a formalização da sequência de {\it broadcast}.% e a do próprio problema.
+
+%Antes de apresentarmos o mecanismo, retrataremos a seguir a formalização de uma sequência de salto de canais e a formalização da sequência de {\it broadcast}, assim com as questões de sincronismo de início de sequências e sincronismo de {\it slots}.
+
+
+Antes de apresentarmos o mecanismo, apresentaremos a seguir a formalização de uma sequência de salto de canais e a formalização de uma sequência de {\it broadcast}. %, assim com as questões de sincronismo de início de sequências e sincronismo de {\it slots}.
+
+
+%\section{Background and Related Works}
+%\label{sec:trabrel}
+
+%In distributed Cognitive Radio Networks (CRNs), a control channel is required for coordinating spectrum management and channel contention between CRs. The work in~\cite{surveyCCC} categorizes various control channel design schemes. In the {\it sequence-based control channel design}~\cite{surveyCCC}, control channels are allocated according to a random or predetermined channel hopping (CH) sequence. Thus, a control channel is dynamically established by multiple rendezvous among CRs. This design minimizes the impact of UP activity over the control channel due to the spectrum allocation's variation over time. Additionally, this approach allows the simultaneous communication of multiple CRs in the same neighborhood by allocating different CH sequences to each control channel. Numerous works in the literature tackle the rendezvous problem with this design scheme by using different strategies in the construction of the CH sequences~\cite{br,ssch,seqr,quorum,amrcc,mclock,jumpstay}. The work in~\cite{mclock} identifies five different system models under which rendezvous can occur according to system capabilities, spectrum policies and environmental conditions. 
+
+%Most of the existing RV algorithms assume a time-slotted system, in which at each time slot CRs hop among channels to attempt rendezvous with their potential neighbors. In a CH scheme where each CR hops among channels randomly~\cite{br}, when two CRs hop to the same channel at the same timeslot, a rendezvous (RV) takes place in case the channel is free from UP presence. Otherwise, the nodes shall continue hopping until a RV occurs. During the RV, the nodes exchange control information.
+
+%RV schemes can be categorized as synchronous~\cite{ssch,quorum} or asynchronous~\cite{seqr,mclock,jumpstay} whether they require that the CRs start their CH sequences at same time or not. In synchronous systems, coordination of CR users is required before rendezvous to achieve time-synchronization. Most RV systems use a static CH sequence~\cite{seqr,quorum,ssch}. However, some algorithms~\cite{mclock,jumpstay} provide sequences that change over time in rounds.  
+
+%The next subsections detail the four algorithms that have been used in this proposal as underlying one-to-one RV mechanisms. The two first algorithms are asynchronous and the remaining two are synchronous.
+
+
+\section{Formalização da Sequência de Salto de Canais e Sequência de \textit{Broadcast}}
+
+% FORMALIZACAO
+
+Formalmente, consideramos que a rede de rádios cognitivos consiste de $K$ ($K \geq 2$) rádios coexistindo com UPs na mesma área geográfica. Além disso, o espectro de frequências licenciado pode ser dividido em $M$ ($M > 1$) canais ortogonais que não se sobrepõem. Assumimos que esses canais são unicamente indexados, como: $0,1,2,...,M-1$ e os índices são bem conhecidos por cada usuário da rede~\cite{quorum}.
+
+%Cada rádio tenta o encontro com outro nó saltando pelos canais disponíveis sucessivamente de acordo com uma sequência de salto de canais. Onde cada rádio começa sua sequência independentemente, como consequência temos um desalinhamento relacionado ao início das sequências de saltos dos nós.
+
+%Os UPs são os usuários prioritários no uso de algum espectro licenciado, que pode ser dividido em $M$ ($M > 1$) canais ortogonais que não se sobrepõem. Assumimos que estes canais são unicamente indexados, como: $1,2,...,M$ e os índices são bem conhecidos por cada usuário da rede.
+
+O conjunto de potenciais canais disponíveis aos rádios é indicado por: 
+
+\vspace{0.3cm}
+
+$\mathcal{C} = \{ c_{0},c_{1},...,c_{n},...,c_{M-1} \}$
+
+\vspace{0.3cm}
+
+Onde $c_{n}$ indica o $n$-ésimo canal que usualmente chamamos de canal $n$ por conveniência $(n = 0,1,2,...,M-1)$. Cada rádio é equipado com uma única interface, que pode acessar canais em $\mathcal{C}$ de maneira oportunista.
+
+Devido à atividade de UPs, nem sempre todos os canais em $\mathcal{C}$ estarão livres. Assim, o conjunto ${\mathcal{C}}_i \subseteq \mathcal{C}$ indica os canais disponíveis para o rádio $i$, ($i=1,2,...,K$).
+
+Além disso, o sistema foi modelado como {\bf assimétrico}, ou seja, os canais livres podem não ser os mesmos para todos os rádios. Desta forma, dois rádios na mesma rede podem ter canais disponíveis diferentes, o que por vezes é dito como ter {\bf ``visões heterogêneas''} do espectro de frequências. Assim, pode ocorrer de: ${\mathcal{C}}_i \neq {\mathcal{C}}_j$, para $1 \leq i,j \leq K$. 
+
+
+% DUVIDA
+%As sequências precisam garantir um {\it rendezvous} determinístico se ${\mathcal{C}}_i \cap {\mathcal{C}}_j \neq \emptyset$. 
+
+ % compartilhados com UPs que estejam ociosos. 
+
+
+%De acordo com muitos trabalhos que tratam de {\it Channel Hopping}, recorre-se ao uso de uma sequência de salto de canais com um sistema adotado na comunicação é {\it time-slot}.
+O tempo foi particionado em {\it slots}, e a cada {\it slot} cada rádio salta para um canal seguindo uma sequência ${\bf s}$, na tentativa de se encontrar com seus potenciais vizinhos. 
+
+% TROCAR
+%Note que uma coordenação de usuários é difícil de conseguir antes do {\it rendezvous} e cada usuário pode iniciar sua sequência de salto em diferentes instantes. Por esta razão o algoritmo deve necessitar de uma sincronização.
+
+
+%A realização do {\it rendezvous} envolve muitos processos detalhados num intervalo de um {\it slot}, incluindo transmissão de {\it beacon} pelo canal disponível, a aplicação de um mecanismo de {\it handshaking} específico, etc. Neste trabalho, nós simplificamos o problema de {\it rendezvous}. Assumimos que o rendezvous é dito completo quando 2 rádios saltam para o mesmo canal de acordo com suas sequências de saltos de canais respectivamente. 
+
+% ETCH
+%Similar a representação utilizada em [quorum e ETCH],
+
+Formalmente uma sequência de salto de canais ${\bf s}$ de período $T$ {\it slots}, pode ser definida como~\cite{ach}:  
+%${\bf s} = \{(0,s[0]), (1,s[1]),...,(i,s[i]),...,(p-1, s[(p-1)])\}$ \\
+
+\vspace{0.3cm}
+
+${\bf s} = \{s_0, s_1,...,s_i,...,s_{(T-1)}\}$ \\
+
+\vspace{0.3cm}
+%Onde $i$ $(0 \leq i \leq T-1)$ é o índice do {\it slot} e, $s[i] \in \mathcal{C}$ $(0 \leq i \leq M)$ é o índice do canal atribuído para o {\it slot} $i$ da sequência ${\bf s}$. Aqui, $p$ representa o período de uma sequência, ou seja, o tempo que o nó gasta em número de {\it slots} para percorrer por toda sequência de salto de canais. 
+%Por esta representação quando indicamos $s_{i}$ estamos representando a sequência de salto de canais do nó $i$.
+
+Onde $s_i \in [0, M-1]$ representa o índice do canal na sequência ${\bf s}$ no $i$-ésimo {\it slot} da sequência de salto de canais. 
+%Onde o índice na sequência ${\bf s}$ indica o {\it slot} da sequência e valor $s_i$ indica o canal utilizado.
+
+%\vspace{0.3cm}
+
+%Onde $s[i] \in [0,N-1]$ representa os índices dos canais da sequência {\bf s} no $i$-ésimo {\it slot} de um período de salto de canais ($i$ é o índice do {\it slot})
+
+%Conforme em [quorum], dadas 2 sequências quaisquer de salto de canais {\bf u} e {\bf v} se existir um par $(i,j) \in {\bf u} \cap {\bf v}$, $(i,j)$ chamado de sobreposição entre {\bf u} e {\bf v}. Neste caso, o $i$-ésimo {\it slot} é chamado de {\it slot} de {\it rendezvous} e o canal $j$ é chamado de canal de {\it rendezvous} entre {\bf u} e {\bf v}. Se o par de rádios seleciona respectivamente {\bf u} e {\bf v} como suas sequências de salto de canais, então o canal de {\it rendezvous} resultante pode ser usado para troca de mensagens entre os nós. Ou seja, os rádios podem trocar informações pelo canal $j$ no $i$-ésimo {\it slot} do período da sequência de salto de canais.
+
+%Dadas 2 sequências quaisquer de salto de canais {\bf u} e {\bf v} se existir $u_n = v_n$, com $0 \leq i \leq T-1$ chamado de sobreposição entre {\bf u} e {\bf v}. Neste caso, o $i$-ésimo índice é chamado de {\it slot} de {\it rendezvous} e o canal $v_n$ e $u_n$ é chamado de canal de {\it rendezvous} entre {\bf u} e {\bf v}. Se o par de rádios seleciona respectivamente {\bf u} e {\bf v} como suas sequências de salto de canais, então o canal de {\it rendezvous} resultante pode ser usado para troca de mensagens entre os nós. %Ou seja, os rádios podem trocar informações pelo canal $j$ no $i$-ésimo {\it slot} do período da sequência de salto de canais.
+
+Dadas duas sequências {\bf u} e {\bf v} de período $T$, se $\exists$ $i$ $\in$ $[0, T-1]$ tal que $u_i = v_i = h$ onde $h \in [0,M-1]$, dizemos que {\bf u} e {\bf v} podem se encontrar no $i$-ésimo {\it slot} no canal $h$. Desta maneira o $i$-ésimo {\it slot} é chamado de {\it slot} de {\it rendezvous} e o canal $h$ é chamado de canal de {\it rendezvous} entre ${\bf u}$ e ${\bf v}$.
+
+
+Na prática, conforme apresentado no Capítulo~\ref{cap:rendezvous}, a realização do {\it rendezvous} e o estabelecimento de um enlace de comunicação envolve mais processos em um intervalo de um {\it slot}, incluindo o recebimento de {\it beacons} no canal disponível, aplicação de mecanismo de {\it handshaking}, etc. Por motivos de foco na questão da sequência de salto de canais, assumimos que o {\it rendezvous} é dito completo quando dois ou mais rádios saltam para o mesmo canal disponível, estão no alcance um do outro e, o canal está livre de transmissões de UPs. %de acordo com suas sequências de saltos de canais respectivamente.
+
+
+
+%como um canal de controle conhecido pelo par de nós ({\it pair-wise control channel}), isto é, dois rádios podem trocar informações de controle no canal $j$ no $i$-ésimo {\it slot} de cada período de sequência de salto de canais.
+
+
+%Agora usando $C({\bf u},{\bf v})$ para indicar o número de canais de {\it rendezvous} entre duas sequências {\bf u} e {\bf v} ,isto é,
+
+%\vspace{0.3cm}
+
+%$C({\bf u},{\bf v}) = \sum \limits_{j=0}^{N-1} I_{j}({\bf u},{\bf v})$ 
+
+%\vspace{0.3cm}
+
+
+%Conforme o algoritmo de {\it rendezvous} utilizado podemos definir o conjunto $S$ que representa o conjunto de sequências de salto de canais
+%\vspace{0.3cm}
+% $S = \{ {\bf u}, {\bf  v}, {\bf w} ... \}$ 
+%\vspace{0.3cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PARTE DE BROADCAST, repetir a representacao e colocar a sequencia de broadcast 
+
+%Conforme os protocolos baseados em sequência de salto da canais, cada nó possui sua sequência de saltos de canais atribuída pelo algoritmo, aqui denominada apenas de sequência de salto de canais. 
+
+A partir da sequência de salto de canais de todos os nós vizinhos de um salto de um nó, queremos construir uma sequência chamada sequência de {\it broadcast}. A sequência de {\it broadcast} será utilizada quando um nó, chamado {\it broadcaster}, desejar enviar uma mensagem de controle para seus vizinhos de um salto. Como, a princípio, cada nó possui sua própria vizinhança, assim cada nó terá sua própria sequência de {\it broadcast}.
+
+Desejamos que a sequência de {\it broadcast} possua sobreposição, com todas ou com a maior quantidade de sequências de salto de canais dos nós vizinhos de um salto do nó emissor da mensagem de {\it broadcast}. %Indicarmos por K , onde  o conjunto de nós vizinhos de um nó emissor de uma mensagem em {\it broadcast}.
+
+Assim como em \cite{quorum}, chamamos de $I_{j}({\bf u},{\bf  v})$ a função que indica quando o canal $j$ é um canal de {\it rendezvous} entre duas sequências {\bf u} e {\bf v}, isto é:
+
+%\vspace{0.3cm}
+%$I_{j}({\bf  u},{\bf  v}) =$ $\left \{
+%\begin{array}{l l}
+%1, & se \: \exists \, i \in [0,p-1], (i,j) \in {\bf u} \cap {\bf v},\\
+%0, & outros \, casos
+%\end{array} \right.$
+%\vspace{0.3cm}
+
+
+\vspace{0.3cm}
+$I_{j}({\bf  u},{\bf  v}) =$ $\left \{
+\begin{array}{l l}
+1, & se \: \exists \, i \in [0,T-1] \: | \: u_i = v_i = j,\\
+0, & outros \, casos
+\end{array} \right.$
+\vspace{0.3cm}
+
+
+Representando por $V_{k}$ o conjunto de sequências dos nós vizinhos de um salto do nó $k$. Temos $V_{k}$ como:
+\vspace{0.3cm}
+
+$V_{k} = \{{\bf u},{\bf v}, {\bf s} ,...\}$ %com $V_{k} \subseteq S$
+
+%ou
+
+%$V_{k} = \{ v_0, v_1, v_2,...\}$
+
+\vspace{0.3cm}
+
+Desta maneira, cada índice de $V_{k}$ indica a sequência de salto de canais de um vizinho de um salto do nó $k$.
+
+
+A seguinte função $W_{k}({\bf b},{\bf w})$ representa a sobreposição de uma sequência ${\bf b}$, que representa uma sequência candidata a ser uma sequência de {\it broadcast} do nó $k$ emissor com qualquer sequência ${\bf w}$, com ${\bf w} \in V_{k}$, em qualquer canal $j$. 
+
+%Assim, a seguinte função $W_{{\bf b}}(k)$ representa a sobreposição de uma sequência {\bf b} do nó $k$ emissor com qualquer sequência contida em $V_{k}$. A entrada ${\bf w}$ abaixo varia desde o primeiro ao último elemento de $V_{k}$.
+
+% ORIGINAL
+%A seguinte função $W_{{\bf b}}(k)$ representa a sobreposição de uma sequência {\bf b} do nó $k$ emissor com qualquer sequência ${\bf w}$, onde ${\bf w} \in V_{k}$, em qualquer canal $j$, assim:
+
+%A seguinte função $W_{{\bf b}}(k)$ representa a sobreposição de uma sequência {\bf b} do nó $k$ emissor com qualquer sequência contida em $V_{k}$. A entrada ${\bf w}$ abaixo varia desde o primeiro ao último elemento de $V_{k}$.
+
+%\vspace{0.3cm}
+
+%$W_{{\bf b}}(k) =$ $\left \{
+%\begin{array}{l l}
+%1, & se \: I_{j}({\bf b},{\bf w}) = 1, \: \forall j, com \: {\bf w} \in V_{k}\\
+%0, & outros \, casos
+%\end{array} \right.$  
+
+%\vspace{0.3cm}
+
+\vspace{0.3cm}
+
+$W_{k}({\bf b},{\bf w}) =$ $\left \{
+\begin{array}{l l}
+1, & se \sum \limits_{j=0}^{(M-1)}  I_{j}({\bf b},{\bf w}) \geq 1 \: \forall {\bf w} \: / \: \: {\bf w} \in V_{k}\\
+0, & outros \, casos
+\end{array} \right.$  
+
+\vspace{0.3cm}
+
+% ORIGINAL
+%$W_{{\bf b}}(k) =$ $\left \{
+%\begin{array}{l l}
+%1, & se \sum \limits_{j=0}^{(M-1)}  I_{j}({\bf b},{\bf w}) \geq 1 \: \forall {\bf w}, \: com \: \: {\bf w} \in V_{k}\\
+%0, & outros \, casos
+%\end{array} \right.$  
+
+
+ %A equação $SB_{\bf k}$ indica quantas sobreposições existem entre uma sequência ${\bf b}$ e as sequências dos nós vizinhos de um salto do nó $k$.  
+
+%$SB_{\bf k} = \sum \limits_{i=0}^{|V_{k}|} W_{{\bf b}}(k)$
+
+%\vspace{0.3cm}
+
+%Idealmente se $SB_{\bf k} = |V_{k}|$ a sequência ${\bf b}$ atinge todos os vizinhos de um salto do nó $k$ será é a sequência de {\it broadcast} do nó $k$.
+
+
+
+% ORIGINAL
+%Idealmente se $W_{{\bf b}}(k) = |V_{k}|$ a sequência ${\bf b}$ atinge todos os vizinhos de um salto do nó $k$, e será a sequência de {\it broadcast} do nó $k$. Caso contrário, a sequência ${\bf b'}$ que tiver maior sobreposição com as demais sequências em $V_{k}$ será a sequência de {\it broadcast} do nó $k$. 
+
+Se representarmos por $Z_{k}({\bf b})$ a função que computa o número de sobreposições da sequência {\bf b} com todas as sequências contidas em $V_{k}$, onde $Z_{k}({\bf b})$ é dada por: 
+
+%$Z_{k}({\bf b}) = \sum \limits_{{\bf w} \in V_{k}} W_{k}({\bf b},{\bf w}) = |V_{k}|$
+
+\vspace{0.3cm}
+
+$Z_{k}({\bf b}) = \sum \limits_{{\bf w} \in V_{k}} W_{k}({\bf b},{\bf w})$
+
+\vspace{0.3cm}
+
+Idealmente, se
+\vspace{0.3cm}
+
+$Z_{k}({\bf b}) = |V_{k}|$
+
+\vspace{0.3cm}
+
+\hspace{-0.7cm} a sequência ${\bf b}$ atinge todos os vizinhos de um salto do nó $k$, e será a sequência de {\it broadcast} do nó $k$. Caso contrário, outra sequência ${\bf b'}$ que tiver maior sobreposição com as demais sequências em $V_{k}$ será a sequência de {\it broadcast} do nó $k$. 
+
+
+%PARTE DE BROADCAST
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%sincronismo de slot e de inicio de sequencias
+%\subsection{Sequências de Salto de Canais Síncronas e Assíncronas}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Sincronismo de Início de Sequências}
+
+%Podemos notar que uma coordenação entre USs é difícil de se conseguir antes do {\it rendezvous}, assim cada usuário pode iniciar sua sequência de salto em diferentes instantes. %Por esta razão o algoritmo deve necessitar de uma sincronização.
+
+%Os trabalhos relacionados a sequências de salto de canais podem ser classificados como sistemas síncronos ou assíncronos quando comparados a necessidade de sincronismo de início das sequências. 
+
+%Trabalhos classificados como síncronos criam sequências que são válidas apenas quando todos os nós iniciam suas respectivas sequências ao mesmo instante. Em sistemas assíncronos, as sequências garantem encontro com os demais nós mesmo que o início das sequências seja qualquer. Ou seja, os nós podem ingressar na rede em instantes de tempo diferentes que mesmo assim as sequências criadas garantem um encontro em tempo finito. A Figura~\ref{fig:sincSeq} ilustra uma solução que necessita de um sincronismo de início de sequências. Neste exemplo, apenas se os nós estiverem com o início de sequências sincronizado o {\it rendezvous} será garantido. Caso o início das sequências seja defasado de um {\it slot}, por exemplo o nó $y$ ingressa na rede no {\it slot} $t1$, o {\it rendezvous} entre os dois rádios nunca ocorrerá. 
+
+%Podemos notar que uma coordenação entre USs é difícil de se conseguir antes do primeiro {\it rendezvous}, assim sistemas síncronos assumem a existência de uma coodernação prévia entre os rádios.  
+
+%\begin{figure}[!ht]
+%	\begin{center}
+%			\includegraphics[width=.8\textwidth]{figuras/inicioSequenciaSinc}
+%		\caption{Sistemas síncronos - sincronismo de início de sequências.}
+%		\label{fig:sincSeq}
+%	\end{center}
+%\end{figure}
+
+%A formalização apresentada até então se aplica a casos síncronos. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+As funções apresentadas anteriormente ($I_{j}(.)$ e $W_{k}(.)$), representam apenas casos de soluções voltadas para sistemas {\bf síncronos}. Ou seja, soluções que assumem e necessitam de um sincronismo de início de sequência entre as sequências de todos os rádios. 
+
+Assim, para representar um sistema {\bf assíncrono}, dada uma sequência ${\bf u}$ conforme em \cite{ach} usamos a função $rotate({\bf u},n)$ que indica uma rotação cíclica de $n$ {\it slots} através da sequência ${\bf u}$, isto é:
+
+\vspace{0.3cm}
+
+$rotate({\bf u},n) = \{{\bf v}_{g} | {\bf v}_{g} = {\bf u}_{(g+n) \: mod \: T},g \in [0,T-1]\}$
+
+\vspace{0.3cm}
+
+Onde $n$ é um número inteiro não negativo. Por exemplo, dado ${\bf u} = \{0,1,2\}$ e $T = 3$, $rotate({\bf u},2) = \{2,0,1\}$
+
+
+%Ou seja, são válidas quando todos os nós iniciam suas respectivas sequências no mesmo instante.
+
+
+
+%O caso contrário do sincronismo de sequência é chamado sistema assíncrono, assim as sequências devem garantir encontro com os demais nós mesmo que o início das sequências seja qualquer.   
+
+%COLOCAR A FUNCAO ROTATE COM O EXEMPLO
+
+Como para o caso {\bf assíncrono}, os nós podem iniciar suas sequências em instantes diferentes, podemos definir o conjunto ${\bf S}$ que contém o conjunto de sequências originadas a partir da sequência ${\bf s}$ rotacionada por $l$, conforme a função $rotate(.)$, onde $0 \leq l \leq T-1$  
+
+%CONFIRMAR INDICE T-1 na formula
+\vspace{0.3cm}
+
+${\bf S} = \{ rotate({\bf s},0), rotate({\bf s},1), rotate({\bf s}, l), ... , rotate({\bf s},T-1)\}$ 
+
+%${\bf s'} = \{ {\bf s},{\bf s'}_1, ..., {\bf s'}_2, ... {\bf s'}_l, ..., {\bf s'}_{(T-1)} \}$
+
+\vspace{0.3cm}
+
+Desta forma, cada índice de conjunto ${\bf S}$ representa a sequência ${\bf s}$ rotacionada conforme o valor de $l$. Pode-se notar que o primeiro índice de ${\bf S}$ representa a própria sequência ${\bf s}$, pois está rotacionada de 0 {\it slots}.
+
+%Podemos redefinir a função $I_{j}({\bf u},{\bf v})$ a valer 1 quando $\exists$ $i \in [0,T-1]$ quando ${\bf u'}_l = {\bf v'}_f$ mesmo com $l \neq f$ e ${\bf u'}_l \in {\bf u'}$ e ${\bf v'}_f \in {\bf v'}$.
+
+Podemos redefinir a função $I_{j}({\bf u},{\bf v})$ a valer 1 quando $\exists$ $i \in [0,T-1]$ quando $rotate({\bf u},l) = rotate({\bf v},f)$ mesmo com $l \neq f$ e $rotate({\bf u},l) \in {\bf U}$ e $rotate({\bf v},f) \in {\bf V}$. Sendo {\bf U} e {\bf V} o conjunto das sequências {\bf u} e {\bf v} rotacionadas. 
+
+O mesmo para a função $W_{k}(.)$, pode-se pensar em estar relacionada ao conjunto 
+\vspace{0.3cm}
+
+$\mathcal{V}_{k} = \{{\bf S},{\bf U},{\bf V},...\}$ 
+
+\vspace{0.3cm}
+
+Este conjunto $\mathcal{V}_{k}$ representa o conjunto de sequências dos vizinhos de um salto do nó emissor $k$ rotacionadas de qualquer valor $l$ , com $0 \leq l \leq T-1$, onde $W_{k}(.)$ irá valer 1 apenas quando existir um casamento de pelo menos um {\it slot} entre a sequência {\bf b} com todas as rotações de uma mesma sequência de um nó vizinho, em qualquer canal. Para a função $Z_{k}({\bf b})$ que contabiliza a quantidade de sobreposições entre a sequência {\bf b}, candidata a sequência de {\it broadcast}, temos a mesma abordagem, porém relacionada ao conjunto $\mathcal{V}_{k}$. 
+
+Para encontramos uma sequência {\bf b} de {\it broadcast} definida anteriormente propomos dois algoritmos, apresentados a seguir. 
+
+%$\mathcal{V}_{k} = \{{\bf S},{\bf U},{\bf V},...\}$
+
+%\vspace{0.3cm}
+
+%METRICAS
+%TTR para o caso de broadcast
+
+%\vspace{0.3cm}
+
+
+%%%%%%%%%  PODE SER VISTO COMO TRABALHOS FUTUROS %%%%%%%%%%%%%%%%
+%\section{ \textit{Rendezvous} quanto ao número de usuários}
+
+%O problema de {\it rendezvous} pode ser categorizado em 2 diferentes cenários baseados no número de usuários na rede de rádios cognitivos:
+
+%\begin{itemize}
+
+%\item 2-usuários: onde 2 usuários tentam conseguir o {\it rendezvous}, chegar no mesmo canal no mesmo instante.
+%\item Multi-usuário: uma rede de rádios cognitivos com múltiplos usuários ($K>2$) tentando {\it rendezvous}, onde todos os usuários estão tentando se encontrar no mesmo canal no mesmo {\it slot} 
+
+%\end{itemize}
+
+%Multi-usuário (SECON)
+
+%\vspace{0.3cm}
+
+%$\mathcal{G} = | \bigcap_{i=1}^{k}   {\mathcal{C}}_i | $ \\
+%$\overline{\mathcal{C}} = \bigcap_{i} {\mathcal{C}}_i$ 
+
+
+
+%\vspace{0.3cm}
+
+%O problema do {\it rendezvous} em um modelo assimétrico pode ser analizado pelo TTR esperado em um cenário com $k$-usuários e um novo usuário $L_{k+1}$ entra na rede quando os $k$ usuários já conseguiram {\it rendezvous}. Este resultado pode ser aproximado para o pior caso quando os usuários podem chegar assincronamente.
+
+%O {\it rendezvous} pode ocorrer no próximo {\it slot} uma vez que todos os $k$ usuarios têm o conjunto de canais de trabalho ({\it working set}) sobre o $L_{k+1}$ ou vice-versa.
+
+%Dois casos:
+%1) O usuário $L_{k+1}$ consegue {\it rendezvous} com qualquer um dos $k$ usuários. Neste ponto o usuário $L_{k+1}$ consegue informação sobre todos os $k$ usuários.
+
+%2) O conjunto de canais de trabalho do usuário $L_{k+1}$ é disseminado entre todos os outros $k$ usuários.
+
+%Propostas do artigo
+
+
+%- usar disponibilidade de canais para modificar a sequência
+%- sequencia de broadcast é o ``canal de controle''
+%- ver se o ach se encontra sempre na mesma sequencia de canais     
+%- depois do encontro os nos podem: passar para uma sequencia unica, continuar na sequencia home, passar para uma sequencia ortogonal (nova), se comunicar em um canal acordado e voltar para a sequencia home 
+%- Por que continuar usando a sequencia de salto de canais mesmo depois de se encontrar? Caso de usuário novo. Ou mesmo um usuário passa a sequência de saltos do destino um terceiro que queira mandar uma mensagem a este primeiro emissor recebera um beacon pois existe as propriedades de sobreposicao entre as sequencias, independente de qual a sequencia em uso. 
+
+%- bootstrap blind rendezvous a rede se descobre
+%- pode não existir $\overline{\mathcal{C}}$
+%- broadcast atrasado para todos os nós, secon e jumpstay broadcast de maneira natural, todos os nos recebem ao mesmo tempo
+%- rede dinâmica (entrada de novos nós)
+
+%- canal de controle em channel hopping
+
+%\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%Vale ressaltar que pode-se pensar em dois tipos de sincronismo: o sincronismo em {\it slot} e o sincronismo de sequência. O sincronismo em {\it slot} está relacionado ao alinhamento entre os {\it slots} no tempo. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Sincronismo de \textit{Slot}}
+
+%Além do sincronismo de início de sequências podemos pensar na necessidade de termos um sincronismo de {\it slots} entre as sequências, representado na Figura~\ref{fig:sincSlot} \cite{kim2} abaixo. 
+
+%Sem um sincronismo de {\it slot}, os limites de {\it slot} entre duas sequências dos nós $A$ e $B$, por exemplo, podem apresentar um desvio, representado por $\theta$ na Figura~\ref{fig:sincSlot}. 
+
+%Se considerarmos $t$ como o tempo mínimo necessário para se estabelecer um enlace de comunicação entre dois nós, o problema do sincronismo de {\it slot} pode ser resolvido aumentando o tempo de {\it slot} para $t'= 2t$~\cite{kim2}.
+
+%%Para lidarmos com isso, assumimos que o intervalo de duração $t$ de um {\it slot} é suficientemente longo para que possa ocorrer a troca de múltiplos pacotes. Isto mesmo se acontecer de vários nós se encontrarem no mesmo {\it slot} no mesmo canal, no qual pode-se seguir um procedimento de contenção do canal, por exemplo o que ocorre no IEEE 802.11~\cite{ach}. Ou seja, $t$ é o tempo mínimo necessário para estabelecer um enlace de comunicação entre dois nós~\cite{kim2}.
+
+%%Além disso, o tempo de duração de um {\it slot} é dobrado para $2t$, a fim de assegurar que dois nós permaneçam em um canal comum, pelo menos pelo tempo $t$ sufuciente. 
+
+%%O sincronismo de {\it slot} pode ser resolvido aumentando o tempo de {\it slot} para $2*n$.
+
+%%FIGURA DE SINCRONISMO DE SLOTS 
+
+%\begin{figure}[!ht]
+%	\begin{center}
+%			\includegraphics[width=.8\textwidth]{figuras/sincslot}
+%		\caption{Sincronismo de \textit{slots}.}
+%		\label{fig:sincSlot}
+%	\end{center}
+%\end{figure}
+
+
+%%If new slot time t ′ = 2t, then DRSEQ guarantees A and B to rendezvous within 2N + 1 slots without slot synchronisation.
+%Proof: As shown in Fig. 3, if the misalignment distance of nodes A and B is d = kt ′ + u (0 ≤ u , t ′ ) for k 1⁄4 0, . . . , 2N, only two cases must be considered.
+
+%Na Figura~\ref{fig:sincSlot}, se a medida de desalinhamento entre os {\it slots} dos nós $A$ e $B$ for representada por $\delta = nt'+ \theta$ $(0 \leq \theta < t')$ dois casos podem ser considerados:
+%\begin{itemize}
+%\item Caso 1) Para $0 \leq \theta < t$, cada {\it slot}, a contar pelo início do {\it slot} de $B$, se sobrepõe ao correspondente de $A$ durante ($t' - \theta$), que é tempo suficiente para estabelecer um enlace de comunicação, se eles estiverem em um canal em comum.
+%\item Caso 2) Para $t \leq \theta < t'$, cada {\it slot}, a contar pelo início do {\it slot} de $B$, se sobrepõe ao próximo {\it slot} de $A$ durante $\theta$.
+%\end{itemize}
+
+%Em ambos os casos, o tempo de duração de um {\it slot} dobrado para $2t$, assegura nos que os dois nós permanecerão por pelo menos o tempo $t$ suficiente.
+
+
+
+
+% Case 1: For 0 ≤ u , t, every slot from the beginning for B overlaps
+%the corresponding one for A during (t − u ) which is long enough to
+%establish the link if they have a common channel.
+% Case 2: For t ≤ u , t ′ , every slot from the beginning for B overlaps
+%the next slot for A during u .
+
+
+
+%We assume that one timeslot is long enough to exchange multiple packets. If multiple nodes happen to rendezvous in the same slot on the same channel, they can follow a channel contention procedure (e.g., 802.11 RTS/CTS protocol). ach
+
+
+%Without slot synchronisation, the slot boundaries for nodes A and B may not be aligned. To cope with this, the slot time is doubled to be 2t in order to ensure that two nodes stay in a common channel for at least time t. Note that t is the minimum time required to establish a link between two nodes.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\section{Mecanismo Proposto - Sequência de \textit{Broadcast}} 
+\section{Algoritmos para Sequência de \textit{broadcast}} 
+%\section{Mecanismo Proposto} 
+\label{sec:prop_cap_broadcast}
+
+%The proposed RV mechanism is based on the retransmission of broadcast messages on all channels of a channel hopping sequence, where this sequence is chosen with the objective of minimizing the time-to-rendezvous (TTR) between the broadcasting node and all of its neighbors. This sequence is referred to as the {\it broadcast CH sequence}.
+
+
+
+Os algoritmos propostos estabelecem a forma de criação de uma sequência de salto de canais denominada sequência de {\it broadcast}. Esta sequência possui o objetivo de minimizar o tempo de {\it rendezvous} \abbrev{TTR}{Time-To-Rendezvous} ({\it Time-To-Rendezvous} - TTR) entre o nó {\it broadcaster} e todos os seus vizinhos de um salto. O mecanismo de uso desta sequência baseia-se na retransmissão da mesma mensagem de {\it broadcast} por todos os {\it slots} da sequência de {\it broadcast}. 
+
+%O mecanismo de {\it rendezvous} proposto baseia-se na retransmissão da mesma mensagem de {\it broadcast} por todos os {\it slots} de uma sequência de salto de canais, onde esta sequência possui o objetivo de minimizar o tempo de {\it rendezvous} (\abbrev{TTR}{Time-To-Rendezvous} {\it Time-To-Rendezvous} - TTR) entre o nó {\it broadcaster} e todos os seus vizinhos de um salto. Denominamos esta sequência como {\bf sequência de \textit{broadcast}}.
+
+%O mecanismo proposto baseia-se na retransmissão de mensagens de {\it broadcast} por todos os {\it slots} de uma sequência de salto de canais criada quando o nó deseja enviar alguma mensagem de {\it broadcast}. Esta sequência possui o objetivo de minimizar o tempo de {\it rendezvous} (\abbrev{TTR}{Time-To-Rendezvous} {\it Time-To-Rendezvous} - TTR) entre o nó {\it broadcaster} e de todos os seus vizinhos de um salto, e foi designada como {\bf sequência de \textit{broadcast}}.
+
+%This mechanism assumes that all secondary users on the network use the same blind one-to-one RV mechanism in a role-based model~\cite{mclock}. In this RV model, it is considered that the nodes can assume different roles and in each role they can use different channel hopping sequences. In this work, the idle nodes, i.e. nodes that currently have nothing to transmit use a channel hopping sequence called {\it idle CH sequence}. When a node wishes to rendezvous or to transmit a broadcast message, it switches to an appropriate sequence, and then returns to the idle CH sequence after performing its task. This sequence is individual to each node and is determined by the blind one-to-one RV mechanism used.
+
+Além disso, o mecanismo assume que todos os usuários secundários utilizam um modelo baseado em papéis ({\it role-based model})~\cite{mclock}, além do mesmo protocolo de sequências de salto de canais, ou seja a mesma solução de {\it rendezvous}. No modelo de papéis, considera-se que os nós podem assumir diferentes papéis (funções) e em cada papel utilizam-se diferentes sequências de salto de canais, neste caso: funções de {\it broadcaster} (emissor de mensagem de {\it broadcast}) ou receptor de mensagens. Assim, os nós ociosos, ou seja, nós que atualmente não têm nada a transmitir, usam uma sequência de salto de canais chamada {\bf sequência de repouso}. Quando um nó deseja transmitir alguma mensagem de {\it broadcast}, ele muda para a sequência apropriada, e retorna para a sequência de repouso após realizar sua tarefa. Esta sequência de repouso é individual para cada nó e é a sequência determinada pela solução de {\it rendezvous} utilizada. %A referência para indicarmos chamarmos de 
+
+
+%We consider that every secondary user in the network performs periodic RVs with their neighbors and exchange information regarding their idle CH sequences and channel availability. Each node transmits the parameterization of the one-to-one RV mechanism used in a way that its idle CH sequence can be reproduced by its neighbors. It also informs its perspective of each channel's primary activity, more precisely the probability of that channel being free from primary users, $p_{idle}$, to its neighbors. This information permits the nodes to calculate the broadcast CH sequence according to Algorithms~\ref{alg:simple} and \ref{alg:pidle}.
+
+Consideramos que cada usuário secundário na rede executa {\it rendezvous} periódicos de modo ``um para um'' com todos seus vizinhos de um salto, no qual trocam informações sobre suas sequências de repouso e informações sobre a disponibilidade de canais. Cada nó transmite os parâmetros da solução de {\it rendezvous} utilizada, de maneira que a sua sequência de repouso possa ser reproduzida pelo nó que recebe estes parâmetros. Os rádios também informam aos seus vizinhos a sua perspectiva de atividade de UPs sobre cada canal. Mais precisamente, os rádios informam a probabilidade de cada canal estar livre de usuários primários ($p_{idle}$). Esta informação permite que os nós criem sua sequência de {\it broadcast} de acordo com Algoritmos~\ref{alg:simple} e \ref{alg:pidle}.
+
+
+
+% simple
+\begin{algorithm}[t]
+	\SetVline
+	{\bf input:} $RADIOS$, $n\acute{o} \, Broadcaster$, $SEQSIZE$, $CANAIS$, $SEQ(RADIOS)$\\
+
+	{\bf init} $sequence = \{ \:\}$\\
+	{\bf init} $reachedNodes = \emptyset$\\
+	\While {$(|sequence| < SEQSIZE)$} {
+		{\bf selecione} canal $C$ onde $n\acute{o} \, Broadcaster$ alcança o maior número de vizinhos $\notin reachedNodes$\\
+		{\bf acrescente} $C$ a $sequence$\\
+		{\bf adicione} todos os vizinhos alcançados a $reachedNodes$\\
+		\If {$(reachedNodes == RADIOS)$}{ 
+			$reachedNodes = \emptyset$\\
+		}
+	}
+	{\bf retorna} $sequence$	
+	\caption{Seleção de sequência de \textit{Broadcast} usando \textit{Greedy Simple}.}
+	\label{alg:simple}
+\end{algorithm}
+
+% pIdle
+\begin{algorithm}[t]
+	\SetVline
+	{\bf input:} $RADIOS$, $n\acute{o} \, Broadcaster$, $SEQSIZE$, $CANAIS$, $SEQ(RADIOS)$, $P_{idle}(n\acute{o}, canal)$\\
+
+	{\bf init} $sequence = \{ \:\}$\\
+	{\bf init} $reachedNodes = \emptyset$\\
+	\For {($n\acute{o}$ in $RADIOS$)} {
+		{\bf init} $P_{idle}acumulada(n\acute{o}) = 0.0$\\
+	}
+	\While {$(|sequence| < SEQSIZE)$} {
+		{\bf selecione} canal $C$ onde $n\acute{o} \, Broadcaster$ alcança o maior número {\bf esperado} de vizinhos $\notin reachedNodes$\\
+		\For {($n\acute{o}$ in vizinhos alcançados)} {
+			$P_{idle}acumulada(n\acute{o}) = P_{idle}acumulada(n\acute{o}) + P_{idle}(n\acute{o}, C)$\\
+			\If{($P_{idle}acumulada(n\acute{o}) >= 1.0$)} {
+				{\bf adicione} $n\acute{o}$ a $reachedNodes$\\
+			}
+		}
+
+		{\bf acrescente} $C$ a $sequence$\\
+
+		\If {$(reachedNodes == RADIOS)$}{ 
+			$reachedNodes = \emptyset$\\
+		}
+	}
+	{\bf retorna} $sequence$	
+	\caption{Seleção de sequência de \textit{Broadcast} usando \textit{Greedy} $p_{idle}$.}
+	\label{alg:pidle}
+\end{algorithm}
+
+%We propose two algorithms that generate a broadcast CH sequence from the exchanged idle CH sequence and channel availability information, namely Greedy Simple and Greedy $p_{idle}$. The purpose of both is to come up with a broadcast CH sequence that allows the broadcasting node to RV with the largest number possible of its neighbors. Both algorithms scan all neighbor's idle CH sequences and choose the channel to be used in each slot of the broadcast sequence as the channel that enables RV with the greater number of nodes in a greedy manner. At each iteration, when a node has already been reached, its idle CH sequence is no longer taken into account, and this goes on until all nodes are reached. If all nodes are reached before the broadcast CH sequence has the same size as the idle CH sequences, the algorithm tries once again to reach all nodes until the CH sequence achieves the desired size, when the algorithm stops.
+
+Propomos dois algoritmos que geram uma sequência de {\it broadcast} a partir das sequências de repouso e informações de disponibilidade de canais, denominados {\it Greedy} {\it Simple} e {\it Greedy} $p_{idle}$. O tamanho da sequência de {\it broadcast} criada, ou seja o seu número de {\it slots}, é o mesmo da sequência de repouso utilizada pelos USs. O objetivo dos algoritmos é obter uma sequência de {\it broadcast} que permita que o nó {\it broadcaster} realize {\it rendezvous} com o maior número possível de vizinhos de um salto, em um tempo menor se comparado a vários encontros individuais do nó {\it broadcaster} com cada vizinho. Ambos os algoritmos varrem todas as sequências de repouso dos nós vizinhos do nó {\it broadcaster}, verificando qual canal deve ser utilizado a cada {\it slot} da sequência de {\it broadcast}. Esta verificação indica o canal que permite {\it rendezvous} com o maior número de nós vizinhos de uma forma ``gulosa''. A cada iteração, caso um nó já tenha sido alcançado (encontrado), sua sequência de repouso não é mais levada em consideração. Este processo se repete até que todos os nós sejam atingidos. Se todos os nós são alcançados antes da sequência de {\it broadcast} atingir o mesmo tamanho da sequência de repouso, o algoritmo tenta mais uma vez se encontrar com todos os nós até que a sequência chegue ao tamanho necessário, quando o algoritmo termina.
+
+%The case where there is a tie when choosing the channel to be used in the next slot of the broadcast sequence, i.e. there are two or more channels which allow reaching the maximum number of nodes is when the algorithms begin to differ. The Greedy Simple algorithm simply chooses the channel with the lowest identification number (ID), whereas the Greedy $p_{idle}$ algorithm uses each neighbor's estimate of the idle rate of the channels to select the channel which is most likely to be idle for most of the nodes.
+
+Os algoritmos começam a divergir quando existe um empate na escolha de qual melhor canal utilizar no {\it slot} da sequência de {\it broadcast}, isto é, quando existem dois ou mais canais que permitem atingir o mesmo número de nós vizinhos. Desta forma, o algoritmo {\it Greedy} {\it Simple} simplesmente desempata pelo canal com o menor número de identificação (ID), enquanto que o algoritmo {\it Greedy} $p_{idle}$ usa a estimativa de cada vizinho sobre os canais mais ociosos para selecionar o canal que é mais provável de estar livre para a maioria dos nós. A informação de $p_{idle}$ indica a estimativa de um canal estar livre de algum UP. Esta estimativa é calculada por cada US depois de feita uma série de amostragens a cada canal, pois antes de uma transmissão o US deve sensorear o canal para evitar uma interferência com algum UP. Assim, esta estimativa reflete a probabilidade de um canal estar livre, onde cada US possui sua própria estimativa para cada canal.   
+
+%Moreover, in the Greedy Simple algorithm a node is considered as reached when its idle CH sequence has one overlapping slot with the broadcast sequence, that is, both sequences have the same channel in the same slot position. On the other hand, the Greedy $p_{idle}$ algorithm only considers a neighbor as reached and stops taking it into account when choosing the broadcast sequence when the sum of the $p_{idle}$'s of that node for that slot exceeds $1.0$. This means it only considers a node as reached when there is a high likelihood of being in the same channel in the same slot while that channel is idle from PU activity. 
+%When a secondary node uses a broadcast CH sequence to transmit a message, it only transmits on a given channel at a given time slot if that channel is free from PU activity in that slot. Otherwise, it waits for the next time slot, repeating this procedure until it has gone through the whole broadcast CH sequence. However, because of PU activity, the broadcast message may not reach all nodes if the sequence is followed only once, and the broadcast CH sequence may be used repeatedly in an effort to increase the odds of reaching all neighbors.
+
+Além disso, no algoritmo {\it Greedy} {\it Simple} um nó é considerado como atingido quando a sua sequência de repouso tem um {\it slot} de sobreposição com a sequência de {\it broadcast}, isto é, as duas sequências têm o mesmo canal no mesmo {\it slot}. Por outro lado, o algoritmo {\it Greedy} $p_{idle}$ só considera um vizinho como alcançado, e não o leva mais em consideração ao escolher a sequência de {\it broadcast}, quando a soma do valor de $p_{idle}$ do nó para aquele {\it slot} ultrapassa $1.0$. %Isso significa que só se considera um nó como alcançado quando se existe umhá uma alta probabilidade de estar no mesmo canal e no mesmo {\it slot}, enquanto que o canal está livre da atividade de UPs.
+
+Quando um nó secundário utiliza uma sequência de {\it broadcast} para transmitir uma mensagem, ele transmite no dado canal e no determinado {\it slot} somente se aquele canal estiver livre da atividade de UPs. Caso contrário, o nó aguarda o {\it slot} seguinte, repetindo este procedimento até que ele percorra toda a sequência de {\it broadcast}. No entanto, por causa da atividade de UPs, nem sempre a mensagem de {\it broadcast} atingirá todos os nós caso a sequência seja seguida uma única vez, assim a sequência de {\it broadcast} pode ser reutilizada repetidamente, num esforço de aumentar as chances de atingir todos os vizinhos do nó {\it broadcaster}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Modelo de Simulação e Resultados}
+\label{sec:sim_cap_broadcast}
+
+%The implemented simulation model emulates the behavior of a node sending periodic broadcast messages to its neighbors according to a role-based RV model. For that reason, the simulation scenario consists of $X+1$ secondary users, with one node (node B) transmitting messages in a broadcast manner and its $X$ neighbors acting as receiver nodes. In each simulation, the $X$ receiver nodes utilize individual idle CH sequences given by one of the following blind one-to-one RV mechanism: modular clock ({\tt mclock}), sequence-based rendezvous ({\tt seqr}), quorum-based channel hopping ({\tt quorum}), or slotted seeded channel hopping ({\tt ssch}). Each of the $X$ receiver nodes has its own idle CH sequence, which is obtained by selecting individual initial parameterization of the RV mechanism in use on that simulation. 
+
+O modelo de simulação implementado emula o comportamento de um nó enviando mensagens de {\it broadcast} periódicas para seus vizinhos, de acordo com um  protocolo baseado em sequência de salto de canais e uso de papéis ({\it role-based model}). O nó pode ter dois papéis, o papel de {\it broadcaster} ou receptor de mensagens, onde temos apenas um nó com a função de {\it broadcaster} a cada rodada da simulação. Por esse motivo, o cenário de simulação, conforme Figura~\ref{fig:cen_broadcaster}, consiste em X $+$ 1 usuários secundários, com um nó (nó B) transmitindo mensagens de {\it broadcast} de maneira que seus X vizinhos ajam como nós receptores. Em cada simulação, os X nós receptores utilizam sequências de repouso individuais dadas pelas soluções de {\it rendezvous}: {\it modular clock} ({\tt mclock}), {\it Sequence-based Rendezvous} ({\tt seqr}), {\it Quorum-based Channel Hopping} ({\tt quorum}) ou {\it Slotted Seeded Channel Hopping} ({\tt ssch}), onde a forma de funcionamento e as características das soluções de {\it rendezvous} implementadas foram apresentadas no Capítulo~\ref{cap:rendezvous}.
+
+\begin{figure}[!ht]
+	\begin{center}
+			\includegraphics[width=.75\textwidth]{figuras/cenario_broadcaster}
+		\caption{Cenário de simulação.}
+		\label{fig:cen_broadcaster}
+	\end{center}
+\end{figure}
+
+
+
+Cada um dos X nós receptores tem sua própria sequência de repouso, a qual é obtida através da seleção de parâmetros iniciais da solução de {\it rendezvous} em uso na simulação.
+
+Utilizamos um simulador próprio em TCL que gera as sequências de repouso dos nós receptores seguindo a solução de {\it rendezvous} selecionada, além de criar a sequência de {\it broadcast} para o nó {\it broadcaster} de acordo com os dois algoritmos propostos. O simulador avança a passos discretos no tempo, de acordo com os {\it slots} das sequências de salto de canais, chaveia o nó para o canal indicado, computa a mensagem de {\it broadcast} a ser enviada e verifica se o canal atual do nó de {\it broadcast} está em uso por algum UP. Esta verificação impede que o nó {\it broadcast} envie alguma mensagem através do canal atual que cause interferência sobre algum UP. Caso o canal esteja ocupado, o nó {\it broadcaster} aguarda até o próximo {\it slot} e verifica uma nova oportunidade de transmissão.  
+
+%We assume that in past rendezvous node B has already exchanged information about its neighbors idle CH sequence parameterization and their perspective of each channel availability. We simulated two cases, where node B uses or neglects that privileged information when it assumes the role of transmitting broadcast messages. By using this privileged information, node B can operate in two different modes, by calculating a broadcast CH sequence using one of the two algorithms proposed in Section~\ref{sec:prop}: greedy simple ({\tt simple}) or greedy $p_{idle}$ ({\tt pIdle}). Otherwise, in the case where this previous knowledge is neglected, node B uses a CH sequence for broadcast given by the same one-to-one RV mechanism that was used by its neighbors to determine their idle CH sequences. It is the best node B can do without any knowledge from its neighbors CH sequences parameterization, since this approach guarantees at least the good properties of the one-to-one RV mechanism in use.
+
+% MEXER NESTE TEXTO
+ 
+%sobre as sequências de repouso de seus vizinhos, e suas perspectivas disponibilidades de cada canal.
+
+%No início da simulação como um {\it warm up} está informações são trocad 
+Realizamos dois tipos de simulações, conforme o nó {\it broadcaster} usa ou negligencia a informação privilegiada sobre a sequência de saltos dos nós vizinhos e as disponibilidades de cada canal. Nos resultados, os casos ``sem o uso da proposta'' indicam a avaliação quando as informações sobre a sequência de saltos dos nós vizinhos são negligenciadas. No início da simulação, assumimos que o nó B já trocou estas informações privilegiadas. Ao utilizar essas informações privilegiadas, o nó B pode criar a sequência de {\it broadcast} de dois modos diferentes, usando um dos algoritmos propostos na Seção~\ref{sec:prop_cap_broadcast}: {\it Greedy} {\it Simple} ({\tt simple}) ou {\it Greedy} $p_{idle}$ ({\tt pIdle}).
+
+Caso contrário, em que este conhecimento prévio é negligenciado, o nó B utiliza para uma transmissão em {\it broadcast} a mesma sequência dada pelas soluções de {\it rendezvous}, ou seja, a sua sequência de repouso. Isto é o melhor que o nó B pode fazer sem qualquer conhecimento da sequência de saltos de seus vizinhos, uma vez que esta abordagem assegura, pelo menos, as boas propriedades do {\it rendezvous} um a um da solução em uso.
+
+
+%All nodes in the simulation look for dynamic spectrum opportunities in $N$ channels. Each channel is utilized by a primary user (or primary network) whose behavior follows an {\tt ON-OFF} model. The duration of each state is exponentially distributed with mean $\mu_{ON}$ and $\mu_{OFF}$, respectively. Thus, the probability of channel $i$ being idle is given by $p_{idle} = \frac{\mu_{OFF,i}} {\mu_{ON,i} + \mu_{OFF,i}}$. These idle probabilities are randomly generated for each channel and are uniformly distributed between $0.0$ and $1.0$.
+
+%Todos os nós na simulação procuram oportunidades dinâmicas nos $N$ canais.
+Cada canal é utilizado por um usuário primário, cujo comportamento segue um modelo {\tt ON-OFF}. A duração de cada estado é distribuída exponencialmente com média de $\mu_{ON}$ e $\mu_{OFF}$, respectivamente. Assim, a probabilidade do canal $j$ estar ocioso é dada por $p_{inativo} = \frac {\mu_{OFF,j}} {\mu_{ON,j} + \mu_{OFF,j}}$. Essas probabilidades ociosas são geradas aleatoriamente para cada canal e são distribuídas uniformemente entre $0.0$ e $1.0$.
+
+
+%In order to determine the PU influence on the secondary communication, the following model was used. Node B is initially positioned in the center of a circle of radius $R$ which represents its communication range. Its $X$ neighbors are then uniformly positioned within that circle while keeping a minimum distance of $D_{min}$ between each other. Then $N$ primary nodes, one for each channel, are disposed randomly within a square area concentric to the circle. The minimum distance $D_{min}$ is also kept between them. All secondary nodes within range $R$ of a given primary node $i$ will sense channel $i$ with its corresponding idle probability and the remaining nodes will sense that channel with $p_{idle} = 1.0$. We consider that every secondary node is able to estimate the PUs idle rate of each channel from periodic sensing operations on such channels as in~\cite{Kim08}.
+
+Utilizamos o seguinte modelo, a fim de determinar a influência de UPs sobre a comunicação dos nós secundários. Inicialmente, o nó B é posicionado no centro de um círculo de raio $R$, que representa a sua área de comunicação. Seus X vizinhos são então uniformemente posicionados dentro desse círculo, mantendo uma distância mínima de $D_{min}$ entre si. Em seguida, $N$ nós primários, um para cada canal, são dispostos de forma aleatória dentro de uma área de quadrado concêntrico ao círculo, Figura~\ref{fig:cen_broadcaster}. A distância mínima $D_{min}$ também foi mantida entre eles. Todos os nós secundários dentro do alcance $R$ de um determinado nó primário $i$ irão sensorear o canal $j$ com sua correspondente probabilidade de uso e os demais nós vão perceber esse canal com $p_{idle} = 1.0$, ou seja o canal estará livre. Consideramos que cada nó secundário é capaz de estimar a taxa com que UPs utilizam cada canal através de operações periódicas de detecção nos canais, como em \cite{kim08}. Assim, a estimativa pode ser feita através de sensoreamentos periódicos a cada canal, este sensoreamento representa um procedimento de amostragem em um canal para descobrir seu estado a cada instante desta amostragem. A amostra corresponde ao valor 1 ou 0 conforme o estado do canal, 1 para ocupado e 0 para livre. Desta forma, o processo produz uma sequência binária para cada canal que representa os períodos de uso do canal por UPs, no caso de 1, e períodos de oportunidades no caso de zeros. Recorre-se a um sensoreamento periódico, com um período de sensoreamento e tempo de sensoreamento definido, onde o tempo de sensoreamento é a quantidade de tempo que se permanece no canal para se realizar uma simples medição de modo a permitir um nível de detecção desejável.   
+
+
+%Because of the dynamic influence of the primary users, there is no guarantee that by the end of one broadcast CH sequence all neighbors received the broadcast message. Therefore, a possible solution would be to extend the time node B stays in the broadcast role. To evaluate this idea, we introduced a new parameter in the simulations called {\it number of broadcast sequences}, which indicates how many times node B will repeat the broadcast CH sequence, staying in the broadcast role.
+
+Devido à influência dinâmica dos usuários primários, não há garantia de que, mesmo ao final de uma sequência de {\it broadcast}, todos os vizinhos do nó recebam a mensagem de {\it broadcast}. Portanto, uma solução possível seria estender o tempo em que o nó B permanece no papel de {\it broadcaster}. Para avaliar esta ideia, nós introduzimos um novo parâmetro nas simulações chamado de número de sequências de {\it broadcast}, que indica quantas vezes o nó B irá repetir a sequência de {\it broadcast}.% permanecendo desta forma no enviou da mensagem de {\it broadcast}.
+
+%An important metric for evaluating CH schemes, which is measured in simulations, is the {\it maximum time-to-rendezvous} (MTTR). It consists of the maximum time in number of time slots (or channels in the sequence) needed for two nodes to achieve rendezvous. In the broadcast case, the MTTR is defined as the maximum time the broadcasting node needs to rendezvous with all of its neighboring nodes in a simulation run. Besides MTTR, we also evaluate in simulations the {\it average time-to-rendezvous} (ATTR), which analogously to the MTTR, is defined as the average time needed to rendezvous with all neighboring nodes.
+
+Uma métrica importante para avaliar as soluções de sequências de salto de canais, que é medida nas simulações, é a tempo máximo para {\it rendezvous} ({\it Maximum Time-To-Rendezvous} - MTTR). {\abbrev{MTTR}{{\it Maximum Time-To-Rendezvous}} Esta métrica é constituída pelo tempo máximo, em número de {\it slots}, necessário para dois nós alcançarem o {\it rendezvous}. No caso de {\it broadcast}, o MTTR é definido como o tempo máximo que o nó {\it broadcaster} necessita para encontrar com todos os seus nós vizinhos de um salto em uma simulação. Além do MTTR, também avaliamos o tempo médio para {\it rendezvous} ({\it Average Time-To-Rendezvous} - ATTR)\abbrev{ATTR}{\textit{Average Time-To-Rendezvous}}, que de forma análoga ao MTTR, é definido como o tempo médio necessário para o {\it rendezvous} do nó {\it broadcaster} com todos os seus nós vizinhos de um salto.
+
+%Since we assume that broadcast is not completely reliable, i.e. some broadcasts do not reach all neighboring nodes, we also introduce a new metric for evaluating broadcast RVs, named success rate. This metric provides the percentage of broadcast RVs in which all neighbors were encountered. Therefore, the MTTR is only computed on the successful broadcast RVs.
+
+Uma vez que assumimos que a transmissão de {\it broadcast} não é totalmente confiável, ou seja, algumas transmissões não chegam a todos os nós vizinhos, apresentamos uma nova métrica para avaliar o {\it rendezvous} em {\it broadcast}, nomeada taxa de sucesso. Esta métrica provê o percentual de {\it rendezvous} em transmissões de {\it broadcast} em que todos os vizinhos foram encontrados. %Portanto, o MTTR só é computado nos encontros com sucesso.
+
+%The simulation results presented in this Section were obtained in scenarios with: $N=13$ channels, $\mu_{OFF}=5$ slots, $R=250$ meters, and  $D_{min}=20$ meters. We varied the number of broadcast sequences from 1 to 5, and varied $X$ (number of node B's neighbors) from 2 to 8. In each simulation run, node B sends 1000 broadcast messages, i.e. node B assumes the broadcast role 1000 times. All the results presented in graphs are the average of 100 simulation runs with 95\% confidence intervals.
+
+
+
+Os resultados da simulação, apresentados nesta seção, foram obtidos em cenários com: $N=13$ canais, $\mu_{Off}=5$ {\it slots}, $R=250$ metros, e $D_{min}=20$ metros.
+Os valores destes parâmetros foram definidos depois de uma série de testes, os quais envolviam tempo de simulação e escolha dos valores de $\mu_{Off}$ e $\mu_{On}$, pois dentro do tempo de simulação, os valores de $\mu_{Off}$ e $\mu_{On}$ devem ser suficientes para apresentarem uma soma de probabilidade igual a 100\%. Variamos o número de sequências de {\it broadcast} de 1 até 5, e variou-se X (número de vizinhos do nó B) de 2 a 8. Em cada simulação, o nó B envia 1000 mensagens de {\it broadcast}, ou seja, o nó B assume o papel de {\it broadcaster} 1000 vezes. Todos os resultados apresentados nos gráficos representam a média de 100 rodadas de simulação com intervalos de confiança de 95\%.
+
+
+%\begin{figure}[!htb]
+%	\centering
+%	\subfigure[SSCH e SeqR]{
+%		\label{fig:mttrcompareA}
+%  		\includegraphics[width=.75\columnwidth]{figuras/mttrcompareA-8radios}}
+%  	\subfigure[Quorum e Modular Clock]{
+%		\label{fig:mttrcompareB}
+%  		\includegraphics[width=.75\columnwidth]{figuras/mttrcompareB-8radios}}
+%	\caption{MTTR para os 2 algoritmos com 8 RCs}
+%	\label{fig:mttrcompare}
+%\end{figure} 
+
+% Na horizontal
+%\begin{figure}[!htb]
+%	\begin{center}
+%		\mbox{
+%		\subfigure[SSCH e SeqR]{
+%			\label{fig:mttrcompareA}
+% 			\includegraphics[width=.48\textwidth]{figuras/mttrcompareA-8radios}}
+%  		\subfigure[Quorum e Modular Clock]{
+%			\label{fig:mttrcompareB}
+%  			\includegraphics[width=.48\textwidth]{figuras/mttrcompareB-8radios}}}
+%		\caption{MTTR para os 2 algoritmos com 8 RCs}
+%		\label{fig:mttrcompare}
+%	\end{center}
+%\end{figure} 
+
+
+% Na vertical modificar 
+\begin{figure}[!htb]
+	\centering
+	\subfigure[SSCH e SeqR]{
+		\label{fig:mttrcompareA}
+  		\includegraphics[width=.65\columnwidth]{figuras/mttrcompareA-8radios}}
+  	\subfigure[Quorum e Modular Clock]{
+		\label{fig:mttrcompareB}
+  		\includegraphics[width=.65\columnwidth]{figuras/mttrcompareB-8radios}}
+	\caption{MTTR para os 2 algoritmos com 8 RCs vizinhos.}
+	\label{fig:mttrcompare}
+\end{figure} 
+
+% Dividida
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/mttrcompareA-8radios}
+%	\label{fig:mttrcompareA}
+%	\caption{MTTR com 8RCs para SSCH e SeqR}
+%\end{figure} 
+
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/mttrcompareB-8radios}
+%	\label{fig:mttrcompareB}
+%	\caption{MTTR com 8 RCs para Quorum e Modular Clock}
+%\end{figure}
+
+%Figures ~\ref{fig:mttrcompareA} and ~\ref{fig:mttrcompareB} show the performance of both proposed algorithms, {\tt pIdle} and {\tt simple} for all one-to-one RV schemes, in terms of maximum time-to-rendezvous (MTTR) to reach all neighbors. It can be seen that {\tt pIdle} outperforms {\tt simple} since it takes into account the PUs activity. This difference is observed in all of the obtained results. For this reason, we will use only the results obtained with the {\tt pIdle} algorithm to evaluate the performance of this work's proposal. However, it can be noticed that the performance of {\tt simple} is close to the one obtained by the other algorithm and it has the advantage of not requiring the estimate of the channel occupation from the perspective of each neighboring node.
+
+As Figuras~\ref{fig:mttrcompareA} e~\ref{fig:mttrcompareB} mostram o desempenho de ambos os algoritmos propostos, {\tt pIdle} e {\tt simple}, para as soluções de {\it rendezvous} testadas, em termos de tempo máximo para {\it rendezvous} (MTTR) para chegar a todos os vizinhos de um salto. Pode-se ver que o algoritmo {\tt pIdle} supera o {\tt simple} uma vez que leva em conta a atividade dos UPs. Esta diferença foi observada em todos os resultados obtidos. Por esta razão, a partir de então apresentaremos somente os resultados obtidos com o algoritmo {\tt pIdle} para avaliar o desempenho da proposta. No entanto, pode-se notar que o desempenho de {\tt simple} é próximo do obtido pelo outro algoritmo e tem a vantagem de não requerer a estimativa da ocupação do canal a partir da perspectiva de cada nó vizinho. %%%%
+
+%Pela Figura \ref{fig:mttrnone}, verificamos o MTTR quando as soluções de {\it rendezvous} são usados sem a nossa proposta de sequência de {\it broadcast}. Pode-se notar que o {\tt seqr} tem os maiores valores de MTTR, mesmo quando apenas uma ciclo de sequência de {\it broadcast} é utilizado. Seu fraco desempenho deve-se ao fato de que esta solução gera sequências de salto de canais com elevado número de {\it slots} o que acaba gerando tempos de MTTR altos. As demais soluções apresentam valores de MTTR inferiores a 100 {\it slots} para todos os parâmetros utilizados. Na Figura~\ref{fig:attrnone2c}, vemos que o MTTR do {\tt mclock} piora à medida que o número de sequências de {\it broadcast} utilizadas aumenta. Isto acontece porque ocorre um aumento na taxa de sucesso de mensagens de {\it broadcast}, enquanto que, ao mesmo tempo MTTRs superiores são incluídos nos resultados.
+
+
+
+% Na horizontal
+%\begin{figure}[!htb]
+%	\centering
+%	\mbox{
+%	\subfigure[8 RCs]{
+%		\label{fig:mttrnone8r}
+%  		\includegraphics[width=.48\columnwidth]{figuras/mttrnone-8radios}}
+%  	\subfigure[2 sequências de \textit{broadcast}]{
+%		\label{fig:mttrnone2c}
+%  		\includegraphics[width=.48\columnwidth]{figuras/mttrnone-2maxcycle}}}
+%	\caption{MTTR sem uso da proposta}
+%	\label{fig:mttrnone}
+%\end{figure} 
+
+% JUNTAR
+% Na vertical modificar 
+%\begin{figure}[!htb]
+%	\centering
+%	\subfigure[Oito RCs]{
+%		\label{fig:mttrnone8r}
+% 		\includegraphics[width=.65\columnwidth]{figuras/mttrnone-8radios}}
+%  	\subfigure[Duas sequências de \textit{broadcast}]{
+%		\label{fig:mttrnone2c}
+%  		\includegraphics[width=.65\columnwidth]{figuras/mttrnone-2maxcycle}}
+%	\caption{MTTR sem uso da proposta}
+%	\label{fig:mttrnone}
+%\end{figure} 
+
+
+
+\begin{figure}[t!]
+$\begin{array}{rl}
+	\subfigure[Sem proposta - Oito RCs]{
+	\label{fig:mttrnone8r}
+		\includegraphics[width=0.5\textwidth]{figuras/mttrnone-8radios}} &
+	\subfigure[Com proposta - Oito RCs]{
+	\label{fig:mttrpidle8r}
+		\includegraphics[width=0.5\textwidth]{figuras/mttrpIdle-8radios}} \\
+    	\multicolumn{2}{c}{
+	\subfigure[Sem proposta - Duas sequências]{
+	\label{fig:mttrnone2c}
+		\includegraphics[width=0.5\textwidth]{figuras/mttrnone-2maxcycle}}
+	\subfigure[Com proposta - Duas sequências]{
+	\label{fig:mttrpidle2c}
+		\includegraphics[width=0.5\textwidth]{figuras/mttrpIdle-2maxcycle}}
+}
+\end{array}$
+\caption[MTTR - com e sem uso da proposta]{\label{fig:mttrnone}MTTR - com e sem uso da proposta.}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+% dividida
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/mttrnone-8radios}
+%	\label{fig:mttrnone8r}
+%	\caption{MTTR com 8 RCs sem uso da proposta}
+%\end{figure}
+
+%\begin{figure}[!htb]
+%	\centering
+%  	\includegraphics[width=.65\columnwidth]{figuras/mttrnone-2maxcycle}
+%	\label{fig:mttrnone2c}
+%	\caption{MTTR sem uso da proposta com 2 repetições da sequência de \textit{broadcast}}
+%\end{figure} 
+
+
+
+
+%Figure~\ref{fig:mttrnone} presents the MTTR when the RV schemes are used without our broadcast CH sequence proposal. It can be noted that the {\tt seqr} scheme has the greatest MTTR values, even when only one broadcast sequence cycle is used. Its poor performance in this aspect is due to the fact that this scheme generates CH sequences with very high number of slots. The remaining schemes present MTTR values lower than 100 slots for all the parameters used. In Figure~\ref{fig:attrnone2c}, we see that the MTTR of the {\tt mclock} scheme gets worse as the number of broadcast sequences used increases. This happens because its broadcast success rate increases, while at the same time higher MTTRs are included in the results, which only take into account the successful broadcast cases.
+
+
+Pelos resultados nas Figuras~\ref{fig:mttrnone8r} e \ref{fig:mttrnone2c}, verificamos o MTTR quando as soluções de {\it rendezvous} utilizam ou não a proposta de sequência de {\it broadcast}. Pode-se notar que o {\tt seqr} tem os maiores valores de MTTR, mesmo quando apenas uma ciclo de sequência de {\it broadcast} é utilizado. Seu fraco desempenho deve-se ao fato de que esta solução gera sequências de salto de canais com elevado número de {\it slots}, o que acaba gerando tempos de MTTR altos. As demais soluções apresentam valores de MTTR inferiores a 100 {\it slots} para todos os parâmetros utilizados. %Na Figura~\ref{fig:attrnone2c}, vemos que o MTTR do {\tt mclock} piora à medida que o número de sequências de {\it broadcast} utilizadas aumenta. Isto acontece porque ocorre um aumento na taxa de sucesso de mensagens de {\it broadcast}, enquanto que, ao mesmo tempo MTTRs superiores são incluídos nos resultados.
+
+
+
+% Na horizontal
+%\begin{figure}[!htb]
+%	\centering
+%	\mbox{
+%	\subfigure[8 RCs]{
+%		\label{fig:mttrpidle8r}
+%  		\includegraphics[width=.48\columnwidth]{figuras/mttrpIdle-8radios}}
+%  	\subfigure[2 sequências de \textit{broadcast}]{
+%		\label{fig:mttrpidle2c}
+%  		\includegraphics[width=.48\columnwidth]{figuras/mttrpIdle-2maxcycle}}}
+%	\caption{MTTR com uso da proposta}
+%	\label{fig:mttrpidle}
+%\end{figure} 
+
+% JUNTAR
+% Na vertical modificar 
+%\begin{figure}[!htb]
+%	\centering
+%	\subfigure[Oito RCs]{
+%		\label{fig:mttrpidle8r}
+% 		\includegraphics[width=.65\columnwidth]{figuras/mttrpIdle-8radios}}
+%  	\subfigure[Duas sequências de \textit{broadcast}]{
+%		\label{fig:mttrpidle2c}
+%  		\includegraphics[width=.65\columnwidth]{figuras/mttrpIdle-2maxcycle}}
+%	\caption{MTTR com uso da proposta}
+%	\label{fig:mttrpidle}
+%\end{figure} 
+
+% Dividida
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/mttrpIdle-8radios}
+%	\label{fig:mttrpidle8r}
+%	\caption{MTTR com 8 RCs e uso da proposta}
+%\end{figure} 
+
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/mttrpIdle-2maxcycle}
+%	\label{fig:mttrpidle2c}
+%	\caption{MTTR com uso da proposta e 2 repetições da sequência de \textit{broadcast}}
+%\end{figure}
+
+%Figure~\ref{fig:mttrpidle} presents the MTTR results when using our broadcast CH sequence proposal. It can be observed that the performances of all RV schemes are enhanced by the use of the proposed broadcast sequence algorithm. It can be noted in Figure~\ref{fig:mttrpidle8r} that the {\tt mclock} scheme once again has worse MTTRs as the number of cycles of the broadcast sequence increases. This occurs because increasing this number of cycles makes the broadcast success rate of this mechanism much higher, as it can be seen in Figure~\ref{fig:successpidle}, and this leads to the inclusion of higher MTTRs in the results, which only compute successful broadcast cases.
+
+
+As Figuras~\ref{fig:mttrpidle8r} e \ref{fig:mttrpidle2c} apresentam os resultados de MTTR quando se utiliza a sequência de {\it broadcast}. Podemos observar que o desempenho de todas as soluções de {\it rendezvous} melhoram ao se utilizar o algoritmo proposto. Conforme Figura~\ref{fig:mttrpidle8r} o {\tt mclock} apresenta MTTRs piores com o aumento do número de ciclos de sequência de {\it broadcast}, isto ocorre porque o aumento deste número de ciclos torna a taxa de sucesso de {\it broadcast} deste mecanismo mais elevada, como pode ser visto na Figura~\ref{fig:success}, o que conduz à inclusão de MTTRs mais elevados nos resultados.%, o qual só computa os casos de {\it broadcast} com sucesso.
+
+
+%As Figuras~\ref{fig:mttrpidle8r} e \ref{fig:mttrpidle2c}  apresentam os resultados de MTTR ao usar a sequência de {\it broadcast}. Pode-se observar que o desempenho de todas as soluções de {\it rendezvous} melhoram ao se utilizar o algoritmo proposto. Observamos na Figura~\ref{fig:mttrpidle8r} que o {\tt mclock} mais uma vez tem MTTRs piores com o aumento do número de ciclos de sequência de {\it broadcast}. Isto ocorre porque o aumento deste número de ciclos torna a taxa de sucesso de {\it broadcast} deste mecanismo mais elevada, como pode ser visto na Figura~\ref{fig:successpidle}, e isto conduz à inclusão de MTTRs mais elevados nos resultados.%, o qual só computa os casos de {\it broadcast} com sucesso.
+
+
+
+% Na horizontal
+%\begin{figure}[!htb]
+%	\centering
+%	\mbox{
+%	\subfigure[8 RCs]{
+%		\label{fig:mttrgain8r}
+%  		\includegraphics[width=.48\columnwidth]{figuras/mttrgain-8radios}}
+%  	\subfigure[2 sequências de \textit{broadcast}]{
+%		\label{fig:mttrgain2c}
+%  		\includegraphics[width=.48\columnwidth]{figuras/mttrgain-2maxcycle}}}
+%	\caption{Redução de MTTR}
+%	\label{fig:mttrgain}
+%\end{figure} 
+
+
+% Na vertical modificar 
+\begin{figure}[!htb]
+	\centering
+	\subfigure[Oito RCs]{
+		\label{fig:mttrgain8r}
+  		\includegraphics[width=.65\columnwidth]{figuras/mttrgain-8radios}}
+  	\subfigure[Duas sequências de \textit{broadcast}]{
+		\label{fig:mttrgain2c}
+  		\includegraphics[width=.65\columnwidth]{figuras/mttrgain-2maxcycle}}
+	\caption{Redução de MTTR.}
+	\label{fig:mttrgain}
+\end{figure} 
+
+
+% Dividida
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/mttrgain-8radios}
+%	\label{fig:mttrgain8r}
+%	\caption{Redução de MTTR para 8 RCs e uso da proposta}
+%\end{figure} 
+
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/mttrgain-2maxcycle}
+%	\label{fig:mttrgain2c}
+%	\caption{Redução de MTTR com 2 repetições da sequência de \textit{broadcast}}
+%\end{figure}
+
+
+
+%Figure~\ref{fig:mttrgain} shows the MTTR reduction percentage achieved by making use of our broadcast CH sequence proposal combined with each different RV scheme. It can be seen that the {\tt seqr} scheme, which has the worst absolute performance when compared to the others, is the one that has its performance increased the most when coupled with our proposal. For all RV schemes, the smallest percentage of reduction is about 30\%, which shows the importance of the performance improvement offered by using our proposal.
+
+Os resultados da Figura~\ref{fig:mttrgain} mostram o percentual de redução de MTTR alcançado quando se combina a proposta com cada solução de {\it rendezvous}. Verificamos que o {\tt seqr}, o qual tem o pior desempenho absoluto, quando comparado com os outros esquemas, é o que tem seu desempenho melhorado ainda mais quando combinado com a proposta. Para todas os soluções de {\it rendezvous} testadas, a menor percentagem de redução foi de cerca de 30\%. %o que demonstra a melhoria ao se utilizar a proposta.
+
+%As Figuras~\ref{fig:mttrgain8r} e \ref{fig:mttrgain2c} mostram o percentual de redução do MTTR alcançado fazendo uso da proposta combinada com cada solução de {\it rendezvous}. Verificamos que o {\tt seqr}, o qual tem o pior desempenho absoluto, quando comparado com os outros esquemas, é o que tem seu desempenho aumentado ainda mais quando combinado com a nossa proposta. Para todas os soluções de {\it rendezvous} testadas, a menor percentagem de redução é de cerca de 30\%.%, o que demonstra a melhoria de desempenho oferecida pela proposta.
+
+% Na horizontal
+%\begin{figure}[!htb]
+%	\centering
+%	\mbox{
+%	\subfigure[8 RCs]{
+%		\label{fig:attrnone8r}
+%  		\includegraphics[width=.48\columnwidth]{figuras/attrnone-8radios}}
+%  	\subfigure[2 sequências de \textit{broadcast}]{
+%		\label{fig:attrnone2c}
+%  		\includegraphics[width=.48\columnwidth]{figuras/attrnone-2maxcycle}}}
+%	\caption{ATTR sem uso da proposta}
+%	\label{fig:attrnone}
+%\end{figure} 
+
+
+% Na vertical modificar
+% JUNTEI 
+%\begin{figure}[!htb]
+%	\centering
+%	\subfigure[Oito RCs]{
+%		\label{fig:attrnone8r}
+%  		\includegraphics[width=.65\columnwidth]{figuras/attrnone-8radios}}
+%  	\subfigure[Duas sequências de \textit{broadcast}]{
+%		\label{fig:attrnone2c}
+%  		\includegraphics[width=.65\columnwidth]{figuras/attrnone-2maxcycle}}
+%	\caption{ATTR sem uso da proposta.}
+%	\label{fig:attrnone}
+%\end{figure}
+
+% JUNTEI
+%\begin{figure}[!htb]
+%	\centering
+%	\subfigure[Oito RCs]{
+%		\label{fig:attrpidle8r}
+%  		\includegraphics[width=.65\columnwidth]{figuras/attrpIdle-8radios}}
+%  	\subfigure[Duas sequências de \textit{broadcast}]{
+%		\label{fig:attrpidle1c}
+%  		\includegraphics[width=.65\columnwidth]{figuras/attrpIdle-2maxcycle}}
+%	\caption{ATTR com uso da proposta.}
+%	\label{fig:attrpidle}
+%\end{figure}
+
+
+\begin{figure}[t!]
+$\begin{array}{rl}
+	\subfigure[Sem proposta - Oito RCs]{
+	\label{fig:attrnone8r}
+		\includegraphics[width=0.5\textwidth]{figuras/attrnone-8radios}} &
+	\subfigure[Com proposta - Oito RCs]{
+	\label{fig:attrpidle8r}
+		\includegraphics[width=0.5\textwidth]{figuras/attrpIdle-8radios}} \\
+    	\multicolumn{2}{c}{
+	\subfigure[Sem proposta - Duas sequências]{
+	\label{fig:attrnone2c}
+		\includegraphics[width=0.5\textwidth]{figuras/attrnone-2maxcycle}}
+	\subfigure[Com proposta - Duas sequências]{
+	\label{fig:attrpidle2c}
+		\includegraphics[width=0.5\textwidth]{figuras/attrpIdle-2maxcycle}}
+}
+\end{array}$
+\caption[ATTR - com e sem uso da proposta]{\label{fig:attr}ATTR - com e sem uso da proposta.}
+\end{figure}
+
+
+
+
+% Dividida
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/attrnone-8radios}
+%	\label{fig:attrnone8r}
+%	\caption{ATTR com 8 RCs e sem uso da proposta}
+%\end{figure} 
+
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/attrnone-2maxcycle}
+%	\label{fig:attrnone2c}
+%	\caption{ATTR sem uso da proposta com 2 repetições das sequências}
+%\end{figure}
+
+
+%Figure~\ref{fig:attrnone} presents the average time-to-rendezvous (ATTR) when the RV schemes are used without our broadcast CH sequence proposal. The behavior shown is similar to that of Figure~\ref{fig:mttrnone}, where the {\tt seqr} scheme presents the worst performance, while the best performances are achieved by the {\tt quorum} and {\tt mclock} schemes. In Figure~\ref{fig:attrnone2c}, it can be seen that the {\tt mclock} scheme's ATTR also gets worse as the number of broadcast sequences used increases. This happens because its broadcast success rate increases, while at the same time higher ATTR values are included in the computations.
+
+Conforme Figuras~\ref{fig:attrnone8r} e \ref{fig:attrnone2c}, temos o tempo médio para o {\it rendezvous} (ATTR) quando as soluções de {\it rendezvous} não utilizam a sequência de {\it broadcast}. O comportamento mostrado é semelhante ao da Figura~\ref{fig:mttrnone}, em que o {\tt seqr} apresenta o pior desempenho, enquanto que os melhores resultados são alcançados pelo {\tt quorum} e {\tt mclock}. Na Figura~\ref{fig:attrnone8r}, pode ser visto que a ATTR para o {\tt mclock} também piora à medida que o número de sequências de {\it broadcast} utilizadas aumenta. Isto ocorre pelo mesmo motivo do MTTR, ou seja valores mais altos de ATTR são incluídos nos cálculos.
+
+%As Figuras~\ref{fig:attrnone8r} e \ref{fig:attrnone2c} apresentam o tempo médio para o {\it rendezvous} (ATTR) quando as soluções de {\it rendezvous} são usadas sem a nossa sequência de {\it broadcast}. O comportamento mostrado é semelhante ao das Figuras~\ref{fig:mttrnone8r} e \ref{fig:mttrnone2c}, em que o {\tt seqr} apresenta o pior desempenho, enquanto que os melhores resultados são alcançados pelo {\tt quorum} e {\tt mclock}. Na Figura~\ref{fig:attrnone2c}, pode ser visto que a ATTR para o {\tt mclock} também piora à medida que o número de sequências de {\it broadcast} utilizadas aumenta. Isto ocorre pelo mesmo motivo do MTTR, valores mais altos de ATTR são incluídos nos cálculos.
+
+%Isto acontece porque o aumento da taxa de sucesso de {\it broadcast}, enquanto que ao mesmo tempo os valores mais altos ATTR são incluídos nos cálculos.
+
+% Na horizontal
+%\begin{figure}[!htb]
+%	\centering
+%	\mbox{
+%	\subfigure[8 RCs]{
+%		\label{fig:attrpidle8r}
+%  		\includegraphics[width=.48\columnwidth]{figuras/attrpIdle-8radios}}
+%  	\subfigure[2 sequências de \textit{broadcast}]{
+%		\label{fig:attrpidle1c}
+%  		\includegraphics[width=.48\columnwidth]{figuras/attrpIdle-2maxcycle}}}
+%	\caption{ATTR com uso da proposta}
+%	\label{fig:attrpidle}
+%\end{figure} 
+
+
+% Na vertical modificar 
+%\begin{figure}[!htb]
+%	\centering
+%	\subfigure[Oito RCs]{
+%		\label{fig:attrpidle8r}
+%  		\includegraphics[width=.65\columnwidth]{figuras/attrpIdle-8radios}}
+%  	\subfigure[Duas sequências de \textit{broadcast}]{
+%		\label{fig:attrpidle1c}
+%  		\includegraphics[width=.65\columnwidth]{figuras/attrpIdle-2maxcycle}}
+%	\caption{ATTR com uso da proposta.}
+%	\label{fig:attrpidle}
+%\end{figure}
+
+
+% Dividida
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/attrpIdle-8radios}
+%	\label{fig:attrpidle8r}
+%	\caption{ATTR com 8 RCs e uso da proposta}
+%\end{figure} 
+
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/attrpIdle-2maxcycle}
+%	\label{fig:attrpidle1c}
+%	\caption{ATTR com uso da proposta e 2 repetições da sequência de \textit{broadcast}}
+%\end{figure}
+
+
+
+%Figure~\ref{fig:attrpidle} shows the ATTR results when using our broadcast CH sequence proposal. It can be seen that the performances of all RV schemes benefit from the use of the proposed broadcast sequence algorithm. In Figure~\ref{fig:attrpidle8r}, we can see that the {\tt mclock} scheme has higher ATTRs as the number of cycles of the broadcast sequence increases. The happens because increasing this number of cycles makes the broadcast success rate of this mechanism become higher, as shown in Figure~\ref{fig:successpidle}, and this causes the inclusion of higher ATTRs in the results, which only consider successful broadcast cases.
+
+As Figuras~\ref{fig:attrpidle8r} e \ref{fig:attrpidle2c}, apresentam os resultados do valor de ATTR ao se utilizar a proposta. Pode-se notar que o desempenho de todas as soluções de {\it rendezvous} são beneficiadas com a utilização do algoritmo proposto. Pela Figura~\ref{fig:attrpidle8r}, podemos ver que o {\tt mclock} possui ATTRs mais altos quando o número de ciclos da sequência de {\it broadcast} aumenta. Isto acontece porque o aumento do número de ciclos torna a taxa de sucesso do mecanismo de transmissão maior, tal como mostrado na Figura~\ref{fig:success}. Isso faz a inclusão de ATTRs mais elevados nos resultados, o qual apenas considera casos de transmissão bem sucedidos.
+
+
+%Conforme Figuras~\ref{fig:attrpidle8r} e \ref{fig:attrpidle1c}, os resultados de ATTR ao utilizar a proposta. Pode-se notar que o desempenho de todas as soluções de {\it rendezvous} são beneficiadas com a utilização do algoritmo proposto. Conforme Figura~\ref{fig:attrpidle8r}, podemos ver que o {\tt mclock} possui ATTRs mais altos quando o número de ciclos da sequência de {\it broadcast} aumenta. Isto acontece porque o aumento deste número de ciclos, torna a taxa de sucesso deste mecanismo de transmissão maior, tal como mostrado na Figura~\ref{fig:successpidle}. Isso faz a inclusão de ATTRs mais elevados nos resultados, que apenas consideram casos de transmissão bem sucedidos.
+
+
+% Na horizontal
+%\begin{figure}[!htb]
+%	\centering
+%	\mbox{
+%	\subfigure[8 RCs]{
+%		\label{fig:attrgain8r}
+%  		\includegraphics[width=.48\columnwidth]{figuras/attrgain-8radios}}
+%  	\subfigure[2 sequências de \textit{broadcast}]{
+%		\label{fig:attrgain2c}
+%  		\includegraphics[width=.48\columnwidth]{figuras/attrgain-2maxcycle}}}
+%	\caption{Redução de ATTR}
+%	\label{fig:attrgain}
+%\end{figure} 
+
+% Na vertical modificar 
+\begin{figure}[!htb]
+	\centering
+	\subfigure[Oito RCs]{
+		\label{fig:attrgain8r}
+  		\includegraphics[width=.65\columnwidth]{figuras/attrgain-8radios}}
+  	\subfigure[Duas sequências de \textit{broadcast}]{
+		\label{fig:attrgain2c}
+  		\includegraphics[width=.65\columnwidth]{figuras/attrgain-2maxcycle}}
+	\caption{Redução de ATTR.}
+	\label{fig:attrgain}
+\end{figure}
+
+
+% Dividida
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/attrgain-8radios}
+%	\label{fig:attrgain8r}
+%	\caption{Redução de ATTR com 8 RCs}
+%\end{figure} 
+
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/attrgain-2maxcycle}
+%	\label{fig:attrgain2c}
+%	\caption{Redução de ATTR com 2 repetições da sequência de \textit{broadcast}}
+%\end{figure}
+
+
+%Figure~\ref{fig:attrgain} shows the ATTR reduction percentage caused by using our broadcast CH sequence proposal coupled with each different RV scheme. We see that the {\tt seqr} scheme, which has the worst absolute performance when compared to the others, is the one that benefits the most from being combined with our proposal. For all RV schemes, the smallest reduction percentage is about 50\%, which shows that the performance improvement offered by using our proposal is very significant.
+
+Os resultados da Figura~\ref{fig:attrgain} apresentam o percentual de redução de ATTR causado pelo uso da proposta juntamente com cada solução de {\it rendezvous}. Podemos constatar que o {\tt seqr}, que tem o pior desempenho absoluto quando comparado com os outros, e é o que se beneficia mais quando combinado com a proposta. Para todas as soluções de {\it rendezvous}, o menor percentual de redução foi de cerca de 50\%. %, o que mostra que a melhoria de desempenho oferecida usando a proposta é muito significativa.
+
+%Pelas Figuras~\ref{fig:attrgain8r} e \ref{fig:attrgain2c}, podemos ver o percentual de redução de ATTR causado pelo uso da proposta juntamente com cada solução de {\it rendezvous}. Vemos que o {\tt seqr}, que tem o pior desempenho absoluto quando comparado com os outros, e é o que se beneficia mais quando combinado com a proposta. Para todas as soluções de {\it rendezvous}, o menor percentual de redução foi de cerca de 50\%. %, o que mostra que a melhoria de desempenho oferecida usando a proposta é muito significativa.
+
+% Na horizontal
+%\begin{figure}[!htb]
+%	\centering
+%	\mbox{
+%	\subfigure[8 RCs]{
+%		\label{fig:successnone8r}
+%  		\includegraphics[width=.48\columnwidth]{figuras/successnone-8radios}}
+%  	\subfigure[2 sequências de \textit{broadcast}]{
+%		\label{fig:successnone2c}
+%  		\includegraphics[width=.48\columnwidth]{figuras/successnone-2maxcycle}}}
+%	\caption{Taxa de sucesso sem a proposta}
+%	\label{fig:successnone}
+%\end{figure} 
+
+
+% Na vertical modificar 
+% JUNTEI COPIEI EMBAIXO
+%\begin{figure}[!htb]
+%	\centering
+%	\subfigure[Oito RCs]{
+%		\label{fig:successnone8r}
+%  		\includegraphics[width=.65\columnwidth]{figuras/successnone-8radios}}
+%  	\subfigure[Duas sequências de \textit{broadcast}]{
+%		\label{fig:successnone2c}
+%  		\includegraphics[width=.65\columnwidth]{figuras/successnone-2maxcycle}}
+%	\caption{Taxa de sucesso sem a proposta.}
+%	\label{fig:successnone}
+%\end{figure}
+
+
+% Dividida
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/successnone-8radios}
+%	\label{fig:successnone8r}
+%	\caption{Taxa de sucesso para 8 RCs sem uso da proposta}
+%\end{figure} 
+
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/successnone-2maxcycle}
+%	\label{fig:successnone2c}
+%	\caption{Taxa de sucesso sem a proposta com 2 repetições das sequências}
+%\end{figure}
+
+
+
+
+%Figure~\ref{fig:successnone} shows the broadcast success rate of the different RV schemes without our {\tt pIdle} proposal. The scheme that presents the worst delivery rate is {\tt mclock}, with its best value around 80\%. The {\tt quorum} scheme has 100\% delivery rate even without using our broadcast CH sequence algorithm. This is due to the fact that this scheme has a very high degree of overlapping between each node's CH sequence. All schemes achieve better success rates when increasing the number of broadcast sequence cycles used. In Figure~\ref{fig:successnone2c}, we observe that the success rate gets worse as the number of radios increases, because it gets harder to deliver the broadcast message to all of the nodes. Once again the greater CH sequence overlapping of the {\tt quorum} scheme allows it to maintain a high delivery rate, even with more radios in the secondary network.
+
+As Figuras~\ref{fig:successnone8r} e \ref{fig:successnone2c} mostram a taxa de sucesso de {\it broadcast} dos sistemas de {\it rendezvous} sem a proposta {\tt pIdle}. O esquema que apresenta a pior taxa de entrega é o {\tt mclock}, com o seu melhor valor em torno de 80\%. O {\tt quorum} tem 100\% de taxa de entrega mesmo sem usar nossa proposta. Isto se deve ao fato do esquema ter um elevado grau de sobreposição entre as sequência de cada nó. Todos os esquemas alcançam melhores taxas de sucesso quando se aumenta o número de ciclos de sequências de {\it broadcast}. Na Figura~\ref{fig:successnone2c}, observamos que a taxa de sucesso piora com o aumento do número de rádios, pois torna-se mais difícil a entrega da mensagem de {\it broadcast} para todos os nós. Mais uma vez, a maior sobreposição entre as sequências do {\tt quorum} permitiu manter uma taxa de entrega elevada, mesmo com mais rádios.
+
+
+%As Figuras~\ref{fig:successnone8r} e \ref{fig:successnone2c} mostram a taxa de sucesso de {\it broadcast} dos sistemas de {\it rendezvous} sem a proposta {\tt pIdle}. O esquema que apresenta a pior taxa de entrega é o {\tt mclock}, com o seu melhor valor em torno de 80\%. O {\tt quorum} tem 100\% de taxa de entrega mesmo sem usar nossa proposta. Isto se deve ao fato do esquema ter um elevado grau de sobreposição entre as sequência de cada nó. Todos os esquemas alcançam melhores taxas de sucesso quando se aumenta o número de ciclos de sequências de {\it broadcast}. Na Figura~\ref{fig:successnone2c}, observamos que a taxa de sucesso piora com o aumento do número de rádios, pois torna-se mais difícil a entrega da mensagem de {\it broadcast} para todos os nós. Mais uma vez, a maior sobreposição entre as sequências do {\tt quorum} permitiu manter uma taxa de entrega elevada, mesmo com mais rádios.
+
+
+% Na horizontal
+%\begin{figure}[!htb]
+%	\centering
+%	\mbox{
+%	\subfigure[8 RCs]{
+%		\label{fig:successpidle8r}
+%  		\includegraphics[width=.48\columnwidth]{figuras/successpIdle-8radios}}
+%  	\subfigure[2 sequências de \textit{broadcast}]{
+%		\label{fig:successpidle1c}
+%  		\includegraphics[width=.48\columnwidth]{figuras/successpIdle-2maxcycle}}}
+%	\caption{Taxa de sucesso com a proposta}
+%	\label{fig:successpidle}
+%\end{figure}
+
+
+% Na vertical modificar 
+
+% JUNTEI
+%\begin{figure}[!htb]
+%	\centering
+%	\subfigure[Oito RCs]{
+%		\label{fig:successnone8r}
+% 		\includegraphics[width=.65\columnwidth]{figuras/successnone-8radios}}
+%  	\subfigure[Duas sequências de \textit{broadcast}]{
+%		\label{fig:successnone2c}
+% 		\includegraphics[width=.65\columnwidth]{figuras/successnone-2maxcycle}}
+%	\caption{Taxa de sucesso sem a proposta.}
+%	\label{fig:successnone}
+%\end{figure}
+
+% JUNTEI
+%\begin{figure}[!htb]
+%	\centering
+%	\subfigure[Oito RCs]{
+%		\label{fig:successpidle8r}
+% 		\includegraphics[width=.65\columnwidth]{figuras/successpIdle-8radios}}
+%  	\subfigure[Duas sequências de \textit{broadcast}]{
+%		\label{fig:successpidle1c}
+%  		\includegraphics[width=.65\columnwidth]{figuras/successpIdle-2maxcycle}}
+%	\caption{Taxa de sucesso com a proposta.}
+%	\label{fig:successpidle}
+%\end{figure}
+
+
+\begin{figure}[t!]
+$\begin{array}{rl}
+	\subfigure[Sem proposta - Oito RCs]{
+	\label{fig:successnone8r}
+		\includegraphics[width=0.5\textwidth]{figuras/successnone-8radios}} &
+	\subfigure[Com proposta - Oito RCs]{
+	\label{fig:successpidle8r}
+		\includegraphics[width=0.5\textwidth]{figuras/successpIdle-8radios}} \\
+    	\multicolumn{2}{c}{
+	\subfigure[Sem proposta - Uma sequência]{
+	\label{fig:successnone2c}
+		\includegraphics[width=0.5\textwidth]{figuras/successnone-2maxcycle}}
+	\subfigure[Com proposta - Uma sequência]{
+	\label{fig:successpidle1c}
+		\includegraphics[width=0.5\textwidth]{figuras/successpIdle-2maxcycle}}
+}
+\end{array}$
+\caption[Taxa de sucesso - com e sem uso da proposta]{\label{fig:success}Taxa de sucesso - com e sem uso da proposta.}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+% Dividida
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/successpIdle-8radios}
+%	\label{fig:successpidle8r}
+%	\caption{Taxa de sucesso para 8 RCs com uso da proposta}
+%\end{figure} 
+
+%\begin{figure}[!htb]
+%	\centering
+%	\includegraphics[width=.65\columnwidth]{figuras/successpIdle-2maxcycle}
+%	\label{fig:successpidle1c}
+%	\caption{Taxa de sucesso com 2 repetições da sequência de \textit{broadcast}}
+%\end{figure}
+
+
+%In Figure~\ref{fig:successpidle}, we have the broadcast success rate of the different RV schemes when used in combination with our {\tt pIdle} proposal. With the exception of the {\tt quorum} scheme, which already had 100\% success rate without our proposal, all RV schemes have improved considerably. The {\tt ssch} and {\tt seqr} schemes attained 100\% delivery rates with our proposal and even the {\tt mclock} scheme, which could not increase its success rate to 100\%, has shown significant improvements.
+
+A partir das Figuras~\ref{fig:successpidle8r} e \ref{fig:successpidle1c}, temos a taxa de sucesso de {\it broadcast} em diferentes soluções de {\it rendezvous}, quando utilizado em combinação com a proposta {\tt pIdle}. Com exceção do {\tt quorum}, que já apresenta 100\% de sucesso sem a nossa proposta, todos os esquemas de {\it rendezvous} melhoraram consideravelmente. O {\tt ssch} e {\tt seqr} atingiram 100\% de taxas de entrega com uso da proposta e mesmo o {\tt mclock}, que não aumentou sua taxa de sucesso para 100\%, apresentou melhorias significativas.
+
+
+%Nas Figuras~\ref{fig:successpidle8r} e \ref{fig:successpidle1c}, temos a taxa de sucesso de {\it broadcast} em diferentes esquemas de {\it rendezvous}, quando utilizado em combinação com a proposta {\tt pIdle}. Com exceção do {\tt quorum}, que já apresenta 100\% de sucesso sem a nossa proposta, todos os esquemas de {\it rendezvous} melhoraram consideravelmente. O {\tt ssch} e {\tt seqr} atingiram 100\% de taxas de entrega com uso da proposta e mesmo o {\tt mclock}, que não aumentou sua taxa de sucesso para 100\%, apresentou melhorias significativas.
+
+\section{Conclusões do Capítulo}
+\label{sec:conclusoes_cap_broadcast}
+
+%Broadcast in rendezvous systems using channel hopping (CH) is not a trivial problem. When this broadcast communication involves control messages dissemination in cognitive radio networks, the problem is even harder due to PU activity. One solution to this problem would be to have all CR nodes share the same CH sequence. However, this approach has many disadvantages associated to the channel contention involved. Therefore, the straightforward alternative solution when CR nodes have different CH sequences is to have the broadcasting node retransmit the messages in each time slot of its own CH sequence so that they reach all of the neighboring nodes. However, when the sender CH sequence does not have a good overlap with its neighbors' sequences and PU activity is not taken into account, this strategy can provide a very loose bound on the time-to-rendezvous and hence add a lot of overhead. 
+
+Transmissões em {\it broadcast} em soluções de {\it rendezvous} usando salto de canais não é um problema trivial. Quando a comunicação em {\it broadcast} envolve a divulgação de mensagens de controle em uma rede de rádio cognitivos, o problema é ainda mais difícil devido à atividade dos UPs. Uma solução para este problema seria que todos os RCs utilizassem a mesma sequência de salto de canais (sequência única) no envio de uma mensagem de {\it broadcast}. No entanto, esta abordagem de utilizar uma sequência única pode apresentar a desvantagem de contenção no acesso ao meio, que ocorre quando temos uma grande quantidade de tentativas de transmissões simultâneas através do mesmo canal. Este problema de sequência única será melhor verificado no capítulo seguinte. Portanto, uma solução alternativa quando os nós têm sequências diferentes, é o nó {\it broadcaster} retransmitir mensagens em cada {\it slot} de sua própria sequência de saltos de modo que alcance todos os nós vizinhos. No entanto, quando a sequência do nó emissor não possui sobreposição com as sequências de seus vizinhos, e a atividade de UPs não é levada em conta, esta estratégia pode proporcionar um atraso até ocorrer o {\it rendezvous} entre o nó e seus vizinhos, além de adicionar sobrecarga.
+
+%uma muito solto ligado no tempo para se encontrar, e, portanto, adicionar um monte de sobrecarga.
+
+%In this paper, we propose two algorithms for constructing the broadcast CH sequence that take into account the number of overlapping channels and PU activity in each channel. These algorithms have the great advantage of being both simple and agnostic to the underlying one-to-one rendezvous scheme used. The algorithms were evaluated in terms of the achieved maximum and average time-to-rendezvous reduction when compared to the case in which the broadcasting node uses its own unmodified CH sequence to perform the broadcast. Simulation results show that both algorithms provide performance gains in terms of these metrics and also in terms of the number of reached neighbors, i.e. the success rate, when a limited number of broadcast sequences are employed.
+
+Neste capítulo, propomos dois algoritmos para a construção de uma sequência de {\it broadcast} que leva em conta o número de sobreposição de canais e a atividade de UPs em cada canal. Estes algoritmos têm a grande vantagem de ser ao mesmo tempo simples e independentes da solução de {\it rendezvous} adotada. Os algoritmos foram avaliados em termos da redução máxima atingida no tempo de {\it rendezvous}, quando comparado com o caso no qual o nó {\it broadcaster} utiliza sua própria sequência de saltos não modificada para efetuar a transmissão. A utilização da própria sequência de saltos para transmissão em {\it broadcast} é o melhor que as soluções da literatura podem fazer. 
+
+Os resultados obtidos pelo uso das propostas mostram que ambos algoritmos proporcionaram ganhos de desempenho em termos destas métricas e também em termos do número de vizinhos alcançados, ou seja, a taxa de sucesso.%, quando um número limitado de sequências de {\it broadcast} são empregadas.
+
+
