@@ -1,0 +1,111 @@
+\chapter{Implementação e Resultados}
+\label{cap:resultados}
+
+\section{Introdução}
+
+Nos capítulos anteriores, os algoritmos ITERATIVO e RECURSIVO foram introduzidos trazendo menores complexidades do que a abordagem ingênua. Neste capítulo, será estudado o que tais complexidades representam em termos de recursos computacionais reais, ou seja, quanto de espaço em memória e tempo de processamento eles precisam. 
+
+Além disso, detalhes de implementação relevantes como teconologias e ambientes adotados são descritos. Finalmente, todo o plano de testes será detalhado e os resultados das simulações baseadas nos algoritmos implementados são apresentados.
+
+\section{Otimizações}
+
+Antes de falar da implementação, é importante mostrar algumas ideias que ajudaram a reduzir a complexidade dos algoritmos.
+
+\subsection{Acoplamentos em Grafos}
+
+Em Teoria dos Grafos, um acoplamento $M$ de um grafo $G=(V,E)$ é definido como um subconjunto de $E(G)$, tal que, para qualquer par de arestas $(i,j) \in M$, $i$ e $j$ não são adjacentes, ou seja, não compartilham vértices. Um acoplamento máximo $M^*$ é aquele com o maior número possível de arestas. 
+
+A partir dessas definições, é possível extrair duas propriedades fundamentais:
+\begin{enumerate}
+\item Para qualquer $M$ em $G=(V,E)$, $g^(v) \leq 1, \forall v \in V(G)$
+\item Para qualquer $M^*$ em $G=(V,E)$, $|M^*|= \lfloor n/2 \rfloor$
+\end{enumerate}
+
+\subsection{Limitando a Busca}
+
+O Modelo de Interferência Primária, devido algumas características, não permite que nós da rede estejam participando de mais de um enlace de comunicação ao mesmo tempo. Logo, em uma rede modelada por um grafo $G=(V,E)$, um conjunto de arestas $C \subset E(G)$ é viável se, e somente se, as arestas de $C$ não comparilham vértices, ou seja, não são adjacentes entre si. 
+
+Dada a definição na seção anterior, um conjunto viável $C$ é um acoplamento $M$ de $G$. Portanto, o maior tamanho possível para um conjunto viável $C^*$ é o tamanho de um acoplamento máximo $M^*$, ou seja, $|C^*| = |M^*| = \lfloor n/2 \rfloor$. Com essa informação, é possível "podar" todos os vértices $C$ da árvore de combinações que tenham $|C|>n/2$, conforme exemplificado na Figura 5.1.
+
+%Figura
+
+Usando essa técnica, a complexidade para percorrer a árvore cai de $O(2^m)$ para $(2^{n/2})$.
+
+\subsection{Reformulando o TIP}
+
+Como consequência da definição de acoplamento, é possível reescrever o algoritmo \ref{alg:tip} com uma menor complexidade.
+
+\subsubsection{Descrição do Algoritmo}
+
+\begin{algorithm}[h]
+	\SetVline
+	{\bf input:} Conjunto de enlaces $C$\\
+	\ForEach { $i \in C$}{
+			\If {(($g(s_{i})>1$)$||$($g(s_{i})>1$))}{
+				\Return FALSE
+			}
+	}
+	\Return TRUE
+\caption{Algoritmo TIP-G}
+\label{alg:tipg}
+\end{algorithm}
+
+\subsubsection{Prova de Corretude}
+
+Pela propriedade 1, se, dado um conjunto $C \in E(G)$, $\forall v \in V(G), g(V) \leq 1$, então C é um acoplamento e, portanto, C é viável. Isso garante que as arestas de C não compartilham vértices, ou seja, os nós do conjunto apenas participam de um enlace. Então, para testar a Interferência Primária, não é necessário verificar se em cada par de enlaces existem nós compartilhados. Basta verificar que o grau dos vértices nos enlaces de C são menores que 2. Como essa verificação é feita na linha 3, o algoritmo está correto.
+
+\subsubsection{Análise de Complexidade}
+
+A complexidade de espaço é O(m). Devido a otimização anterior, $m \leq n/2$, então a complexidade é reduzida a $O(n/2)=O(n)$. 
+
+Como todos os enlaces de C são avaliados, então a complexidade é O(m). Como no caso da complexidade de espaço, esse valor é reduzido a O(n).
+
+\section{Detalhes de Implementação}
+
+Todos os algoritmos aqui apresentados, bem como as estruturas de dados subjacentes, foram implementados usando a liguagem de programação C++ sob o paradigma de Orientação a Objetos. O ambiente de desenvolvimento foi composto do sistema operacional Ubuntu 16.04 64 bits com o compilador GCC 5.4.0-6, usando o editor Atom para produção do código. O hardware utilizado foi um processador Intel Core i5-3337U com 6GB de RAM.
+
+A primeira porção de código produzido foi referente a modelagem da rede. As classes Node, Link e Network representam os nós, enlaces e a rede, respectivamente. Além dos dados relevantes aos cálculos efetuados, como posição dos nós, potência de recepção, entre outros, várias funções também foram criadas nas classes, como geração aleaória da posição dos nós, cálculo da distância entre nós e assim por diante. O objeto da classe Network será a entrada para os algoritmos. 
+
+Para geração das redes, três parâmetros são utilizados: (i) potência de transmissão TP; (ii) número de nós N; (iii) tamanho do lado A da área quadrada onde os nós serão dispostos. A primeira coisa a ser feita é distribuir os N nós aleatoriamente dentro da área definida por A. A distância entre todos os pares de nós é então calculada. Se a distância entre os nós for menor que um limite D, então um enlace é criado para conectá-los usando a equação \ref{eq:rp}.  
+
+Devido algumas facilidades para gerenciar variáveis compartilhadas, os algoritmos ITERATIVO e RECURSIVO também foram codificados como classes, Iterative e Recursive, respectivamente. Ambas as classes possuem o método construtor e o método principal que implementa o algoritmo propriamente dito, além de alguns outros métodos secundários para manipulação dos dados.
+
+A arquitetura do ambiente descrito é o principal limitante dos algoritmos. Como os processadores são de 64 bits, o maior número inteiro nativo oferecido pela linguagem C++ é $2^{64}-1$. Portanto, até o momento, não é possível aplicar esses algoritmos a redes com mais de 64 enlaces. Devido a essa limitação, alguns cuidados também tiveram que ter sido tomados. Por exemplo, em C++, em uma contagem, ao exceder o número $2^{64}-1$, a contagem é retomada do 0. Se nenhum mecanismo para detectar essa situação fosse implantado, ao executar os algoritmos para $m=64$, o programa iria entrar em loop infinito. Um outro caso é baseado na inicialização da variável $limite$. No algoritmo ITERATIVO, $limite = 2^m$, logo, se $m=64$, então $limite=0$ e, portanto, o programa seria encerrado antes mesmo de entrar no loop principal. Mais uma vez, um mecanismo teve de ser adotado para contornar essa situação.
+
+\section{Simulações e Resultados}
+
+Existem dois objetivos principais nos quais os testes são baseados. Para cada caso, o plano de teste será descrito assim como os detalhes das simulações.
+
+\subsubsection{Verificar o tempo de execução real dos algoritmos}
+
+Para alcançar esse objetivo, um programa foi criado para variar o valor do lado da área A com o intuito de simular redes de 4 a 64 enlaces. Além do tempo de execução de cada algoritmo para as 60 redes geradas, também se mostrou importante entender o efeito da variação do número de nós. Os valores utilizados para n são $\{16, 32, 64, 128\}$. 
+
+Então, as redes foram simuladas com diferentes valores de m e n e o tempo de execução de ambos os algoritmos foi medido. Para evitar ruídos provenientes de variações computacionais aleatórias, 30 execuções de cada algoritmo foram feitas para cada cenário, seguindo a regra de [Citar o cara que determinou esse número]. Ao final, o tempo médio das execuções foi utilizado para gerar uma curva e, com isso, poder analisar o tempo real.
+
+%Figura: Tempos de execução para os algoritmos sobrepostos com diferentes valores de n
+
+O primeiro fato a ser notado é que o algoritmo recursivo obteve menores tempos de execução para todos os valores de n. Isso reflete a menor complexidade de tempo teórica que algoritmo RECURSIVO tem em comparção com o algoritmo ITERATIVO. Em ambos os algoritmos, com o aumento de n, suas curvas se aproximam cada vez mais de uma exponencial, confirmando suas complexidades computacionais.
+
+\subsubsection{Verificar a variação da quantidade de conjuntos de enlaces viáveis}
+
+É importante verificar a variação da quantidade de conjuntos de enlaces viáveis resultantes da execução dos algoritmos em função do tamanho da rede para melhor determinar a sua complexidade computacional. Para isso, 30 redes diferentes para cada valor de m e n foram geradas. Mais uma vez, $n=\{16,32,64,128\}$. 
+
+Em cada uma dessas redes, ambos os algoritmos foram executados, mas dessa vez, o número de conjuntos viáveis foi computado em vez do tempo. A média dos valores encontrados foi utilizada para gerar uma curva e, com isso, poder aproximar a complexidade dos algoritmos.
+
+%Figura: Número médio de conjuntos viáveis
+
+Assim como no caso anterior, as curvas se acentuam com o aumento de n. Isso significa que a variação do número de conjuntos viáveis torna-se mais sensível ao aumento do número de enlaces a medida que maiores valores de m são utilizados. 
+
+O método de regressão linear foi utilizado para interpolar as curvas subjacentes aos gráficos da figura anterior. Usando esse método, foi possível encontrar uma função de f(m) que melhor se aproxima dos pontos, ou seja, que melhor descreve o comportamento do número de conjuntos em função de m. As funções encontradas para os diferentes valores de n são mostradas da tabela a seguir.
+
+%tabela
+
+Em todos os casos, $f_n(m)$ é $O(n^2)$. Logo, é possível afirmar que $O(|F|)=O(n^2)$. Conclui-se que, as complexidades dos algoritmos ITERATIVO e RECURSIVO são, respectivamente, $O(n^2m^3)$ e $O(n^2m^2)$. Em ambos os casos, a complexidade de tempo é menor do que a força bruta, que é $O(2^m*m^3)$. Esse fato pode ser demonstrado analisando o gráfico na figura a seguir, que mostra as curvas assintóticas em ambos os casos para $n \leq 64$.
+
+%Figura: Curvas das complexidades. 
+
+\section{Conclusão}
+
+Nesse capítulo, a redução da complexidade computacional de O(m) para O(n) em algoritmos que iteram sobre os enlaces de um conjunto foi justificado através de técnicas de otimização. Em seguida, foi descrito um panorama sobre as técnicas de implementação e ambiente utilizados. 
+
+Finalmente, usou-se o resultado das simulações para entender qual o impacto das complexidades computacionais teóricas quando os algoritmos são utilizados na prática. Além disso, também foi possível verificar o tamanho de |F| em função de m, que permitiu concluir a superioridade dos algoritmos aqui apresentados em relação aos algoritmos ingênuos e baseados em força bruta.

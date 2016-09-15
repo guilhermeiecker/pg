@@ -32,7 +32,7 @@ void Network::set_links()
 					pr = pow(10.0, ((tpower_dBm - l0_dB - 10*alpha*log10(dist / d0))/10.0));
 				else
 					pr = pow(10.0, ((tpower_dBm - l0_dB) / 10.0));
-					links.push_back(Link(&(*i), &(*j), index++, dist, pr));
+				links.push_back(Link(&(*i), &(*j), index++, dist, pr));
 			}
 		}
 	}

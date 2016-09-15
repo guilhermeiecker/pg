@@ -57,7 +57,7 @@
 \RequirePackage{hyphenat}
 \RequirePackage{lastpage}
 \RequirePackage{hyperref}
-\RequirePackage[english,brazil]{babel}
+\RequirePackage[english,portuguese]{babel}
 \RequirePackage{ifthen}
 \RequirePackage{graphicx}
 \RequirePackage{setspace}
