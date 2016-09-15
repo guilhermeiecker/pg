@@ -3,13 +3,15 @@
 
 \section{Introdução}
 
-Neste capítulo, será introduzido um novo algoritmo para encontrar os conjuntos de enlaces viáveis em uma rede sem fio. Esse algoritmo é baseado nos mesmos modelos apresentados no Capítulo 2, portanto ele possui algumas similaridades como o Algoritmo Iterativo. Como será mostrado nas próximas seções, o diferencial consiste em uma nova maneira de percorrer a árvore, que permitirá que os cálculos da SINR dos enlaces em uma dada combinação sejam reutilizados por seus descendentes. Finalmente, o algoritmo será detalhado e sua complexidade analisada.
+Neste capítulo, será introduzido um novo algoritmo para encontrar os conjuntos de enlaces viáveis em uma rede sem fio. Esse algoritmo é baseado nos mesmos modelos apresentados no Capítulo \ref{cap:modelagem}, portanto ele possui algumas similaridades como o Algoritmo Iterativo introduzido no Capítulo \ref{cap:iterativo}. 
+
+Como será mostrado nas próximas seções, o diferencial consiste em uma nova maneira de percorrer a árvore, que permitirá que os cálculos da SINR dos enlaces em uma dada combinação sejam reutilizados por seus descendentes. Finalmente, o algoritmo será detalhado e sua complexidade analisada.
 
 \section{Percorrendo a Árvore Recursivamente}
 
 A grande diferença com relação ao Algoritmo Iterativo está na forma em que a árvore é percorrida. No caso iterativo, faz-se uma contagem, ou seja, visita-se os vértices da árvore somando 1 ao seu valor codificado anterior. O caso recursivo não é tão simples e essa seção será dedicada ao seu entendimento.
 
-Como foi brevemente mencionado no capítulo anterior, é possível saber quantos descendentes tem um conjunto codificado $B$. Para isso, basta encontrar o bit ativo menos significativo $b_i^*$ (o bit 1 mais à direita) e o número de bits 0 depois de $b_i^*$ é o número de filhos de $B$. Como consequência disso, é possível notar que as folhas da árvore possuem os seus bits menos significativos ativos, ou seja, se $B$ é ímpar, então $B$ é folha. Um caso especial surge ao analisar $B=0$. Nesse caso, não existem bits ativos e, por convenção, o número de filhos de $B=0$ é $|B|$.
+Como foi mencionado no capítulo anterior, é possível saber quantos descendentes tem um conjunto codificado $B$. Para isso, basta encontrar o bit ativo menos significativo $b_i^*$ (o bit 1 mais à direita) e o número de bits 0 depois de $b_i^*$ é o número de filhos de $B$. Como consequência disso, é possível notar que as folhas da árvore possuem os seus bits menos significativos ativos, ou seja, se $B$ é ímpar, então $B$ é folha. Um caso especial surge ao analisar $B=0$. Nesse caso, não existem bits ativos e, por convenção, o número de filhos de $B=0$ é $|B|$.
 
 Além de saber quantos filhos tem a combinação $B$, conhecer $b_i^*$ também nos permite alcançar os filhos de $B$. Para adicionar mais um enlace em $C$ e, com isso, descobrir um possível filho de $B$ na árvore, basta que um dos bits 0 depois de $b_i^*$ seja alternado para 1. De maneira geral, para fazer essa alternância, basta realizar a soma $B + 2^i$, tal que, $i < i^*$. Consequentemente, para alcançar todos os filhos de uma combinação B basta fazer $B + 2^i$, $\forall i$, tal que, $0\leq i\leq i^*$. Portanto, uma pequena contagem é feita para alternar todos os bits 0 depois de $b_i^*$ em uma combinação $B$ com o intuito de encontrar os filhos de $B$.
 
@@ -27,43 +29,52 @@ Dada essa situação, é importante ressaltar que, nem sempre irá existir um $B
 
 No algoritmo anterior, era fundamental que houvesse um processo de decodificação do número $B$ em um conjunto $C$ para que os testes de interferência fossem realizados. No caso da busca recursiva, quando um novo vértice é visitado, o enlace $e_i$ correspondente ao índice $i$ do bit alternado é adicionado em $C$. Ao ser adicionado em $C$, a porção de interferência causada e sofrida por $e_i$ é atualizada. A viabilidade do conjunto $C$ é testada toda vez que um novo enlace é adicionado. Simetricamente, depois de visitar todos os seus descendentes, $e_i$ é removido de $C$.
 
-Ao realizar o procedimento de adição e remoção dos enlaces descrito, dado um conjunto viável $B$, para testar a viabilidade de seus filhos na árvore, basta considerar a contribuição de interferência do enlace adicionado a $B$. Isso significa que todo o cálculo de SINR feito de 0 até $B$ não precisa ser refeito ao testar os filhos de $B$. 
+Ao realizar o procedimento de adição e remoção dos enlaces descrito, dado um conjunto viável $B$, para testar a viabilidade de seus filhos na árvore, basta considerar a contribuição de interferência do enlace adicionado a $B$. Isso significa que todo o cálculo de SINR feito de 0 até $B$ não precisa ser refeito ao testar os filhos de $B$.
+
+Além disso, a SINR já é calculada no momento em que um novo enlace é adicionado ao conjunto. Logo, para esse caso, a complexidade do algoritmo TIS é reduzida. Como as SINR já estão calculadas, basta iterar sobre os enlaces de $C$, fazendo a complexidade de tempo diminuir de $O(m^2)$ para $O(m)$. Como será detalhado no Capítulo \ref{cap:resultados}, o tempo do TIS também será reduzido para $O(m)$. Consequentemente, o algoritmo VIAVEL para o caso recursivo terá complexidade $O(m) + O(m) = O(m)$. 
 
 \section{Descrição do Algoritmo}
 
 Até o momento, uma nova ideia de como percorrer a árvore foi apresentada. Essa ideia permite que a árvore seja “podada” e dispensa a necessidade de decodificação, o que, intuitivamente, representa um ganho na complexidade de tempo em relação ao Algoritmo Iterativo. O Algoritmo Recursivo é apresentado a seguir.
 
-\subsection{Algoritmo Recursiva para Enumeração de Conjuntos de Enlaces Viáveis (RECEV)}
+\subsection{Algoritmo Recursivo para Enumeração de Conjuntos de Enlaces Viáveis}
 
-Entrada: Grafo direcionado G=(V,E), Inteiro X, Conjunto de Enlaces Atual C
+\subsubsection{Descrição do Algoritmo}
 
-Saída: Lista dos conjuntos dos enlaces viáveis F
+\begin{algorithm}[h]
+	\SetVline
+	{\bf input:} Grafo direcionado $G=(V,E)$, Conjunto de Enlaces $C$, Inteiro $X$\\
+	{\bf output:} Conjuntos de Enlaces Viáveis $F$\\
+	\If{$X=0$}{
+		\For{$i=0$ to $m-1$}{
+			$RECURSIVO(G, C, X + 2^i)$\\
+		}
+	}
+	\Else{
+		$limite \leftarrow log2(X \& ~(X-1))$\\
+		$C \leftarrow C \cup \{e_{limite}\}$\\
+		\If{$VIAVEL(C)$}{
+			$F \leftarrow F \cup {C}$\\
+			\For{$i=0$ to $limite-1$}{
+				$RECURSIVO(G, C, X + 2^i)$\\
+			}
+			$C \leftarrow C \ {e_{limite}}$\\
+		}
+	}
+\caption{Algoritmo RECURSIVO}
+\label{alg:recursivo}
+\end{algorithm}
 
-%Se X=0, então
-%  Para i=0 até |E|-1, faça
-%    RECEV(G, C, X + 2^i)
-%Senão
-%  limite <- log2(X & ~(X-1))
-%  C <- C [união] {elimite}
-%  Se VIÁVEL(C), então
-%    F <- F [uniao] {C}
-%    Para i=0 até limite-1, faça
-%      RECEV(G, C, X + 2^i)
-%    C <- C\{elimite}
+\subsubsection{Prova de Corretude}
 
-\subsection{Prova de Corretude}
+Como mostrado na seção 4.2, se $X=0$, então toda a árvore é percorrida chamando o algoritmo RECURSIVO recursivamente para todos os descendentes. A condicional na linha 1 e 4 fazem o tratamento do caso especial em que $X=0$. A chamada recursiva da função só é feita quando o conjunto $C$ se mostra viável ou quando $limite>0$. Se $C$ não é viável então RECURSIVO não será chamada para seus descendentes, o que não problema devido a Inviabilidade Hereditária. Logo, ignorar os descendentes de uma combinação não viável não altera o resultado do algoritmo, apenas agiliza o processo. As linhas 6 e 11 garantem que qualquer enlace que seja adicionado a $C$ também seja removido. Finalmente, na linha 8, se $C$ é viável, então é adicionado ao conjunto $F$ e, por isso, $F$ contém todos os conjuntos de enlaces viáveis. Portanto, o algoritmo está correto.
 
-Como mostrado na seção 4.2, se $X=0$, então toda a árvore é percorrida chamando o algoritmo RECEV recursivamente para todos os descendentes. A condicional na linha 1 e 4 fazem o tratamento do caso especial em que $X=0$. A chamada recursiva da função só é feita quando o conjunto $C$ se mostra viável ou quando $limite>0$. Se $C$ não é viável então RECEB não será chamada para seus descendentes, o que não problema devido a Inviabilidade Hereditária. Logo, ignorar os descendentes de uma combinação não viável não altera o resultado do algoritmo, apenas agiliza o processo. As linhas 6 e 11 garantem que qualquer enlace que seja adicionado a $C$ também seja removido. Finalmente, na linha 8, se $C$ é viável, então é adicionado ao conjunto $F$ e, por isso, $F$ contém todos os conjuntos de enlaces viáveis. Portanto, o algoritmo está correto.
+\subsubsection{Análise da Complexidade}
 
-\subsection{Análise da Complexidade}
+Assim como no caso do algoritmo ITERATIVO, a complexidade de espaço é $O(m)$.
 
-\subsubsection{Complexidade de Espaço}
-$O(2^m)$
-
-\subsubsection{Complexidade de Tempo}
-
-	As linhas 1-4, 7-12 são $O(1)$. A função de decodificação na linha 6 é $O(m)$ e o teste de viabilidade na linha 7 é $O(m^2)$. O laço principal das linhas 5-12 é $O(2^mm^2)$ pois a cada uma das $2^m$ iterações (no pior caso), a função de decodificação e o teste de viabilidade são chamados com complexidade de $O(m) + O(m^2) = O(m^2)$. De maneira geral, a complexidade de tempo total é $O(2^mm^2)$.
- 
-Contudo, esse valor de complexidade é muito exagerado uma vez que, devido aos saltos, a contagem cobrirá apenas uma parte das $2^m$ combinações. Nesse caso, o números de conjuntos avaliados na contagem é $O(|F|)$, onde $|F|$ é a quantidade conjuntos viáveis da rede. Além disso, como será discutido no Capítulo 5, o $m^2$ pode ser simplificado por $n^2$. Portanto, a complexidade é $O(|F|n^2)$.
+A complexidade de tempo desse algoritmo é parecida com a do algoritmo ITERATIVO. Contudo, como houveram algumas otimizações decorrentes do reaproveitamento dos cálculos da SINR, sua complexidade é um pouco menor. Houve uma redução de $O(|F|m^2)$ para $O(|F|m)$.
 
 \section{Conclusão}
+
+Apesar de uma concepção um pouco mais complexa, o algoritmo RECURSIVO obteve melhor complexidade de tempo em comparação com todas as técnicas apresentadas até agora. Tudo isso, devido a reutilização dos cálculos proporcionada por sua natureza recursiva. 

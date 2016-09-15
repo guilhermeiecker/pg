@@ -3,13 +3,13 @@
 
 \section{Introdução}
 
-Nos capítulos anteriores, os algoritmos ITERATIVO e RECURSIVO foram introduzidos trazendo menores complexidades do que a abordagem ingênua. Neste capítulo, será estudado o que tais complexidades representam em termos de recursos computacionais reais, ou seja, quanto de espaço em memória e tempo de processamento eles precisam. 
+Nos capítulos anteriores, os algoritmos ITERATIVO e RECURSIVO foram introduzidos trazendo menores complexidades do que a força bruta pura. Neste capítulo, será estudado o que tais complexidades representam em termos de recursos computacionais reais, ou seja, quanto de espaço em memória e tempo de processamento eles precisam. 
 
-Além disso, detalhes de implementação relevantes como teconologias e ambientes adotados são descritos. Finalmente, todo o plano de testes será detalhado e os resultados das simulações baseadas nos algoritmos implementados são apresentados.
+Além disso, detalhes de implementação relevantes como teconologias e ambientes adotados são descritos. Finalmente, todo o plano de simulações será detalhado e os resultados são analisados.
 
 \section{Otimizações}
 
-Antes de falar da implementação, é importante mostrar algumas ideias que ajudaram a reduzir a complexidade dos algoritmos.
+Antes de falar da implementação, é importante mostrar algumas ideias que ajudaram a reduzir ainda mais a complexidade dos algoritmos.
 
 \subsection{Acoplamentos em Grafos}
 
@@ -17,7 +17,7 @@ Em Teoria dos Grafos, um acoplamento $M$ de um grafo $G=(V,E)$ é definido como 
 
 A partir dessas definições, é possível extrair duas propriedades fundamentais:
 \begin{enumerate}
-\item Para qualquer $M$ em $G=(V,E)$, $g^(v) \leq 1, \forall v \in V(G)$
+\item Para qualquer $M$ em $G=(V,E)$, $g(v) \leq 1, \forall v \in V(G)$
 \item Para qualquer $M^*$ em $G=(V,E)$, $|M^*|= \lfloor n/2 \rfloor$
 \end{enumerate}
 
@@ -28,6 +28,21 @@ O Modelo de Interferência Primária, devido algumas características, não perm
 Dada a definição na seção anterior, um conjunto viável $C$ é um acoplamento $M$ de $G$. Portanto, o maior tamanho possível para um conjunto viável $C^*$ é o tamanho de um acoplamento máximo $M^*$, ou seja, $|C^*| = |M^*| = \lfloor n/2 \rfloor$. Com essa informação, é possível "podar" todos os vértices $C$ da árvore de combinações que tenham $|C|>n/2$, conforme exemplificado na Figura 5.1.
 
 %Figura
+\begin{figure}[ht] 
+  \label{fig:otimizacao} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=0.5\linewidth]{figs/otim1.png} 
+    \caption{Grafo com $n=m=4$} 
+    \vspace{4ex}
+  \end{minipage}%%
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/otim2.png} 
+    \caption{Árvore "podada em $n/2$} 
+    \vspace{4ex}
+  \end{minipage} 
+\end{figure}
 
 Usando essa técnica, a complexidade para percorrer a árvore cai de $O(2^m)$ para $(2^{n/2})$.
 
@@ -58,13 +73,13 @@ Pela propriedade 1, se, dado um conjunto $C \in E(G)$, $\forall v \in V(G), g(V)
 
 A complexidade de espaço é O(m). Devido a otimização anterior, $m \leq n/2$, então a complexidade é reduzida a $O(n/2)=O(n)$. 
 
-Como todos os enlaces de C são avaliados, então a complexidade é O(m). Como no caso da complexidade de espaço, esse valor é reduzido a O(n).
+Como todos os enlaces de C são avaliados, então a complexidade é O(m). Contudo, sabemos que $|C| \leq n/2$, portanto, a complexidade de espaço é reduzida para $O(n)$
 
 \section{Detalhes de Implementação}
 
 Todos os algoritmos aqui apresentados, bem como as estruturas de dados subjacentes, foram implementados usando a liguagem de programação C++ sob o paradigma de Orientação a Objetos. O ambiente de desenvolvimento foi composto do sistema operacional Ubuntu 16.04 64 bits com o compilador GCC 5.4.0-6, usando o editor Atom para produção do código. O hardware utilizado foi um processador Intel Core i5-3337U com 6GB de RAM.
 
-A primeira porção de código produzido foi referente a modelagem da rede. As classes Node, Link e Network representam os nós, enlaces e a rede, respectivamente. Além dos dados relevantes aos cálculos efetuados, como posição dos nós, potência de recepção, entre outros, várias funções também foram criadas nas classes, como geração aleaória da posição dos nós, cálculo da distância entre nós e assim por diante. O objeto da classe Network será a entrada para os algoritmos. 
+A primeira porção de código produzido foi referente a modelagem da rede. As classes Node, Link e Network representam os nós, enlaces e a rede, respectivamente. Além dos dados relevantes aos cálculos efetuados, como posição dos nós, potência de recepção, entre outros, vários métodos também foram criados, como geração aleaória da posição dos nós, cálculo da distância entre nós e assim por diante. O objeto da classe Network é servir de entrada para os algoritmos. 
 
 Para geração das redes, três parâmetros são utilizados: (i) potência de transmissão TP; (ii) número de nós N; (iii) tamanho do lado A da área quadrada onde os nós serão dispostos. A primeira coisa a ser feita é distribuir os N nós aleatoriamente dentro da área definida por A. A distância entre todos os pares de nós é então calculada. Se a distância entre os nós for menor que um limite D, então um enlace é criado para conectá-los usando a equação \ref{eq:rp}.  
 
@@ -74,35 +89,118 @@ A arquitetura do ambiente descrito é o principal limitante dos algoritmos. Como
 
 \section{Simulações e Resultados}
 
-Existem dois objetivos principais nos quais os testes são baseados. Para cada caso, o plano de teste será descrito assim como os detalhes das simulações.
-
-\subsubsection{Verificar o tempo de execução real dos algoritmos}
-
-Para alcançar esse objetivo, um programa foi criado para variar o valor do lado da área A com o intuito de simular redes de 4 a 64 enlaces. Além do tempo de execução de cada algoritmo para as 60 redes geradas, também se mostrou importante entender o efeito da variação do número de nós. Os valores utilizados para n são $\{16, 32, 64, 128\}$. 
-
-Então, as redes foram simuladas com diferentes valores de m e n e o tempo de execução de ambos os algoritmos foi medido. Para evitar ruídos provenientes de variações computacionais aleatórias, 30 execuções de cada algoritmo foram feitas para cada cenário, seguindo a regra de [Citar o cara que determinou esse número]. Ao final, o tempo médio das execuções foi utilizado para gerar uma curva e, com isso, poder analisar o tempo real.
-
-%Figura: Tempos de execução para os algoritmos sobrepostos com diferentes valores de n
-
-O primeiro fato a ser notado é que o algoritmo recursivo obteve menores tempos de execução para todos os valores de n. Isso reflete a menor complexidade de tempo teórica que algoritmo RECURSIVO tem em comparção com o algoritmo ITERATIVO. Em ambos os algoritmos, com o aumento de n, suas curvas se aproximam cada vez mais de uma exponencial, confirmando suas complexidades computacionais.
-
-\subsubsection{Verificar a variação da quantidade de conjuntos de enlaces viáveis}
+\subsubsection{Verificação da variação da quantidade de conjuntos de enlaces viáveis}
 
 É importante verificar a variação da quantidade de conjuntos de enlaces viáveis resultantes da execução dos algoritmos em função do tamanho da rede para melhor determinar a sua complexidade computacional. Para isso, 30 redes diferentes para cada valor de m e n foram geradas. Mais uma vez, $n=\{16,32,64,128\}$. 
 
-Em cada uma dessas redes, ambos os algoritmos foram executados, mas dessa vez, o número de conjuntos viáveis foi computado em vez do tempo. A média dos valores encontrados foi utilizada para gerar uma curva e, com isso, poder aproximar a complexidade dos algoritmos.
+Em cada uma dessas redes, o número de conjuntos viáveis foi computado. A média dos valores encontrados foi utilizada para gerar uma curva e, com isso, poder aproximar a complexidade dos algoritmos.
 
 %Figura: Número médio de conjuntos viáveis
+\begin{figure}[ht] 
+  \label{fig:tamanho} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/tamanho16.png} 
+    \caption{Variação de $|F|$ para $n=16$} 
+    \vspace{4ex}
+  \end{minipage}%%
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/tamanho32.png} 
+    \caption{Variação de $|F|$ para $n=32$} 
+    \vspace{4ex}
+  \end{minipage} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/tamanho64.png} 
+    \caption{Variação de $|F|$ para $n=64$} 
+    \vspace{4ex}
+  \end{minipage}%% 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/tamanho128.png} 
+    \caption{Variação de $|F|$ para $n=128$} 
+    \vspace{4ex}
+  \end{minipage} 
+\end{figure}
 
 Assim como no caso anterior, as curvas se acentuam com o aumento de n. Isso significa que a variação do número de conjuntos viáveis torna-se mais sensível ao aumento do número de enlaces a medida que maiores valores de m são utilizados. 
 
 O método de regressão linear foi utilizado para interpolar as curvas subjacentes aos gráficos da figura anterior. Usando esse método, foi possível encontrar uma função de f(m) que melhor se aproxima dos pontos, ou seja, que melhor descreve o comportamento do número de conjuntos em função de m. As funções encontradas para os diferentes valores de n são mostradas da tabela a seguir.
 
-%tabela
+\begin{table}[h]
+\centering
+\caption[Funções Aproximadas]
+{Funções Aproximadas.}
+\label{table:funcoes}
+\begin{tabular}{lc}
+\hline
+$n$ & $f_n(m)$\\ \hline
+16  & $f_{16}(m) = am^2 + bm + c$\\
+32  & $f_{32}(m) = am^2 + bm + c$\\
+64  & $f_{64}(m) = am^2 + bm + c$\\
+128 & $f_{128}(m) = am^2 + bm + c$\\
+\end{tabular}
+\end{table}
 
-Em todos os casos, $f_n(m)$ é $O(n^2)$. Logo, é possível afirmar que $O(|F|)=O(n^2)$. Conclui-se que, as complexidades dos algoritmos ITERATIVO e RECURSIVO são, respectivamente, $O(n^2m^3)$ e $O(n^2m^2)$. Em ambos os casos, a complexidade de tempo é menor do que a força bruta, que é $O(2^m*m^3)$. Esse fato pode ser demonstrado analisando o gráfico na figura a seguir, que mostra as curvas assintóticas em ambos os casos para $n \leq 64$.
+Em todos os casos, $f_n(m)$ é $O(n^2)$. Logo, é possível afirmar que $O(|F|)=O(n^2)$. Conclui-se que, as complexidades dos algoritmos ITERATIVO e RECURSIVO são, respectivamente, $O(|F|n^2) = O(n^2n^2) = O(n^4)$ e $O(|F|n) = O(n^2n) = O(n^3)$. Para o algoritmo RECURSIVO, a complexidade de tempo é menor do que a força bruta pura, que é $O(|F|n^2) = O(n^2n^2) = O(n^4)$. 
 
-%Figura: Curvas das complexidades. 
+\subsubsection{Complexidades}
+
+Agora que o valor de $O(|F|)$ foi encontrado, pode-se resumir as complexidades computacionais dos algoritmos apresentados nesse trabalho.
+
+\begin{table}[h]
+\centering
+\caption[Complexidades Computacionais]
+{Complexidades Computacionais.}
+\label{table:complexidade}
+\begin{tabular}{lcc}
+\hline
+Algoritmo & Tempo & Espaço\\ \hline
+Força Bruta Pura & $O(2^mm^2)$ & $O(2^m)$\\
+BP com "Poda" & $O(m^4)$ & $O(2^m)$\\
+ITERATIVO & $O(m^4)$ & $O(m)$\\
+RECURSIVO & $O(m^3)$ & $O(m)$\\
+ITERATIVO + Otimizações & $O(n^4)$ & $O(m)$\\
+RECURSIVO + Otimizações & $O(n^3)$ & $O(m)$\\
+\end{tabular}
+\end{table}
+
+\subsubsection{Verificação do tempo de execução real dos algoritmos}
+
+Para alcançar esse objetivo, um programa foi criado para variar o valor do lado da área A com o intuito de simular redes de 4 a 64 enlaces. Além do tempo de execução de cada algoritmo para as 60 redes geradas, também se mostrou importante entender o efeito da variação do número de nós. Os valores utilizados para n são $\{16, 32, 64, 128\}$. 
+
+Então, as redes foram simuladas com diferentes valores de m e n e o tempo de execução de ambos os algoritmos foi medido. Para evitar ruídos provenientes de variações computacionais aleatórias, 30 execuções de cada algoritmo foram feitas para cada cenário, seguindo a regra de [Citar o cara que determinou esse número]. Ao final, o tempo médio das execuções foi utilizado para gerar uma curva e, com isso, poder analisar o tempo real.
+
+\begin{figure}[ht] 
+  \label{fig:tempo} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/tempo16.png} 
+    \caption{$n=16$} 
+    \vspace{4ex}
+  \end{minipage}%%
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/tempo32.png} 
+    \caption{$n=32$} 
+    \vspace{4ex}
+  \end{minipage} 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/tempo64.png} 
+    \caption{$n=64$} 
+    \vspace{4ex}
+  \end{minipage}%% 
+  \begin{minipage}[b]{0.5\linewidth}
+    \centering
+    \includegraphics[width=1\linewidth]{figs/tempo128.png} 
+    \caption{$n=128$} 
+    \vspace{4ex}
+  \end{minipage} 
+\end{figure}
+
+O primeiro fato a ser notado é que o algoritmo recursivo obteve menores tempos de execução para todos os valores de n. Isso reflete a menor complexidade de tempo teórica que algoritmo RECURSIVO tem em comparção com o algoritmo ITERATIVO. Em ambos os algoritmos, com o aumento de n, suas curvas se aproximam cada vez mais de uma exponencial, confirmando suas complexidades computacionais.
 
 \section{Conclusão}
 
