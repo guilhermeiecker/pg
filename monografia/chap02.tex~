@@ -39,24 +39,26 @@ Sobre essas combinações de enlaces é possível definir uma árvore de combina
 
 Nessa árvore, a raiz ($h=0$) é a combinação com nenhum enlace, ou seja, $C=\emptyset$ ($(|C|=0)$). Os filhos de qualquer vértice $C$ da árvore são obtidos combinando $C$ com um enlace $i \in E(G)$, tal que $i \notin C$. Para a mesma rede modelada na Figura \ref{fig:grafo}, é ilustrada sua árvore de combinações de enlaces na Figura \ref{fig:arvore}.
 
-No contexto de árvore de combinações, é importante definir também os descendentes de um vértice. Segundo [XXX], se P(r,v) é um caminho da raiz $r$ a um vértice $v$ na árvore, $v$ é descendente de $u$ se, e somente se, $u \in P(r,v)$. 
+No contexto de árvore de combinações, é importante definir também os descendentes de um vértice. Segundo [XXX], se P(r,v) é um caminho da raiz $r$ a um vértice $v$, $v$ é descendente de $u$ se, e somente se, $u \in P(r,v)$. 
 
-A abstração de árvore de combinações permite que os conjuntos de enlaces sejam percorridos conforme a estrutura da árvore. Com isso, é possível desenvolver métodos sistemáticos para buscar e avaliar a viabilidade das combinações de enlaces. Os métodos mais famosos como Busca em Largura e Busca em Profundidade em árvores podem ser considerados nesse caso. Entretanto, sua utilização exige a construção prévia da árvore que apresenta alta complexidade tanto de tempo, quanto de espaço ($O(2^m)$ em ambos os casos).
+A abstração de árvore de combinações permite que os conjuntos de enlaces sejam percorridos conforme a estrutura da árvore. Com isso é possível desenvolver métodos sistemáticos para buscar e avaliar a viabilidade das combinações de enlaces. Os métodos mais famosos como Busca em Largura e Busca em Profundidade em árvores podem ser considerados nesse caso. Entretanto, sua utilização exige a construção prévia da árvore que apresenta alta complexidade tanto de tempo, quanto de espaço ($O(2^m)$ em ambos os casos).
 
-Os algoritmos que serão apresentados nos próximos capítulos apenas usam a ideia de árvore de combinações em seus projetos. Não há construção da árvore para realizar buscas e isso representa uma diminuição considerável na complexidade de espaço. Além disso, eles fazem uso da propriedade apresentada na próxima seção que, por sua vez, ajuda a reduzir a complexidade de tempo.
+Os algoritmos que serão apresentados nos próximos capítulos apenas usam a ideia de árvore de combinações em seus projetos. Não há construção da árvore para realizar buscas e isso representa uma diminuição considerável na complexidade de espaço. Além disso, eles fazem uso da propriedade apresentada na próxima seção que por sua vez ajuda a reduzir a complexidade de tempo.
 
 \section{Modelos de Interferência}
 
-No capítulo \ref{cap:introducao}, os testes de interferências foram descritos de maneira intuitiva e pouco detalhada. Nessa seção, eles serão definidos formalmente e uma propriedade decorrente da natureza desses testes será apresentada. Essa propriedade é importante pois permitirá o desenvolvimento de algoritmos de enumeração com melhores desempenhos.
-
-Em redes sem fio, o meio físico é compartilhado. Isso significa que, apesar das mensagens geradas pelo transmissor serem destinadas um receptor específico, elas acabam atingindo todos os nós com diferentes intensidades.
+No capítulo \ref{cap:introducao}, o teste de interferência foi descrito de maneira intuitiva e pouco detalhada. Nessa seção, eles serão definidos formalmente e uma propriedade decorrente da natureza desses testes será apresentada. Essa propriedade é importante pois permitirá o desenvolvimento de algoritmos de enumeração com melhores desempenhos.
 
 \subsection{Modelo de Interferência Primária}
 
-Na modelagem de redes sem fio, os enlaces são considerados half-duplex, isto é, os rádios dos dispositivos que compõem a rede não podem transmitir e receber mensagens ao mesmo tempo. Por isso, um nó pode apenas ser transmissor ou receptor em um dado instante de tempo.
+Existem duas características dos enlaces que limitam a comunicação entre os nós em uma rede sem fio: 
+
+\begin{enumerate}
+
+\item Enlaces {\it half-duplex}: Em canais {\it half-duplex}, os rádios dos dispositivos que compõem a rede não podem transmitir e receber mensagens ao mesmo tempo. Por isso, um nó pode apenas ser ou transmissor ou receptor em um dado cenário.
  
 \item Enlaces dedicados: Apesar das mensagens serem transmitidas em várias direções e, portanto, alcançarem diversos nós, elas são direcionadas a um nó específico. 
-
+\end{enumerate}
 
 Ao modelar uma rede em que os enlaces possuam essas duas características, os nós apenas assumem papel de transmissor ou de receptor em, no máximo, um enlace. A figura \ref{fig:primario} ilustra essas características usando diferentes cenários.
 
