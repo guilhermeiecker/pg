@@ -1,1 +1,0 @@
-plot [0:37] "i128.csv" using 1:32:35:36 with yerrorlines
