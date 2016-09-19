@@ -263,9 +263,7 @@ Conjunto & Situação\\ \hline
 O conjunto vazio e os conjuntos com apenas 1 enlace dispensam o teste de viabilidade. O primeiro conjunto a ser testado de verdade é o conjunto \{A,B\} que é reprovado no TIS e, portanto seus descendentes serão "podados". O conjunto \{A,C\} é reprovado no TIP pois A e C compartilham o nó 3 e, com isso, \{A,C,D\} é "podado". Em seguida, \{A,D\} é testado e reprovado no TIS, mas como é uma folha da árvore, a busca continua normalmente, sem "poda". O conjunto \{B,C\} é testado e reprovado no TIP pois B e C compartilham o nó 2 e, consequentemente, \{B,C,D\} é "podado". Finalmente, os conjuntos \{B,D\} e \{C,D\} são testados e classificados como viáveis, já que passam em ambos os testes.
 Conclui-se que os conjuntos de enlaces viáveis obtidos são: $\{\{\},\{A\},\{B\},\{B,D\},\{C\},\{C,D\},\{D\}\}$. 
 
-A justificativa dos resultados dos TIS realizados são mostrados na Figura \ref{table:sinr}. O valor da tolerância de interferência escolhido foi $\beta=316,228$mW. A coluna das distâncias $d(s_j,r_i)$ mostra a distância entre transmissor de j ao receptor de i. Baseada nessa distância, a interferência total $I(j,i)$ na próxima coluna foi calculada. Na última coluna, o valor das {$SINR(i, \{i,j\}$  calculadas são listadas. Aquelas com valores menores que $\beta$ estão sombreadas de vermelho e justificam a combinação relacionada não ter passado no TIS. Para o cálculo da {$SINR(i, \{i,j\}$, o valor do ruído do ambiente utilizado foi $\gamma=8,004 \times 10^{-11}$ mW.
-
-\begin{table}[]
+\begin{table}[H]
 \centering
 \caption{Cálculos das SINR}
 \label{table:sinr}
@@ -282,6 +280,8 @@ A justificativa dos resultados dos TIS realizados são mostrados na Figura \ref{
 \multirow{-2}{*}{\{A,B\}}        & B=(2,1)          & 673,016                              & 146,224                                  & \cellcolor[HTML]{FFCCC9}\textbf{26,66666}     \\ \hline
 \end{tabular}
 \end{table}
+
+A justificativa dos resultados dos TIS realizados são mostrados na Figura \ref{table:sinr}. O valor da tolerância de interferência escolhido foi $\beta=316,228$mW. A coluna das distâncias $d(s_j,r_i)$ mostra a distância entre transmissor de j ao receptor de i. Baseada nessa distância, a interferência total $I(j,i)$ na próxima coluna foi calculada. Na última coluna, o valor das {$SINR(i, \{i,j\}$  calculadas são listadas. Aquelas com valores menores que $\beta$ estão sombreadas de vermelho e justificam a combinação relacionada não ter passado no TIS. Para o cálculo da {$SINR(i, \{i,j\}$, o valor do ruído do ambiente utilizado foi $\gamma=8,004 \times 10^{-11}$ mW.
 
 %No Apêndice A, é apresentada a justificativa para a escolha de todos os parâmetros para o Modelo de Interferência Secundária. Os parâmetros usados para construir esse exemplo também foram utilizados na parte de implementação para gerar as redes usadas nos experimentos. 
 

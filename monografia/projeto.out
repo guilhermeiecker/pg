@@ -1,55 +1,55 @@
-\BOOKMARK [0][-]{chapter*.3}{Lista de Figuras}{}% 1
-\BOOKMARK [0][-]{chapter*.4}{Lista de Tabelas}{}% 2
-\BOOKMARK [0][-]{chapter*.5}{Lista de Abreviaturas}{}% 3
-\BOOKMARK [0][-]{chapter.1}{Introdu\347\343o}{}% 4
-\BOOKMARK [1][-]{section.1.1}{Motiva\347\343o}{chapter.1}% 5
-\BOOKMARK [1][-]{section.1.2}{Descri\347\343o do Problema}{chapter.1}% 6
-\BOOKMARK [1][-]{section.1.3}{Objetivo}{chapter.1}% 7
-\BOOKMARK [1][-]{section.1.4}{Metodologia}{chapter.1}% 8
-\BOOKMARK [1][-]{section.1.5}{Organiza\347\343o do Texto}{chapter.1}% 9
-\BOOKMARK [0][-]{chapter.2}{Modelagem}{}% 10
-\BOOKMARK [1][-]{section.2.1}{Introdu\347\343o}{chapter.2}% 11
-\BOOKMARK [1][-]{section.2.2}{Modelando Redes usando Grafos}{chapter.2}% 12
-\BOOKMARK [1][-]{section.2.3}{\301rvore de Combina\347\365es}{chapter.2}% 13
-\BOOKMARK [1][-]{section.2.4}{Modelos de Interfer\352ncia}{chapter.2}% 14
-\BOOKMARK [2][-]{subsection.2.4.1}{Modelo de Interfer\352ncia Prim\341ria}{section.2.4}% 15
-\BOOKMARK [2][-]{subsection.2.4.2}{Teste de Interfer\352ncia Prim\341ria}{section.2.4}% 16
-\BOOKMARK [2][-]{subsection.2.4.3}{Modelo de Interfer\352ncia Secund\341ria}{section.2.4}% 17
-\BOOKMARK [2][-]{subsection.2.4.4}{Teste de Interfer\352ncia Secund\341ria}{section.2.4}% 18
-\BOOKMARK [2][-]{subsection.2.4.5}{Viabilidade de Conjuntos}{section.2.4}% 19
-\BOOKMARK [2][-]{subsection.2.4.6}{Inviabilidade Heredit\341ria}{section.2.4}% 20
-\BOOKMARK [1][-]{section.2.5}{Exemplo com Busca em Profundidade}{chapter.2}% 21
-\BOOKMARK [1][-]{section.2.6}{Vantagens e Desvantagens}{chapter.2}% 22
-\BOOKMARK [1][-]{section.2.7}{Conclus\343o}{chapter.2}% 23
-\BOOKMARK [0][-]{chapter.3}{Projeto do Algoritmo Iterativo}{}% 24
-\BOOKMARK [1][-]{section.3.1}{Introdu\347\343o}{chapter.3}% 25
-\BOOKMARK [1][-]{section.3.2}{Representando Combina\347\365es Usando Inteiros}{chapter.3}% 26
-\BOOKMARK [2][-]{subsection.3.2.1}{Codifica\347\343o}{section.3.2}% 27
-\BOOKMARK [2][-]{subsection.3.2.2}{Decodifica\347\343o}{section.3.2}% 28
-\BOOKMARK [1][-]{section.3.3}{Percorrendo a \301rvore Iterativamente}{chapter.3}% 29
-\BOOKMARK [1][-]{section.3.4}{\215Podando\216 a \301rvore de Combina\347\365es}{chapter.3}% 30
-\BOOKMARK [1][-]{section.3.5}{Algoritmo Iterativo para Enumera\347\343o de Conjuntos de Enlaces Vi\341veis}{chapter.3}% 31
-\BOOKMARK [1][-]{section.3.6}{Conclus\343o}{chapter.3}% 32
-\BOOKMARK [0][-]{chapter.4}{Projeto do Algoritmo Recursivo}{}% 33
-\BOOKMARK [1][-]{section.4.1}{Introdu\347\343o}{chapter.4}% 34
-\BOOKMARK [1][-]{section.4.2}{Percorrendo a \301rvore Recursivamente}{chapter.4}% 35
-\BOOKMARK [1][-]{section.4.3}{\215Podando\216 a \301rvore de Combina\347\365es}{chapter.4}% 36
-\BOOKMARK [1][-]{section.4.4}{Reaproveitando C\341lculos}{chapter.4}% 37
-\BOOKMARK [1][-]{section.4.5}{Algoritmo Recursivo para Enumera\347\343o de Conjuntos de Enlaces Vi\341veis}{chapter.4}% 38
-\BOOKMARK [1][-]{section.4.6}{Conclus\343o}{chapter.4}% 39
-\BOOKMARK [0][-]{chapter.5}{Implementa\347\343o e Resultados}{}% 40
-\BOOKMARK [1][-]{section.5.1}{Introdu\347\343o}{chapter.5}% 41
-\BOOKMARK [1][-]{section.5.2}{Otimiza\347\365es}{chapter.5}% 42
-\BOOKMARK [2][-]{subsection.5.2.1}{Acoplamentos em Grafos}{section.5.2}% 43
-\BOOKMARK [2][-]{subsection.5.2.2}{Limitando a Itera\347\343o Sobre Conjuntos}{section.5.2}% 44
-\BOOKMARK [2][-]{subsection.5.2.3}{Reformulando o TIP}{section.5.2}% 45
-\BOOKMARK [1][-]{section.5.3}{Detalhes de Implementa\347\343o}{chapter.5}% 46
-\BOOKMARK [1][-]{section.5.4}{Simula\347\365es e Resultados}{chapter.5}% 47
-\BOOKMARK [1][-]{section.5.5}{Conclus\343o}{chapter.5}% 48
-\BOOKMARK [0][-]{chapter.6}{Conclus\365es e Trabalhos Futuros}{}% 49
-\BOOKMARK [1][-]{section.6.1}{Conclus\365es}{chapter.6}% 50
-\BOOKMARK [1][-]{section.6.2}{Trabalhos Futuros}{chapter.6}% 51
-\BOOKMARK [2][-]{subsection.6.2.1}{Paraleliza\347\343o dos Algoritmos}{section.6.2}% 52
-\BOOKMARK [2][-]{subsection.6.2.2}{Teste de M\341scaras}{section.6.2}% 53
-\BOOKMARK [2][-]{subsection.6.2.3}{Aumentar Redes}{section.6.2}% 54
-\BOOKMARK [0][-]{chapter*.53}{Bibliografia}{}% 55
+\BOOKMARK [0][-]{chapter*.3}{Lista de Figuras}{}
+\BOOKMARK [0][-]{chapter*.4}{Lista de Tabelas}{}
+\BOOKMARK [0][-]{chapter*.5}{Lista de Abreviaturas}{}
+\BOOKMARK [0][-]{chapter.1}{Introdu\347\343o}{}
+\BOOKMARK [1][-]{section.1.1}{Motiva\347\343o}{chapter.1}
+\BOOKMARK [1][-]{section.1.2}{Descri\347\343o do Problema}{chapter.1}
+\BOOKMARK [1][-]{section.1.3}{Objetivo}{chapter.1}
+\BOOKMARK [1][-]{section.1.4}{Metodologia}{chapter.1}
+\BOOKMARK [1][-]{section.1.5}{Organiza\347\343o do Texto}{chapter.1}
+\BOOKMARK [0][-]{chapter.2}{Modelagem}{}
+\BOOKMARK [1][-]{section.2.1}{Introdu\347\343o}{chapter.2}
+\BOOKMARK [1][-]{section.2.2}{Modelando Redes usando Grafos}{chapter.2}
+\BOOKMARK [1][-]{section.2.3}{\301rvore de Combina\347\365es}{chapter.2}
+\BOOKMARK [1][-]{section.2.4}{Modelos de Interfer\352ncia}{chapter.2}
+\BOOKMARK [2][-]{subsection.2.4.1}{Modelo de Interfer\352ncia Prim\341ria}{section.2.4}
+\BOOKMARK [2][-]{subsection.2.4.2}{Teste de Interfer\352ncia Prim\341ria}{section.2.4}
+\BOOKMARK [2][-]{subsection.2.4.3}{Modelo de Interfer\352ncia Secund\341ria}{section.2.4}
+\BOOKMARK [2][-]{subsection.2.4.4}{Teste de Interfer\352ncia Secund\341ria}{section.2.4}
+\BOOKMARK [2][-]{subsection.2.4.5}{Viabilidade de Conjuntos}{section.2.4}
+\BOOKMARK [2][-]{subsection.2.4.6}{Inviabilidade Heredit\341ria}{section.2.4}
+\BOOKMARK [1][-]{section.2.5}{Exemplo com Busca em Profundidade}{chapter.2}
+\BOOKMARK [1][-]{section.2.6}{Vantagens e Desvantagens}{chapter.2}
+\BOOKMARK [1][-]{section.2.7}{Conclus\343o}{chapter.2}
+\BOOKMARK [0][-]{chapter.3}{Projeto do Algoritmo Iterativo}{}
+\BOOKMARK [1][-]{section.3.1}{Introdu\347\343o}{chapter.3}
+\BOOKMARK [1][-]{section.3.2}{Representando Combina\347\365es Usando Inteiros}{chapter.3}
+\BOOKMARK [2][-]{subsection.3.2.1}{Codifica\347\343o}{section.3.2}
+\BOOKMARK [2][-]{subsection.3.2.2}{Decodifica\347\343o}{section.3.2}
+\BOOKMARK [1][-]{section.3.3}{Percorrendo a \301rvore Iterativamente}{chapter.3}
+\BOOKMARK [1][-]{section.3.4}{\215Podando\216 a \301rvore de Combina\347\365es}{chapter.3}
+\BOOKMARK [1][-]{section.3.5}{Algoritmo Iterativo para Enumera\347\343o de Conjuntos de Enlaces Vi\341veis}{chapter.3}
+\BOOKMARK [1][-]{section.3.6}{Conclus\343o}{chapter.3}
+\BOOKMARK [0][-]{chapter.4}{Projeto do Algoritmo Recursivo}{}
+\BOOKMARK [1][-]{section.4.1}{Introdu\347\343o}{chapter.4}
+\BOOKMARK [1][-]{section.4.2}{Percorrendo a \301rvore Recursivamente}{chapter.4}
+\BOOKMARK [1][-]{section.4.3}{\215Podando\216 a \301rvore de Combina\347\365es}{chapter.4}
+\BOOKMARK [1][-]{section.4.4}{Reaproveitando C\341lculos}{chapter.4}
+\BOOKMARK [1][-]{section.4.5}{Algoritmo Recursivo para Enumera\347\343o de Conjuntos de Enlaces Vi\341veis}{chapter.4}
+\BOOKMARK [1][-]{section.4.6}{Conclus\343o}{chapter.4}
+\BOOKMARK [0][-]{chapter.5}{Implementa\347\343o e Resultados}{}
+\BOOKMARK [1][-]{section.5.1}{Introdu\347\343o}{chapter.5}
+\BOOKMARK [1][-]{section.5.2}{Otimiza\347\365es}{chapter.5}
+\BOOKMARK [2][-]{subsection.5.2.1}{Acoplamentos em Grafos}{section.5.2}
+\BOOKMARK [2][-]{subsection.5.2.2}{Limitando a Itera\347\343o Sobre Conjuntos}{section.5.2}
+\BOOKMARK [2][-]{subsection.5.2.3}{Reformulando o TIP}{section.5.2}
+\BOOKMARK [1][-]{section.5.3}{Detalhes de Implementa\347\343o}{chapter.5}
+\BOOKMARK [1][-]{section.5.4}{Simula\347\365es e Resultados}{chapter.5}
+\BOOKMARK [1][-]{section.5.5}{Conclus\343o}{chapter.5}
+\BOOKMARK [0][-]{chapter.6}{Conclus\365es e Trabalhos Futuros}{}
+\BOOKMARK [1][-]{section.6.1}{Conclus\365es}{chapter.6}
+\BOOKMARK [1][-]{section.6.2}{Trabalhos Futuros}{chapter.6}
+\BOOKMARK [2][-]{subsection.6.2.1}{Paraleliza\347\343o dos Algoritmos}{section.6.2}
+\BOOKMARK [2][-]{subsection.6.2.2}{Teste de M\341scaras}{section.6.2}
+\BOOKMARK [2][-]{subsection.6.2.3}{Aumentar Redes}{section.6.2}
+\BOOKMARK [0][-]{chapter*.53}{Bibliografia}{}
