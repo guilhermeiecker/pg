@@ -267,7 +267,7 @@ Conjunto & Situação\\ \hline
 O conjunto vazio e os conjuntos com apenas 1 enlace dispensam o teste de viabilidade. O primeiro conjunto a ser testado de verdade é o conjunto \{A,B\} que é reprovado no TIS e, portanto seus descendentes serão "podados". O conjunto \{A,C\} é reprovado no TIP pois A e C compartilham o nó 3 e, com isso, \{A,C,D\} é "podado". Em seguida, \{A,D\} é testado e reprovado no TIS, mas como é uma folha da árvore, a busca continua normalmente, sem "poda". O conjunto \{B,C\} é testado e reprovado no TIP pois B e C compartilham o nó 2 e, consequentemente, \{B,C,D\} é "podado". Finalmente, os conjuntos \{B,D\} e \{C,D\} são testados e classificados como viáveis, já que passam em ambos os testes.
 Conclui-se que os conjuntos de enlaces viáveis obtidos são: $\{\{\},\{A\},\{B\},\{B,D\},\{C\},\{C,D\},\{D\}\}$. 
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
 \caption{Cálculos das SINR}
 \label{table:sinr}
