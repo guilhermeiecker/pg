@@ -1,16 +1,22 @@
-This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: projeto.aux
+A level-1 auxiliary file: agradecimento.aux
+A level-1 auxiliary file: dedicatoria.aux
+A level-1 auxiliary file: resumo.aux
+A level-1 auxiliary file: abstract.aux
 A level-1 auxiliary file: chap01.aux
 A level-1 auxiliary file: chap02.aux
 A level-1 auxiliary file: chap03.aux
 A level-1 auxiliary file: chap04.aux
 A level-1 auxiliary file: chap05.aux
+A level-1 auxiliary file: chap06.aux
 The style file: coppetex/coppe-unsrt.bst
 Database file #1: projeto.bib
 Warning--empty year in elevationdata
 You've used 2 entries,
             2628 wiz_defined-function locations,
-            559 strings with 4380 characters,
+            564 strings with 4444 characters,
 and the built_in function-call counts, 606 in all, are:
 = -- 47
 > -- 14

@@ -1,12 +1,21 @@
 \documentclass[grad,pdftex,numbers]{coppetex/coppe}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb}
-%\usepackage{multirow}
+\usepackage{multirow}% http://ctan.org/pkg/multirow
+\usepackage{hhline}% http://ctan.org/pkg/hhline
+\usepackage[table,xcdraw]{xcolor}
 %\usepackage{subfigure}
 \usepackage{longtable}
 \usepackage[portuguese]{babel}
 \usepackage[linesnumbered,ruled,vlined,portugues]{algorithm2e}
-%\usepackage{float}
+\usepackage{float}
+\usepackage{subfig}
+%\usepackage{graphicx}
+%\usepackage{caption}
+\usepackage{graphicx}
+%\usepackage{subcaption}
+
+% Tabelas geradas em: http://www.tablesgenerator.com/latex_tables#
 
 \makeloabbreviations
 
@@ -35,9 +44,10 @@
   \maketitle
 
   \frontmatter
-%  \include{agradecimento}
-%  \include{resumo}
-%  \include{abstract}
+  \include{agradecimento}
+  \include{dedicatoria}
+  \include{resumo}
+  \include{abstract}
   \tableofcontents
   \listoffigures
   \listoftables
@@ -49,7 +59,7 @@
   \include{chap03}
   \include{chap04}
   \include{chap05}
-	%\include{chap06}
+	\include{chap06}
 	
   \backmatter
   \bibliographystyle{coppetex/coppe-unsrt}

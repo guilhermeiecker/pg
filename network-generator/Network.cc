@@ -10,12 +10,16 @@ vector<Link> Network::get_links()
 	return links;
 }
 
-void Network::set_nodes()
+void Network::set_nodes(uint64_t s)
 {
+	Node* n;
 	for (uint64_t i = 0; i < num_nodes; i++)
 	{
-		nodes.push_back(Node(i, area_side));
+		n = new Node(i, area_side, s+i);
+		nodes.push_back(*n);
+		cout << "(" << n->get_x() << "," << n->get_y() << ")\t";
 	}
+	cout << endl;
 }
 
 void Network::set_links()
@@ -24,7 +28,7 @@ void Network::set_links()
 	uint64_t index = 0;
 	for (vector<Node>::iterator i = nodes.begin(); i != nodes.end(); ++i) {
 		for (vector<Node>::iterator j = i + 1; j != nodes.end(); ++j) {
-			int coin = ((int) random())%2;
+			//int coin = ((int) random())%2;
 			double pr;
 			double dist = i->distance(*j);
 			if (dist <= max_range) {

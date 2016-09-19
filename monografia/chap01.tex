@@ -1,7 +1,7 @@
 \chapter{Introdução}
 \label{cap:introducao}
 
-O problema de enumeração de conjuntos de enlaces viáveis em redes sem fio surgiu de uma proposta de solução ao problema de escalonamento de enlaces. Neste capítulo, é apresentado o problema de escalonamento de enlaces como motivação, de onde surgiu a necessidade de encontrar e listar os conjuntos de enlaces viáveis, e algumas definições importantes ao longo deste trabalho.
+O problema de enumeração de conjuntos de enlaces viáveis em redes sem fio surgiu de uma proposta de solução ao problema de escalonamento de enlaces. Neste capítulo, são apresentados o problema de escalonamento de enlaces como motivação, de onde surgiu a necessidade de encontrar e listar os conjuntos de enlaces viáveis, e algumas definições importantes ao longo deste trabalho.
 
 Além disso, serão apresentados a descrição formal para o problema de enumaração de conjuntos viáveis, o objetivo deste trabalho, e qual a metodolgia usada para alcançá-lo. Finalmente, é descrito como o restante do texto está organizado.
 
@@ -18,10 +18,7 @@ Existem diversas estratégias para abordar esse problema, algumas delas estão e
 
 \section{Descrição do Problema}
 
-%Em um instante $t$, é analisada uma rede {\it mesh} com diversas transmissões ocorrendo simultaneamente. Em $t$, pode-se ver quais enlaces estão estabelecidos e em qual direção a transmissão está ocorrendo. Os nós e os enlaces em $t$ podem ser interpretados como um grafo direcionado $G=(V, E)$. Nesse grafo, $V$ é o conjunto de nós (vértices) e $E$ é o conjunto de enlaces que possuem uma direção de transmissão específica (arestas direcionadas). 
-
-Deseja-se verificar a viabilidade de todos os conjuntos de enlaces possíveis em uma rede através de testes de interferência.
-%Um conjunto de enlaces $C$ que desejamos analisar é um subconjunto de todos os enlaces da rede., ou seja $C \subset E$.
+Deseja-se verificar a viabilidade de todos os conjuntos de enlaces possíveis em uma rede através de testes de interferência.             
 O problema de enumeração de conjuntos de enlaces viáveis consiste em desenvolver um algoritmo capaz de encontrar todos os conjuntos C, tal que C é viável, com o menor tempo para que possa ser utilizado em aplicações práticas.
 
 Caso a rede tenha $m$ enlaces, então existe um total de $2^m$ conjuntos a serem testados. Com isso, a complexidade de tempo de um algoritmo que usa força bruta pura para explorar todos os conjuntos possíveis e testar sua viabilidade é $O(2^m)$. Isto é, o tempo de excução de tal algoritmo é tão grande que torna-se impraticável utilizá-lo em aplicações reais. Se a complexidade do teste também for considerada, o tempo de execução aumenta ainda mais. 
@@ -44,5 +41,5 @@ Nos capítulos~\ref{cap:iterativo} e ~\ref{cap:recursivo}, o projeto dos algorit
 
 No capítulo~\ref{cap:resultados}, algumas técnicas de otimização adicionais são apresentadas. Depois, é feito um breve resumo das técnicas de implementação e ambientes utilizados. Conclui-se o capítulo descrevendo as simulações e analisando os resultados obtidos.
 
-No capítulo~\ref{cap:conclusao}, as considerações finais são feitas e alguns trabalhos decorrentes desse projeto são propostos.
+No capítulo~\ref{cap:conclusoes}, as considerações finais são feitas e alguns trabalhos decorrentes desse projeto são propostos.
 

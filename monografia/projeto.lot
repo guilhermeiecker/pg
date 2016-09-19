@@ -1,8 +1,14 @@
 \select@language {portuguese}
+\select@language {english}
+\select@language {portuguese}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces Descri\IeC {\c c}\IeC {\~a}o dos Enlaces.}}{12}{table.caption.21}
+\contentsline {table}{\numberline {2.2}{\ignorespaces Resultados dos Testes de Viabilidade.}}{13}{table.caption.23}
+\contentsline {table}{\numberline {2.3}{\ignorespaces C\IeC {\'a}lculos das SINR\relax }}{13}{table.caption.24}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Fun\IeC {\c c}\IeC {\~o}es Aproximadas}}{31}{table.caption.46}
+\contentsline {table}{\numberline {5.2}{\ignorespaces Complexidades Computacionais}}{32}{table.caption.48}
 \addvspace {10\p@ }
-\addvspace {10\p@ }
-\contentsline {table}{\numberline {5.1}{\ignorespaces Fun\IeC {\c c}\IeC {\~o}es Aproximadas}}{27}{table.5.1}
-\contentsline {table}{\numberline {5.2}{\ignorespaces Complexidades Computacionais}}{27}{table.5.2}

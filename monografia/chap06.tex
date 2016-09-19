@@ -1,0 +1,48 @@
+\chapter{Conclusões e Trabalhos Futuros}
+\label{cap:conclusoes}
+
+\section{Conclusões}
+
+A corretude dos algoritmos discutida nos Capítulos \ref{cap:iterativo} e \ref{cap:recursivo} garante que eles conseguem efetivamente enumerar todos os conjuntos de enlaces viáveis em uma rede. Sua complexidade computacional teórica também é analisada nesses capítulos e sua comprovação é observada nos resultados experimentais do Capítilo \ref{cap:resultados}. Observou-se que tais algoritmos terminam sua computação em tempo praticável para a aplicação motivadora deste trabalho. 
+
+As redes usadas como entrada dos algoritmos são limitadas a no máximo 64 enlaces e isso pode reduzir o raio de aplicação dos algoritmos. Além disso, as complexidades computacionais teóricas foram aproximadas para redes de até 128 nós. Não é possível afirmar que o modelo usado para descrever a variação do número de conjuntos viáveis continua válido para redes com mais nós.
+
+Portanto, conclui-se que o problema de enumeração de conjuntos viáveis pode ser resolvido usando os algoritmos propostos e, com isso, o objetivo do trabalho é alcançado.
+
+\section{Trabalhos Futuros}
+
+Como mencionado na seção anterior, ainda existem algumas limitações para o contexto de aplicação dos algoritmos. Na forma de proposta de trabalhos futuro, algumas ideias para reduzir tais limitações são apresentadas.
+
+\subsection{Paralelização dos Algoritmos}
+
+Os dois algoritmos apresentados são sequenciais. Por isso, é intuitivo pensar que melhores tempos de execução podem ser alcançados paralelizando-os. 
+
+\subsubsection{Algoritmo Iterativo Paralelo}
+
+Para o algoritmo ITERATIVO, a ideia é dividir a contagem. Existem $m$ ramos principais, uma para cada enlace da rede, que partem da raiz da árvore de combinações. Cada ramo principal possui $2^i$ vértices na árvore, onde $i$ é o índice do enlace $e_i$ que define a raiz desse ramo. 
+
+Cada ramo é atribuído a uma das $T$ threads disponíveis. Mesmo que $T < m$, os $T$ primeiros ramos são alocados nas $T$ threads e, a medida que as threads terminam a contagem no ramo, elas passam para o próximo ramo $T+1, T+2, ..., m$. É importante manter a divisão dos m ramos principais para garantir que os saltos em uma porção da contagem não se sobreponham a outras porções.
+
+A Figura \ref{fig:saltos} será usada para exemplificar o paralelismo. Em um dado ambiente computacional existem $T=3$ threads disponíveis. Como descrito, cada ramo principal da árvore será tratado por uma thread. Inicialmente, a thread $t_1$ cuidará do ramo $\{1\}$, a thread $t_2$ cuidará do ramo $\{2, 3\}$ e a thread $t_3$ cuidará do ramo $\{4, 5, 6, 7\}$. Assim que uma das threads terminar sua computação inicial ela assumirá o próximo ramo. 
+
+Por exemplo, se $t_1$ acabar sua computação primeiro, ela cuidará do ramo $\{8,9,10,11,12,13,14,15\}$. Qualquer salto que saia de um ramo para o outro, resulta no término da thread, que será atribuída para outro ramo ainda não coberto, se houver. Por exemplo, nessa figura, a thread $t_3$ está cuidando do ramo com raiz em 4, que não é viável. Normalmente, um salto seria dado de 4 para 8, que é o pai do último ramo principal. Contudo, como $t_1$ acaba antes de $t_3$, $t_1$ já está cuidando desse ramo e, portanto, $t_3$ simplesmente encerra sua computação.  
+ 
+\subsubsection{Algoritmo Recursivo Paralelo}
+
+Uma abordagem semelhante seria adotada para o algoritmo RECURSIVO. Nesse algoritmo, sua primeira execução, ou seja, quando B=0, é diferenciada das demais. O tratamento para o caso em que B=0 é chamar RECURSIVO para todos os m filhos de 0 na árvore de combinações, ou seja, as raizes dos ramos principais. Logo, basta que a iteração sobre os filhos de 0 seja paralelizada de maneira análoga ao caso do algoritmo ITERATIVO. 
+
+\subsection{Teste de Máscaras}
+
+Seja $C$ um vértice de uma árvore de cobinações. Se $C$ não é viável, então se os enlaces do conjunto $C$ também aparecerem em outro conjunto $C'$, $C'$ também não é viável. A prova para esse fato é anóloga à justficativa da propriedade de Inviabilidade Hereditária apresentada no Capítulo \ref{cap:modelagem}.
+
+Seja $B$ um número inteiro que codifica o conjunto $C$ não viável. Seja $\{b_{m-1}, b_{m-2}, ..., b_1, b_0\}$ a sequência dos bits de $B$ que representam a pertinência dos enlaces de $E(G)$ em $C$. Os bits ativos em $B$ formam um padrão, de forma que, qualquer número inteiro $B'$ que contenha esse padrão também não é viável.
+
+A ideia do Teste de Máscara é, uma vez que um conjunto não viável é encontrado, seu valor codificado $B$ é adicionado a uma lista de máscaras. Sempre que a viabilidade de outros conjuntos forem testadas, tenta-se encontrar o padrão de bits de todos os números na lista de máscaras. Se o padrão de pelo menos uma máscara for encontrado no número que codifica o conjunto testado, então tal conjunto também não é viável. Por exemplo, se $(3)_{10} = (0011)_2$ não for viável, então certamente $(7)_{10} = (0111)_2$, $(11)_{10} = (1011)_2$ e $(15)_{10} = (1111)_2$ também não serão.
+
+O teste para checar se o padrão de $B$ está contido em $B'$ pode ser feito por uma simples operação bit-a-bit. Contudo, se há muitos conjuntos não viáveis em uma rede, a complexidade de tempo para esse teste pode aumentar muito. Por isso, a melhor estratégia para implementar o Teste de Máscaras é fazê-lo em paralelo ao teste de viabilidade.
+
+\subsection{Aumentar Redes}
+
+O limitante mais grave dos algoritmos apresentados é o fato de só funcionarem para redes de até 64 enlaces. Essa limitação surge devido as arquiteturas dos computadores atuais serem de, no máximo, 64 bits. Por isso, em qualquer linguagem de programação, o maior inteiro que se pode ter é $2^{64}-1$. Logo, como os algoritmos baseiam-se em números inteiros que representam os conjuntos de enlaces, apenas $2^{64}-1$ conjuntos de enlaces pode ser testado.
+
+Contudo, existem bibliotecas que oferecem manipulação numérica para inteiros maiores que 64 bits. Para C++, a biblioteca XXX oferece uma classe que permite representar inteiros até 128 bem como as operações matemáticas básicas, que são suficientes para escrever os algoritmos. Apesar de existir recursos para isso, ao fazer a adaptação para um cenário em que 128 enlaces são permitidos, novas complexidades devem ser analisadas para verificar se a aplicabilidade dos algoritmos se mantém.

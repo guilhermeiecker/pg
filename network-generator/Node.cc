@@ -1,9 +1,9 @@
 #include "Node.h"
 
-Node::Node(uint64_t _id, double _area): id(_id)
+Node::Node(uint64_t _id, double _area, uint64_t _s): id(_id)
 {
 	degree = 0;
-	random_position(_area);
+	random_position(_area, _s);
 }
 
 uint64_t Node::get_id()
@@ -61,8 +61,9 @@ double Node::distance(Node n)
 	return sqrt(pow(x - n.get_x(), 2) + pow(y - n.get_y(), 2));
 }
 
-void Node::random_position(double area)
+void Node::random_position(double area, uint64_t seed)
 {
+	srand(seed);
 	x = ((double)rand() / (RAND_MAX)) * area;
 	y = ((double)rand() / (RAND_MAX)) * area;
 }

@@ -15,7 +15,8 @@ private:
 	uint64_t num_nodes;
 	double area_side;
 	double tpower;
-
+	uint64_t seed;
+	
 	vector<Node> nodes;
 	vector<Link> links;
 
@@ -31,16 +32,16 @@ public:
 	const double tpower_dBm = 10 * log10(tpower);
 	const double max_range = d0*pow(10, (tpower_dBm - noise_dBm - beta_dB - l0_dB) / (10 * alpha));
 
-	Network(uint64_t _n = 100, double _a = 3000.0, double _p = 300.0) : num_nodes(_n), area_side(_a), tpower(_p)
+	Network(uint64_t _n = 100, double _a = 3000.0, double _p = 300.0, uint64_t _s = 0) : num_nodes(_n), area_side(_a), tpower(_p), seed(_s)
 	{
-		set_nodes();
+		set_nodes(seed);
 		set_links();
 	}
 
 	vector<Node> get_nodes();
 	vector<Link> get_links();
 
-	void set_nodes();
+	void set_nodes(uint64_t);
 	void set_links();
 
 	Link* get_link(uint64_t);

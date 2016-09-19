@@ -3,34 +3,43 @@
 
 \section{Introdução}
 
-%Neste capítulo, alguns modelos são apresentados. para o problema proposto que será a base para os algoritmos introduzidos nos Capítulos 3 e 4. Em seguida, é apresentado como as interferências foram modeladas, como os testes de interferência são definidos e uma propriedade decorrente da modelagem que auxilia na garantia de menores complexidades de tempo.
+Neste capítulo, é apresentado como modelar uma rede usando grafos e como modelar as combinações de enlaces em uma árvore de combinações. 
+
+Os modelos de iterferências são apresentados com o intuito de definir o teste de viabilidade e, futuramente, permitir algumas otimizações.
+
+Ao final, é apresentado um exemplo de como enumerar os conjuntos viáveis ingenuamente usando os modelos introduzidos com Busca em Largura. As vantagens e desvantagens dessa abordagem são discutidas.
 
 \section{Modelando Redes usando Grafos}
 
-Para modelar uma rede qualquer usando um grafo $G=(V,E)$, basta fazer as seguintes representações:
+Para modelar uma rede qualquer usando um grafo $G=(V,E)$, basta fazer as seguintes representações: Os nós da rede são os vértices do grafo, ou seja constituem o conjunto $V(G)$ e, por convenção, $|V|=n$. Os enlaces da rede são as arestas do grafo, ou seja constituem o conjunto $E(G)$ e, por convenção, $|E|=m$.
 
-\begin{itemize}
-\item Os nós da rede são os vértices do grafo, ou seja constituem o conjunto V. Por convenção, $|V|=n$
-\item Os enlaces da rede são as arestas do grafo, ou seja constituem o conjunto E. Por convenção, $|E|=m$
-\end{itemize}
+Para esse trabalho, é importante que as arestas de G sejam direcionadas já que os enlaces especificam a direção da comunicação. A Figura \ref{fig:grafo} mostra um exemplo de como tal modelagem pode ser feita para uma rede bem simples com $n=5$ e $m=4$.
 
-Para esse trabalho, é importante que as arestas de G sejam direcionadas já que os enlaces especificam a direção da comunicação. A figura abaixo mostra um exemplo de como tal modelagem pode ser feita para uma rede bem simples com $n=5$ e $m=4$.
+\begin{figure}[htb]
+\centering
+\includegraphics[width=1\textwidth]{figs/grafo}
+\caption[Modelo da rede (a) usando o grafo (b).]
+{Modelo da rede (a) usando o grafo (b).}
+\label{fig:grafo}
+\end{figure}
 
-Modelar uma rede como um grafo é bastante útil pois permite pegar emprestado algumas propriedades úteis da Teoria dos Grafos e fazer diversas manipulações matemáticas. Especificamente, nesse trabalho, a abstração em grafos também ajudou muito na etapa de implementação dos algoritmos.
+Modelar uma rede como um grafo é bastante útil pois permite pegar emprestado algumas propriedades importantes da Teoria dos Grafos e fazer diversas manipulações matemáticas. Especificamente, nesse trabalho, a abstração em grafos também ajudou muito na etapa de implementação dos algoritmos.
 
 \section{Árvore de Combinações}
 
-Seja um grafo direcionado $G=(V,E)$ conforme aquele utilizado para modelar uma rede na seção anterior. O conjunto de arestas E representa todos os enlaces ativos para essa rede. É possível definir um subgrafo $C=(V,E)$ de G, tal que $V(C)=V(G)$ e $E(C)' \subseteq E(G)$. Com isso, tem-se que o menor tamanho de $E(C)$ é zero, ou seja, não há enlaces ativos ($E(C)=\emptyset$), e o maior tamanho de $E(C)$ é o próprio $E(G)$ com todos os enlaces possíveis ativos ($E(C)=E(G)$). Entre esses dois extremos, existem $2^m$ combinações de enlaces possíveis, que são subconjuntos de $G$ definidos pela escolha de quais enlaces estão ativos.
+Seja um grafo direcionado $G=(V,E)$ conforme aquele utilizado para modelar uma rede na seção anterior. É possível definir um conjunto $C$, tal que $C \subseteq E(G)$. Com isso, tem-se que o menor tamanho de $C$ é zero, ou seja, não há enlaces ativos ($C=\emptyset$), e o maior tamanho é o próprio $E(G)$ com todos os enlaces possíveis ativos ($C=E(G)$). Entre esses dois extremos, existem $2^m$ combinações de enlaces possíveis, que são subconjuntos de $E(G)$ definidos pela escolha de quais enlaces estão ativos.
 
-Sobre essas combinações de enlaces é possível definir uma árvore de combinações $A=(V,E)$. Os vértices da árvore são todas os subconjuntos possíveis de G. As arestas da árvore ligam qualquer subconjunto em uma altura $h$ a outro em uma altura $h+1$ que pode ser obtido através da adição de um enlace de G. Em $A$, o tamanho de um vértice C a uma altura h na árvore é tal que $m_c=h$.
+Sobre essas combinações de enlaces é possível definir uma árvore de combinações $A=(V,E)$. Os vértices da árvore são todas os subconjuntos possíveis de $E(G)$. As arestas da árvore ligam qualquer subconjunto em uma altura $h$ a outro em uma altura $h+1$ que pode ser obtido através da adição de um enlace de $E(G)$. Em $A$, o tamanho de um vértice C a uma altura h na árvore é tal que $|C|=h$.
 
-O número de conjuntos possíveis com tamanho $h=m_c$ é dado pela combinação de $m$ tomados $m_c$ a $m_c$. Nessa árvore, parte-se da combinação vazia $(m_{c}=0)$ como raiz ($h=0$). Os filhos de qualquer vértice $E(C)$ da árvore são obtidos combinando $C$ com um enlace $i \in E$, tal que $i \ni C$. É apresentado na Figura 2.1 um exemplo de árvore de combinações com a estrutura descrita para $m=3$.
-%Figura~\ref{fig:arvoreCombinacoes}
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.7\textwidth]{figs/arvore}
+\caption[Árvore de Combinações para a rede da Figura \ref{fig:grafo}.]
+{Árvore de Combinações para a rede da Figura \ref{fig:grafo}.}
+\label{fig:arvore}
+\end{figure}
 
-
-%FIGURA Árvore de Combinações para m=3
-%\label{fig:arvoreCombinacoes}
-
+Nessa árvore, a raiz ($h=0$) é a combinação com nenhum enlace, ou seja, $C=\emptyset$ ($(|C|=0)$). Os filhos de qualquer vértice $C$ da árvore são obtidos combinando $C$ com um enlace $i \in E(G)$, tal que $i \notin C$. Para a mesma rede modelada na Figura \ref{fig:grafo}, é ilustrada sua árvore de combinações de enlaces na Figura \ref{fig:arvore}.
 
 No contexto de árvore de combinações, é importante definir também os descendentes e os ancestrais de um vértice. Um descendente de um vértice $u$ em uma árvore é qualquer vértice $v$ que pode ser alcançado a partir de $u$ por algum caminho na árvore. Analogamente, $u$ é ancestral de $v$ se, e somente se, $v$ é descendente de $u$. 
 
@@ -53,13 +62,19 @@ Existem duas características dos enlaces que limitam a comunicação entre os n
 \item Enlaces dedicados: Apesar das mensagens serem transmitidas em várias direções e, portanto, alcançarem diversos nós, elas são direcionadas a um nó específico. 
 \end{enumerate}
 
-Ao modelar uma rede em que os enlaces possuam essas duas características, os nós apenas assumem papel de transmissor ou de receptor em, no máximo, um enlace. A figura abaixo mostra algumas redes com e sem essas características.
+Ao modelar uma rede em que os enlaces possuam essas duas características, os nós apenas assumem papel de transmissor ou de receptor em, no máximo, um enlace. A figura \ref{fig:primario} ilustra essas características usando diferentes cenários.
 
-%Figura 2.2: Exemplos de redes em que (a) a condição I é quebrada; (b) a condição II é quebrada; e (c) as condições I e II são atendidas.
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.7\textwidth]{figs/primario}
+\caption[Cenários com diferentes variações das caraterísticas.]
+{Cenários com diferentes variações das caraterísticas.}
+\label{fig:primario}
+\end{figure}
 
 \subsection{Teste de Interferência Primária}
 
-Seja $i$ um enlace de um conjunto $C \subset E$. O nó transmissor e o nó receptor de $i$ são, respectivamente, $s_{i}$ e $r_{i}$. $C$ passa no {\bf Teste de Interferência Primária} (TIP)\abbrev{TIP}{Teste de Interferência Primária} se, e somente se, $\forall i,j \in C, s_{i} \neq s_{j} \& s_{i} \neq r_{j} \& r_{i} \neq s_{j} \& r_{i} \neq r_{j}$. 
+Seja $i$ um enlace de um conjunto $C \subset E$. O nó transmissor e o nó receptor de $i$ são, respectivamente, $s_{i}$ e $r_{i}$. $C$ passa no Teste de Interferência Primária (TIP)\abbrev{TIP}{Teste de Interferência Primária} se, e somente se, $\forall i,j \in C, s_{i} \neq s_{j} \& s_{i} \neq r_{j} \& r_{i} \neq s_{j} \& r_{i} \neq r_{j}$. 
 
 \subsubsection{Descrição do Algoritmo}
 
@@ -122,8 +137,6 @@ SINR(i,C) = \frac{RP(s_{i},r_{i})} {\gamma + I(i,C)}
 \end{equation}
 
 Dado um conjunto de enlaces $C$ e tendo calculado $SINR(i,C)$, $\forall i \in C$, compara-se os valores encontrados com uma constante $\beta$, que representa um valor numérico para o limite de interferência tolerado. Se a interferência for muito alta, o valor do denominador na Equação~\ref{eq:sinr} irá aumentar, fazendo o valor da $SINR(i,C)$ diminuir. 
-
-Nesse trabalho, os seguintes valores para as constantes foram usados: $\alpha = 4.0$, $\beta = YYY$ e $\gamma=XXX$. % explicar o porquê desses valores
 
 \subsection{Teste de Interferência Secundária}
 
@@ -195,21 +208,86 @@ Devido a Inviabilidade Hereditária, no processo de busca e verificação de via
 
 \section{Exemplo com Busca em Profundidade}
 
-O grafo G=(V,E) da Figura 2.3 representa os nós e os enlaces de uma rede mesh sem fio. Deseja-se encontrar os conjuntos de enlaces viáveis dessa rede. 
+A rede modelada na Figura \ref{fig:grafo} será utilizada para construir esse exemplo. O objetivo é encontrar os conjuntos de enlaces viáveis dessa rede. 
 
-%Figura 2.3: Rede Mapeada no Grafo G=(V,E)
+Nesse exemplo, os nós foram distribuídos aleatoriamente em uma área quadrada de lado $2000m$. As potências de transmissão foram fixadas em $TP=350mW=24.7712dBm$ para todos os nós. Nesse cenário, $m=4$ enlaces foram definidos, $E(G)=\{A, B, C, D\}$. Uma descrição dos enlaces contendo a distância entre os nós e a potência de recepção pode ser encontrada na Tabela \ref{table:enlaces}. Os valores do coeficiente e da distância de referência do modelo de propagação utilizados foram, respectivamente, $\alpha=4,0$ e $d_0=1,0$m.
 
-Nesse exemplo, $E=\{1, 2, 3, 4\}$, ou seja, $m=4$. Portanto, existem $2^4 = 16$ combinações de enlaces que são representados na árvore de combinações da Figura 2.4. Uma Busca em Profundidade será executada para percorrer os vértices da árvore que serão verificados usando o algoritmo VIÁVEL. A ordem em que os vértices são visitados é $\{\{\}, \{1\}, \{1,2\}, \{1,2,3\}, \{1,2,3,4\}, \{1,3\}, \{1,3,4\}, \{1,4\}, \{2\}, \{2,3\}, \{2,3,4\}, \{2,4\},$ $\{3\}, \{3,4\}, \{4\}\}$ e pode ser verificada também na Figura 2.4.
+\begin{table}[h]
+\centering
+\caption[Descrição dos Enlaces.]
+{Descrição dos Enlaces.}
+\label{table:enlaces}
+\begin{tabular}{lccc}
+\hline
+Enlace & Distância ($m$) & Potência de Recepção ($10^{-8}mW$)\\ \hline
+A=(4,3)	& $322,583$	& $2,77047$\\
+B=(2,1)	& $292,245$	& $4,11274$\\
+C=(2,3)	& $192,006$	& $22,0730$\\
+D=(5,6)	& $179,399$	& $28,9628$
+\end{tabular}
+\end{table}
 
-%Figura 2.4: Árvore de Combinações dos Enlaces de G
+Existem $2^4 = 16$ combinações de enlaces que são representados na árvore de combinações da \ref{fig:bp}. Uma Busca em Profundidade será executada para percorrer os vértices da árvore que serão verificados usando o algoritmo VIÁVEL. A ordem em que os vértices são visitados é $\{\{\}, \{A\}, \{A,B\}, \{A,B,C\}, \{A,B,C,D\}, \{A,B,D\}, \{A,C\}, \{A,C,D\}, \{A,D\},$ $\{B\}, \{B,C\}, \{B,C,D\},$ $\{B,D\}, \{C\}, \{C,D\}, \{D\}\}$ e pode ser verificada também na Figura \ref{fig:bp}. A Tabela \ref{table:resultadoviabilidade} mostra o resultado dos testes para cada combinação. 
 
-A Tabela 2.1 mostra o resultado dos testes para cada combinação e a Tabela 2.2 mostra os motivos pelos quais as combinações falharam os testes.
+\begin{figure}[htb]
+\centering
+\includegraphics[width=1\textwidth]{figs/bp}
+\caption[Busca em Largura na árvore de combinações.]
+{Busca em Largura na árvore de combinações.}
+\label{fig:bp}
+\end{figure}
 
-%Tabela 2.1
+\begin{table}[h]
+\centering
+\caption[Resultados dos Testes de Viabilidade.]
+{Resultados dos Testes de Viabilidade.}
+\label{table:resultadoviabilidade}
+\begin{tabular}{lcc}
+\hline
+Conjunto & Situação\\ \hline
+\{\} & Dispensa teste\\
+\{A\}	& Dispensa teste\\
+\{A,B\}	& Falha TIS\\
+\{A,B,C\}	& "Podado"\\
+\{A,B,C,D\}	& "Podado"\\
+\{A,B,D\}	& "Podado"\\
+\{A,C\}	& Falha TIP\\
+\{A,C,D\}	& "Podado"\\
+\{A,D\}	& Falha TIS\\
+\{B\}	& Dispensa teste\\
+\{B,C\}	& Falha TIP\\
+\{B,C,D\}	& "Podado"\\
+\{B,D\}	& OK\\
+\{C\}	& Dispensa teste\\
+\{C,D\}	& OK\\
+\{D\}	& Dispensa teste\\
+\end{tabular}
+\end{table}
 
-%Tabela 2.2
+O conjunto vazio e os conjuntos com apenas 1 enlace dispensam o teste de viabilidade. O primeiro conjunto a ser testado de verdade é o conjunto \{A,B\} que é reprovado no TIS e, portanto seus descendentes serão "podados". O conjunto \{A,C\} é reprovado no TIP pois A e C compartilham o nó 3 e, com isso, \{A,C,D\} é "podado". Em seguida, \{A,D\} é testado e reprovado no TIS, mas como é uma folha da árvore, a busca continua normalmente, sem "poda". O conjunto \{B,C\} é testado e reprovado no TIP pois B e C compartilham o nó 2 e, consequentemente, \{B,C,D\} é "podado". Finalmente, os conjuntos \{B,D\} e \{C,D\} são testados e classificados como viáveis, já que passam em ambos os testes.
+Conclui-se que os conjuntos de enlaces viáveis obtidos são: $\{\{\},\{A\},\{B\},\{B,D\},\{C\},\{C,D\},\{D\}\}$. 
 
-Finalmente, os conjuntos de enlaces viáveis obtidos  são: $\{\{\},\{1\},\{2\},\{2,4\},\{3\},\{3,4\},\{4\}\}$. 
+A justificativa dos resultados dos TIS realizados são mostrados na Figura \ref{table:sinr}. O valor da tolerância de interferência escolhido foi $\beta=316,228$mW. A coluna das distâncias $d(s_j,r_i)$ mostra a distância entre transmissor de j ao receptor de i. Baseada nessa distância, a interferência total $I(j,i)$ na próxima coluna foi calculada. Na última coluna, o valor das {$SINR(i, \{i,j\}$  calculadas são listadas. Aquelas com valores menores que $\beta$ estão sombreadas de vermelho e justificam a combinação relacionada não ter passado no TIS. Para o cálculo da {$SINR(i, \{i,j\}$, o valor do ruído do ambiente utilizado foi $\gamma=8,004 \times 10^{-11}$ mW.
+
+\begin{table}[]
+\centering
+\caption{Cálculos das SINR}
+\label{table:sinr}
+\begin{tabular}{|c|l|c|c|c|}
+\hline
+\multicolumn{1}{|l|}{Combinação} & Enlaces($i=s_i,r_i$) & \multicolumn{1}{l|}{$d(s_j,r_i)${[}m{]}} & \multicolumn{1}{l|}{$I(j,i)[10^{-11}$mW$]$} & \multicolumn{1}{l|}{$SINR(i, \{i,j\}$){[}mW{]}} \\ \hline
+                                 & C=(4,6)          & 1263,04                              & 11,7883                                  & \cellcolor[HTML]{9AFF99}1.115,22962           \\ \cline{2-5} 
+\multirow{-2}{*}{\{C,D\}}        & D=(5,6)          & 1590,92                              & 4,68303                                  & \cellcolor[HTML]{9AFF99}2.282,86418           \\ \hline
+                                 & B=(2,1)          & 1744,24                              & 3,24112                                  & \cellcolor[HTML]{9AFF99}365,73588             \\ \cline{2-5} 
+\multirow{-2}{*}{\{B,D\}}        & D=(5,6)          & 1590,92                              & 4,68303                                  & \cellcolor[HTML]{9AFF99}2.282,86418           \\ \hline
+                                 & A=(4,3)          & 1263,04                              & 11,78830                                 & \cellcolor[HTML]{FFCCC9}\textbf{139,97729}    \\ \cline{2-5} 
+\multirow{-2}{*}{\{A,D\}}        & D=(5,6)          & 1327,55                              & 9,65865                                  & \cellcolor[HTML]{9AFF99}1.639,77421           \\ \hline
+                                 & A=(4,3)          & 192,006                              & 22073,0                                  & \cellcolor[HTML]{FFCCC9}\textbf{0,12547}      \\ \cline{2-5} 
+\multirow{-2}{*}{\{A,B\}}        & B=(2,1)          & 673,016                              & 146,224                                  & \cellcolor[HTML]{FFCCC9}\textbf{26,66666}     \\ \hline
+\end{tabular}
+\end{table}
+
+%No Apêndice A, é apresentada a justificativa para a escolha de todos os parâmetros para o Modelo de Interferência Secundária. Os parâmetros usados para construir esse exemplo também foram utilizados na parte de implementação para gerar as redes usadas nos experimentos. 
 
 \section{Vantagens e Desvantagens}
 

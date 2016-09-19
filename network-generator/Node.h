@@ -10,7 +10,7 @@ private:
 	double x, y;
 
 public:
-	Node(uint64_t, double);
+	Node(uint64_t, double, uint64_t);
 
 	uint64_t get_id();
 	uint64_t get_degree();
@@ -27,5 +27,5 @@ public:
 	void dec_degree();
 
 	double distance(Node);
-	void random_position(double);
+	void random_position(double, uint64_t);
 };
