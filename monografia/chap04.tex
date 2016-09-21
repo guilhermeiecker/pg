@@ -1,9 +1,7 @@
 \chapter{Projeto do Algoritmo Recursivo}
 \label{cap:recursivo}
 
-\section{Introdução}
-
-Neste capítulo, será introduzido um novo algoritmo para encontrar os conjuntos de enlaces viáveis em uma rede sem fio. Esse algoritmo é baseado nos mesmos modelos apresentados no Capítulo \ref{cap:modelagem}, portanto ele possui algumas similaridades como o Algoritmo Iterativo introduzido no Capítulo \ref{cap:iterativo}. 
+Neste capítulo, será introduzido um novo algoritmo para encontrar os conjuntos de enlaces viáveis em uma rede sem fio. Esse algoritmo é baseado nos mesmos modelos apresentados no Capítulo \ref{cap:modelagem}, portanto ele possui algumas similaridades com o algoritmo ITERATIVO introduzido no Capítulo \ref{cap:iterativo}. 
 
 Como será mostrado nas próximas seções, o diferencial consiste em uma nova maneira de percorrer a árvore, que permitirá que os cálculos da SINR dos enlaces em uma dada combinação sejam reutilizados por seus descendentes. Finalmente, o algoritmo será detalhado e sua complexidade analisada.
 
@@ -53,7 +51,7 @@ No algoritmo anterior, era fundamental que houvesse um processo de decodificaç�
 
 Ao realizar o procedimento de adição e remoção dos enlaces descrito, dado um conjunto viável $B$, para testar a viabilidade de seus filhos na árvore, basta considerar a contribuição de interferência do enlace adicionado a $B$. Isso significa que todo o cálculo de SINR feito de 0 até $B$ não precisa ser refeito ao testar os filhos de $B$.
 
-Além disso, a SINR já é calculada no momento em que um novo enlace é adicionado ao conjunto. Logo, para esse caso, a complexidade do algoritmo TIS é reduzida. Como as SINR já estão calculadas, basta iterar sobre os enlaces de $C$, fazendo a complexidade de tempo diminuir de $O(m^2)$ para $O(m)$. Como será detalhado no Capítulo \ref{cap:resultados}, o tempo do TIS também será reduzido para $O(m)$. Consequentemente, o algoritmo VIAVEL para o caso recursivo terá complexidade $O(m) + O(m) = O(m)$. 
+Além disso, a SINR já é calculada no momento em que um novo enlace é adicionado ao conjunto. Logo, para esse caso, a complexidade do algoritmo TIS é reduzida. Como as SINRs já estão calculadas, basta iterar sobre os enlaces de $C$, fazendo a complexidade de tempo diminuir de $O(m^2)$ para $O(m)$. Como será detalhado no Capítulo \ref{cap:resultados}, o tempo do TIS também será reduzido para $O(m)$. Consequentemente, o algoritmo VIAVEL para o caso recursivo terá complexidade $O(m) + O(m) = O(m)$. 
 
 \section{Algoritmo Recursivo para Enumeração de Conjuntos de Enlaces Viáveis}
 

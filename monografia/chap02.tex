@@ -24,7 +24,7 @@ Se $PR$ for muito baixa, significa que a distância entre os nós é muito grand
 \label{fig:mesh}
 \end{figure}
 
-Na Figura \ref{fig:mesh}, um exemplo de uma rede simples com $|\mathcal{N}|=6$ nós e $|\mathcal{L}|=4$ enlaces é apresentado. Os nós 2, 4, e 5 estão ativos, ou seja, estão transmitindo, e os quatro enlaces são estabelecidos entre eles e os outros nós dentro de suas áreas de transmissão representadas pelo círculos sombreados. Como no caso do nó 3, é possível que nós estejam dentro de duas áreas de transmissão simultaneamente e, com isso, estejam participando de mais de um enlace como nó receptor. Simetricamente, caso mais de um nó esteja dentro da área de transmissão de um nó ativo, mais de um enlace podem ser estabelecidos, como no caso do nó 2. Não está ilustrado, mas também é possível que em um par de nós, ambos estejam ativos. Nesse caso, um enlace é definido em cada direção.
+Na Figura \ref{fig:mesh}, um exemplo de uma rede simples com $|\mathcal{N}|=6$ nós e $|\mathcal{L}|=4$ enlaces é apresentado. Os nós 2, 4, e 5 estão ativos, ou seja, estão transmitindo, e os quatro enlaces são estabelecidos entre eles e os outros nós dentro de suas áreas de transmissão representadas pelo círculos sombreados. Como no caso do nó 3, é possível que nós estejam dentro de duas áreas de transmissão simultaneamente e, com isso, estejam participando de mais de um enlace como nó receptor. Por outro lado, caso mais de um nó estejam dentro da área de transmissão de um nó ativo, mais de um enlace podem ser estabelecidos, como no caso do nó 2.
 
 Devido a característica de {\it broadcast} em comunicações sem fio, caso um nó $s$ deseje transmitir a um nó $r$, o pacote será difundido através do meio físico e será interceptado por todos os nós da rede. Cada nó receberá o sinal transmitido a uma potência $PR$ que depende da distância até $s$. Para qualquer nó $u$, tal que $u \neq s,r$, a $PR$ a qual $u$ recebe o sinal de $s$ é definida como a interferência que $s$ causa em $r$. Em cenário com diversas transmissões ocorrendo, a coexistência dos enlaces formados a partir das transmissões no mesmo intervalo de tempo pode fazer com que os nós ativos em um enlace interfiram nos demais nós da rede, podendo prejudicar a comunicação. Ainda na Figura \ref{fig:mesh}, as setas tracejadas representam a interferência exercida por um transmissor em outros nós da rede.
 
@@ -50,7 +50,7 @@ Modelar uma rede como um grafo é bastante útil pois permite utilizar algumas p
 \section{Árvore de Combinações}
 \label{section:trees}
 
-É possível definir um conjunto $C$, tal que $C \subseteq \mathcal{L}$, isto é, $C$ é uma combinação dos enlaces de $\mathcal{L}$. Com isso, tem-se que o menor tamanho de $C$ é zero, ou seja, não há enlaces ativos ($C=\emptyset$), e o maior tamanho é o próprio $\mathcal{L}$, com todos os enlaces possíveis ativos ($C=\mathcal{L}$). Se $|\mathcal{L}|=m$, usando a convenção da seção anterior, entre os dois extremos, existem $2^m$ combinações de enlaces possíveis, que são subconjuntos de $\mathcal{L}$ definidos pela escolha de quais enlaces estão ativos.
+É possível definir um conjunto $C$, tal que $C \subseteq \mathcal{L}$, isto é, $C$ é uma combinação dos enlaces de $\mathcal{L}$. Com isso, tem-se que o menor tamanho de $C$ é zero, ou seja, não há enlaces ativos ($C=\varnothing$), e o maior tamanho é o próprio $\mathcal{L}$, com todos os enlaces possíveis ativos ($C=\mathcal{L}$). Se $|\mathcal{L}|=m$, usando a convenção da seção anterior, entre os dois extremos, existem $2^m$ combinações de enlaces possíveis, que são subconjuntos de $\mathcal{L}$ definidos pela escolha de quais enlaces estão ativos.
 
 Sobre essas combinações de enlaces é possível definir uma árvore de combinações $A=(V,E)$. Os vértices da árvore são todas as combinações possíveis dos enlaces em $\mathcal{L}$. As arestas da árvore ligam qualquer combinação em uma altura $h$ a outra combinação em uma altura $h+1$ que pode ser obtido através da adição de um enlace de $E(G)$. Em $A$, o tamanho de uma combinação C a uma altura h na árvore é tal que $|C|=h$.
 
@@ -62,9 +62,9 @@ Sobre essas combinações de enlaces é possível definir uma árvore de combina
 \label{fig:arvore}
 \end{figure}
 
-Nessa árvore, a raiz ($h=0$) é a combinação com nenhum enlace, ou seja, $C=\emptyset$ ($(|C|=0)$). Os filhos de qualquer vértice $C$ da árvore são obtidos combinando $C$ com um enlace $i \in E(G)$, tal que $i \notin C$. Para a mesma rede modelada na Figura \ref{fig:grafo}, é ilustrada sua árvore de combinações de enlaces na Figura \ref{fig:arvore}.
+Nessa árvore, a raiz ($h=0$) é a combinação com nenhum enlace, ou seja, $C=\varnothing$ ($|C|=0$). Os filhos de qualquer vértice $C$ da árvore são obtidos combinando $C$ com um enlace $i \in E(G)$, tal que $i \notin C$. Para a mesma rede modelada na Figura \ref{fig:grafo}, é ilustrada sua árvore de combinações de enlaces na Figura \ref{fig:arvore}.
 
-No contexto de árvore de combinações, é importante definir também os descendentes de um vértice. Segundo [XXX], se $P(r,v)$ é um caminho da raiz $r$ a um vértice $v$ na árvore, $v$ é descendente de $u$ se, e somente se, $u \in P(r,v)$ e $u \neq v$. Como consequência, $\forall v \in V(T)$, tal que $v \neq r$, $v$ é descendente de $r$. 
+No contexto de árvore de combinações, é importante definir também os descendentes de um vértice. Conforme definido no Capítulo 2 de \cite{grafos}, se $P(r,v)$ é um caminho da raiz $r$ a um vértice $v$ na árvore, $v$ é descendente de $u$ se, e somente se, $u \in P(r,v)$ e $u \neq v$. Como consequência, $\forall v \in V(T)$, tal que $v \neq r$, $v$ é descendente de $r$. 
 
 A abstração de árvore de combinações permite que os conjuntos de enlaces sejam percorridos conforme a estrutura da árvore. Com isso, é possível utilizar métodos sistemáticos para buscar e avaliar a viabilidade das combinações de enlaces. Os métodos mais famosos como Busca em Profundidade e Busca em Profundidade em árvores podem ser considerados nesse caso. Entretanto, sua utilização exige a construção prévia da árvore que apresenta alta complexidade tanto de tempo, quanto de espaço ($O(2^m)$ em ambos os casos).
 
@@ -77,9 +77,7 @@ No capítulo \ref{cap:introducao}, os testes de interferências foram descritos 
 
 \subsection{Modelo de Interferência Primária}
 
-Em \cite{primary}, a modelagem de redes sem fio é feita considerando que os enlaces são {\it half-duplex}, isto é, as antenas dos rádios dos dispositivos que compõem a rede não podem transmitir e receber mensagens ao mesmo tempo. Além disso, o transceptor em um nó apenas consegue transmitir para ou receber de um outro nó.
-
-Em resumo, todo nó pode apenas ser transmissor ou receptor em um único enlace. Portanto, a restrição para que uma rede esteja livre de interferências primárias é que nenhum nó pode participar de mais de um enlace. Usando a abstração de grafos introduzida na seção anterior, a figura \ref{fig:primario} ilustra alguns cenários que exploram essa condição.
+Em \cite{primary}, o Modelo de Interferência Primária para redes sem fio é construído considerando que os enlaces são {\it half-duplex}, isto é, as antenas dos rádios dos dispositivos que compõem a rede não podem transmitir e receber mensagens ao mesmo tempo. Logo, todo nó pode apenas ser transmissor ou receptor em um único enlace. Portanto, a restrição para que uma rede esteja livre de interferências primárias é que nenhum nó pode participar de mais de um enlace. Usando a abstração de grafos introduzida na seção anterior, a figura \ref{fig:primario} ilustra alguns cenários que exploram essa condição.
 
 \begin{figure}[htb]
 \centering
@@ -89,18 +87,18 @@ Em resumo, todo nó pode apenas ser transmissor ou receptor em um único enlace.
 \label{fig:primario}
 \end{figure}
 
-Na Figura \ref{fig:primario}, o cenário (a) mostra um nó transmitindo para dois outros nós ao mesmo tempo; (b) mostra um nó recebendo de dois outros nós ao mesmo tempo; (c) mostra um nó transmitindo e recebendo ao mesmo tempo; e (d), diferente dos cenários anteriores, mostra uma rede que respeita a restrição proposta.   
+Na Figura \ref{fig:primario}, o cenário (a) mostra um nó transmitindo para dois outros nós; (b) mostra um nó recebendo de dois outros nós; (c) mostra um nó transmitindo e recebendo ao mesmo tempo; e (d), diferente dos cenários anteriores, mostra uma rede que respeita a restrição proposta.   
 
 \subsection{Teste de Interferência Primária}
 
-Seja $i$ um enlace de um conjunto $C \subset \mathcal{L}$. O nó transmissor e o nó receptor de $i$ são, respectivamente, $s_{i}$ e $r_{i}$. $C$ passa no Teste de Interferência Primária (TIP)\abbrev{TIP}{Teste de Interferência Primária} se, e somente se, $\forall i,j \in C, s_{i} \neq s_{j} \& s_{i} \neq r_{j} \& r_{i} \neq s_{j} \& r_{i} \neq r_{j}$. 
+Seja $i$ um enlace de um conjunto $C \subset \mathcal{L}$. O nó transmissor e o nó receptor de $i$ são, respectivamente, $s_{i}$ e $r_{i}$. $C$ passa no Teste de Interferência Primária (TIP)\abbrev{TIP}{Teste de Interferência Primária} se, e somente se, atende a restrição proposta, ou seja, $\forall i,j \in C, s_{i} \neq s_{j} \& s_{i} \neq r_{j} \& r_{i} \neq s_{j} \& r_{i} \neq r_{j}$. 
 
 \begin{algorithm}[h]
 	\SetVline
 	{\bf input:} Conjunto de enlaces $C$\\
 	\ForEach { $i \in C$}{
 		\ForEach { $j \in C$, $j \neq i$}{
-			\If { (( $s_{i}==s_{j}$ ) $||$ ( $s_{i}==r_{j}$ ) $||$ ( $r_{i}==s_{j}$ ) $||$ ( $r_{i}==r_{j}$ ))}{
+			\If { (( $s_{i}=s_{j}$ ) or ( $s_{i}=r_{j}$ ) or ( $r_{i}=s_{j}$ ) or ( $r_{i}=r_{j}$ ))}{
 				\Return FALSE
 			}
 		}
@@ -112,24 +110,24 @@ Seja $i$ um enlace de um conjunto $C \subset \mathcal{L}$. O nó transmissor e o
 
 \subsubsection{Prova de Corretude}
 
-O TIP apenas formaliza o que foi definido na subseção anterior. Portanto, o algoritmo está correto. 
+Os laços aninhados nas linhas 2 e 3 garantem que todos os pares de enlaces sejam testados. O teste na condicional da linha 4 garante que, em um par de enlaces, se qualquer nó for compartilhado entre eles, o algoritmo retorna falso. Somente depois de testar todas os pares possíveis é que o algoritmo retorna verdadeiro. Como esse comportamento é suficiente para verificar que as restrições do Modelo de Interferência Primária, conclui-se que o algoritmo \ref{alg:tip} está correto.
 
 \subsubsection{Análise da Complexidade}
 
-Para o pior caso, $|C|=m$, então a complexidade de tempo é $O(m^2)$. A complexidade de espaço é definida pelo maior tamanho de $C$ possível, portanto, $O(m)$.
+A complexidade de espaço é $O(m)$ pois o maior tamanho de $C$ possível é $|C|=m$. No o pior caso, mais uma vez $|C|=m$. Portanto, devido os laços aninhados, serão feitas $m^2$ iterações, o que configura a complexidade de tempo como $O(m^2)$. 
 
 \subsection{Modelo de Interferência Secundária}
 
-O Modelo de Interferência Secundária é definido em \cite{sinr, models}. Nesse modelo, é considerada uma grandeza chamada SINR ({\it Signal to Interference plus Noise Ratio}) \abbrev{SINR}{Signal to Interference plus Noise Ratio} que representa uma razão entre o sinal recebido e as interferências sofridas por um nó.
+O Modelo de Interferência Secundária é definido em \cite{sinr, models}. Nesse modelo, é considerada uma grandeza chamada SINR ({\it Signal to Interference plus Noise Ratio}) \abbrev{SINR}{Signal to Interference plus Noise Ratio} que é a razão entre a potência de recepção do sinal recebido em um enlace e as interferências causadas pelas transmissões dos outros enlaces mais o ruído do ambiente.
 
-Conforme discutido na Seção \ref{section:mesh}, nesse trabalho é usado o modelo de propagação {\it log-distance}. A potência de recepão $PR(s,r)$ de um sinal transmitido por $s$ e recebido por $r$ é definido como,
+Para definir matematicamente a SINR, é preciso usar o conceito de potência de recepção discutido na Seção \ref{section:mesh}. A potência de recepção $PR(s,r)$  em um nó $r$ resultante da atenuação do sinal transmitido a uma potência de transmissão $PT$ por um nó $s$ é dada por:
 
 \begin{equation}
 PR(s,r) = \frac{PT}{(\frac{d_{sr}}{d_{0}})^{\alpha}}
 \label{eq:rp}
 \end{equation}
 
-onde $\alpha$ é o coeficiente e $d_{0}$ é a distância de referência do modelo de propagação.
+onde $\alpha$ é o coeficiente e $d_{0}$ é a distância de referência do modelo de propagação {\it log-distance}.
 
 Para um enlace $i$, dado um nó receptor $r_{i}$, consegue-se calcular a potência de recepção em $r_{i}$ em duas situações distintas:
 
@@ -140,7 +138,7 @@ Para um enlace $i$, dado um nó receptor $r_{i}$, consegue-se calcular a potênc
 
 \end{itemize}
 
-A interferência será analisada entre os enlaces que compõem um conjunto $C$. Com isso, denomina-se Interferência Total $I(i,C)$ a soma das interferências que os nós transmissores de todos os outros enlaces de $C$ exercem sobre o nó receptor do enlace $i$. Ou seja,
+A interferência será analisada entre os enlaces que compõem um dado conjunto $C$. Então, denomina-se Interferência Total $I(i,C)$ a soma das interferências que os nós transmissores de todos os outros enlaces de $C$ exercem sobre o nó receptor do enlace $i$. Ou seja,
 
 \begin{equation}
 I(i,C) = \sum_{j \neq i} PR(s_{j},r_{i})
@@ -153,19 +151,17 @@ SINR(i,C) = \frac{PR(s_{i},r_{i})} {\gamma + I(i,C)}
 \label{eq:sinr}  
 \end{equation}
 
-Dado um conjunto de enlaces $C$ e tendo calculado $SINR(i,C)$, $\forall i \in C$, compara-se os valores encontrados com uma constante $\beta$, que representa um valor numérico para o limite de interferência tolerado. Se a interferência for muito alta, o valor do denominador na Equação~\ref{eq:sinr} irá aumentar, fazendo o valor da $SINR(i,C)$ diminuir. 
+Dado um conjunto de enlaces $C$ e tendo calculado $SINR(i,C)$, $\forall i \in C$, compara-se os valores encontrados com uma constante $\beta$, que representa um valor numérico para o limite de interferência tolerado. Se a interferência for muito alta, o valor do denominador na Equação~\ref{eq:sinr} irá aumentar, fazendo o valor da $SINR(i,C)$ diminuir. Logo, enlaces com $SINR(i,C)<\beta$ estão sofrendo uma alta interferência dentro do conjunto de enlaces que pertencem, compromentendo a comunicação entre os nós. Portanto, a restrição para que uma rede esteja livre de interferência secundárias é que a $SINR(i,C)$ dos enlaces em $C$ sejam sempre maiores que $\beta$.
 
 \subsection{Teste de Interferência Secundária}
 
-No modelo de interferência secundária, $\beta$ é um limite inferior, tal que, se $SINR(i,C) \geq \beta$ , $\forall i \in C$, então $C$ passa no Teste de Interferência Secundária (TIS)\abbrev{TIS}{Teste de Interferência Secundária}.
-
-\subsubsection{Descrição do Algoritmo}
+$C$ passa no Teste de Interferência Secundária (TIS) se, e somente se, $C$ atende a restrição proposta no Modelo de Interferência Secundária, ou seja, $\forall i \in C, SINR(i,C) \geq \beta$.
 
 \begin{algorithm}[h]
 	\SetVline
 	{\bf input:} Conjunto de enlaces $C$\\
 	\ForEach { $i \in C$}{
-		\If {(( $SINR(i,C)<\beta$ ))}{
+		\If {( $SINR(i,C)<\beta$ )}{
 			\Return FALSE
 		}
 	}
@@ -176,22 +172,22 @@ No modelo de interferência secundária, $\beta$ é um limite inferior, tal que,
 
 \subsubsection{Prova de Corretude}
 
-O TIS apenas formaliza o que foi definido na subseção 2.2.2. Portanto, está correto.
+O laço da linha 2 garante que todos os enlaces de $C$ sejam testados. Na linha 3, a $SINR(i,C)$ é calculada e seu valor é comparada com $\beta$. Se, para algum enlace, $SINR(i,C)<\beta$, então o algoritmo retorna falso. Somente depois de testar todas os enlaces em $C$ é que o algoritmo retorna verdadeiro. Como esse comportamento é suficiente para verificar que as restrições do Modelo de Interferência Secundária foram atendidos, então conclui-se que o Algoritmo \ref{alg:tis} está correto.
 
 \subsubsection{Análise da Complexidade}
 
-Como itera-se sobre todos os enlaces de C para calcular $SINR(i,C)$, sua complexidade é $O(m)$. Devido o laço definido na linha 2 iterar sobre no máximo m enlaces, então a complexidade de tempo é $O(m^2)$. Analogamente ao TIP, a complexidade de espaço é $O(m)$.
+Analogamente ao TIP, a complexidade de espaço é $O(m)$.
+
+A primeira coisa a ser observada é que, no pior caso, o valor da $SINR(i,C)$ calculado na linha 3 é feito com relação a todos os outros m-1 enlaces de C. Logo, a complexidade do cálculo é $O(m)$. Como itera-se sobre todos os m enlaces de C para calcular $SINR(i,C)$ e comparar seu valor com $\beta$, sua complexidade de tempo é $O(m^2)$. 
 
 \subsection{Viabilidade de Conjuntos}
 
 Dados os modelos de interferência apresentados, se um conjunto de enlace $C$ passar em ambos os testes, então diz-se que $C$ é viável. Essa definição é apresentada em \cite{scheduling}. O algoritmo para testar a viabilidade de um conjunto de enlaces é simplesmente a junção dos algoritmos anteriores.
 
-\subsubsection{Descrição do Algoritmo}
-
 \begin{algorithm}[h]
 	\SetVline
 	{\bf input:} Conjunto de enlaces $C$\\
-		\If { (TIP(C)) $\&\&$ (TIS(C))}{
+		\If { (TIP(C) and TIS(C))}{
 			\Return TRUE
 		}
 		\Else {
@@ -203,21 +199,21 @@ Dados os modelos de interferência apresentados, se um conjunto de enlace $C$ pa
 
 \subsubsection{Prova de Corretude}
 
-A condicional da linha 2 garante que ambos os testes são executados e, somente ao passar necessariamente nos dois, um conjunto C é classificado como viável. Portanto, o algoritmo está correto.
+A condicional da linha 2 garante que ambos os testes são executados e, somente ao passar necessariamente nos dois, um conjunto C é classificado como viável. Portanto, o Algoritmo \ref{alg:viavel} está correto.
 
 \subsubsection{Análise da Complexidade}
 
-O pior caso para o teste de viabilidade é quando o conjunto é viável, ou seja, todas as iterações do TIP e do TIS ocorrem. Para o maior tamanho de C possível, temos que a complexidade de tempo desse algoritmo é $O(m)+O(m^2)=O(m^2)$.
+O pior caso para o teste de viabilidade é quando o conjunto é viável, ou seja, todas as iterações do TIP e do TIS ocorrem. Para o maior tamanho de C possível, temos que a complexidade de tempo desse algoritmo é $O(m^2)+O(m^2)=O(m^2)$.
 
 \subsection{Inviabilidade Hereditária}
 
 Dados os modelos de interferência apresentados, se um conjunto de enlace $C$ passar em ambos os testes, então diz-se que $C$ é viável. Entretanto, nesta subseção, será analisado o que acontece quando C não é viável.
 
-Em um primeiro cenário, assume-se que $C$ não passou no TIP. Nesse caso, pelo menos um nó de $C$ está participando de mais de um enlace, o que é proibido. Seja um conjunto $C'$, tal que $C' = C \cup \{i\}$, onde $i \in E$. A adição do novo enlace $i$ em $C$ pode: ({\bf i}) conectar dois nós contidos em $C$; ({\bf ii}) conectar um nó existente em $C$ a um novo nó; e ({\bf iii}) incluir dois novos nós conectados por $i$. 
+Em um primeiro cenário, assume-se que $C$ não passou no TIP. Nesse caso, pelo menos um nó de $C$ está participando de mais de um enlace, o que é proibido. Seja um conjunto $C'$, tal que $C' = C \cup \{i\}$, onde $i \in \mathcal{L}$. A adição do novo enlace $i$ em $C$ pode: ({\bf i}) conectar dois nós contidos em $C$; ({\bf ii}) conectar um nó existente em $C$ a um novo nó; e ({\bf iii}) incluir dois novos nós conectados por $i$. 
   
 Nas três situações descritas anteriormente, a adição do novo enlace $i$ para formar $C'$ não muda o fato de que $C$ não é viável, independentemente do efeito que $i$ cause no conjunto original $C$. Consequentemente, é possível notar que $C'$ também não é viável.
 
-Em um segundo cenário, assume-se que $C$ passou no TIP, mas não passou no TIS. Nesse caso, $SINR(i,C) < \beta$, para algum enlace $i$. Seja um conjunto $C'$, tal que, $C' = C \cup \{j\}$, onde $j \in E$ e $C'$ também passa no TIP. A adição de um novo enlace ao conjunto $C$ para formar $C'$, apenas fará aumentar a interferência nos enlaces já contidos em $C$. Mesmo que a contribuição na interferência total seja pequena, podendo até ser desprezada, a adição de um novo enlace não muda o fato de que $C$ não é viável. Consequentemente, é possível notar que $C'$ também não é viável.
+Em um segundo cenário, assume-se que $C$ passou no TIP, mas não passou no TIS. Nesse caso, $SINR(i,C) < \beta$, para algum enlace $i$. Seja um conjunto $C'$, tal que, $C' = C \cup \{j\}$, onde $j \in \mathcal{L}$ e $C'$ também passa no TIP. A adição de um novo enlace ao conjunto $C$ para formar $C'$, apenas fará aumentar a interferência nos enlaces já contidos em $C$. Mesmo que a contribuição na interferência total seja pequena, podendo até ser desprezada, a adição de um novo enlace não muda o fato de que $C$ não é viável. Consequentemente, é possível notar que $C'$ também não é viável.
 
 Os dois cenários apresentados garantem a seguinte propriedade: se um conjunto $C$ não é viável, independentemente de qual teste de interferência ele falhou, então qualquer conjunto $C'$, tal que $C \subset C'$ também não é viável. Usando o modelo de árvore de combinações apresentado na seção anterior, se uma combinação $C$ da árvore de combinações não é viável, então todos os seus descendentes na árvore também não são viáveis. Por isso, essa propriedade é denominada Inviabilidade Hereditária. 
 
@@ -228,7 +224,7 @@ Devido a Inviabilidade Hereditária, no processo de busca e verificação de via
 
 A rede modelada na Figura \ref{fig:grafo} será utilizada para construir esse exemplo. O objetivo é encontrar os conjuntos de enlaces viáveis dessa rede. 
 
-Nesse exemplo, os nós foram distribuídos aleatoriamente em uma área quadrada de lado $2000m$. As potências de transmissão foram fixadas em $PT=350mW=24.7712dBm$ para todos os nós. Nesse cenário, $m=4$ enlaces foram definidos, $E(G)=\{A, B, C, D\}$. Uma descrição dos enlaces contendo a distância entre os nós e a potência de recepção pode ser encontrada na Tabela \ref{table:enlaces}. Os valores do coeficiente e da distância de referência do modelo de propagação utilizados foram, respectivamente, $\alpha=4,0$ e $d_0=1,0$m.
+Nesse exemplo, os nós foram distribuídos aleatoriamente em uma área quadrada de lado $2000m$. As potências de transmissão foram fixadas em $PT=350mW=24.7712dBm$ para todos os nós. Nesse cenário, $m=4$ enlaces foram definidos, $\mathcal{L}=\{A, B, C, D\}$. Uma descrição dos enlaces contendo a distância entre os nós e a potência de recepção pode ser encontrada na Tabela \ref{table:enlaces}. Os valores do coeficiente e da distância de referência do modelo de propagação utilizados foram, respectivamente, $\alpha=4,0$ e $d_0=1,0$m.
 
 \begin{table}[h]
 \centering
@@ -303,12 +299,12 @@ Conclui-se que os conjuntos de enlaces viáveis obtidos são: $\{\{\},\{A\},\{B\
 \end{tabular}
 \end{table}
 
-A justificativa dos resultados dos TIS realizados são mostrados na Figura \ref{table:sinr}. O valor da tolerância de interferência escolhido foi $\beta=316,228$mW. A coluna das distâncias $d(s_j,r_i)$ mostra a distância entre transmissor de j ao receptor de i. Baseada nessa distância, a interferência total $I(j,i)$ na próxima coluna foi calculada. Na última coluna, o valor das {$SINR(i, \{i,j\}$  calculadas são listadas. Aquelas com valores menores que $\beta$ estão sombreadas de vermelho e justificam a combinação relacionada não ter passado no TIS. Para o cálculo da {$SINR(i, \{i,j\}$, o valor do ruído do ambiente utilizado foi $\gamma=8,004 \times 10^{-11}$ mW.
+Os cálculos das $SINR$ usadas nos TIS realizados são mostrados na Tabela \ref{table:sinr}. O valor da tolerância de interferência escolhido foi $\beta=316,228$mW. A coluna das distâncias $d(s_j,r_i)$ mostra a distância entre o transmissor de j ao receptor de i. Baseada nessa distância, a interferência total $I(j,i)$ na próxima coluna foi calculada. Na última coluna, o valor das {$SINR(i, \{i,j\}$  calculadas são listadas. Aquelas com valores menores que $\beta$ estão sombreadas de vermelho e justificam a combinação relacionada não ter passado no TIS. Para o cálculo da {$SINR(i, \{i,j\}$, o valor do ruído do ambiente utilizado foi $\gamma=8,004 \times 10^{-11}$ mW.
 
 %No Apêndice A, é apresentada a justificativa para a escolha de todos os parâmetros para o Modelo de Interferência Secundária. Os parâmetros usados para construir esse exemplo também foram utilizados na parte de implementação para gerar as redes usadas nos experimentos. 
 
-\section{Vantagens e Desvantagens}
-\label{section:complexity}
+\section{Revisitando a Complexidade}
+\label{section:complexidade}
 
 No pior caso, o processo de enumeração descrito na seção anterior percorre todos os $2^m$ vértices da árvore, aplicando VIAVEL em cada conjunto de enlaces. Isso representa uma complexidade de $O(2^mm^2)$. Na prática, as redes possuem uma densidade grande. Por isso, é um exagero assumir que $2^m$ combinações serão testadas, pois certamente haverão muitos conjuntos não viáveis. 
 
@@ -319,6 +315,7 @@ Existe, então, um bom candidato a substituir a porção exponencial da complexi
 Mesmo com uma potencial redução da complexidade de tempo ao utilizar o valor $|F|$, a complexidade de espaço desse algoritmo ainda é exponencial. Isso significa que sua implementação está limitada a pequenos valores de m.
 
 \section{Conclusão}
-\label{section:conclusion}
+\label{section:conclusao2}
+
 Nesse capítulo, todo o problema foi modelado usando diferentes abstrações com o intuito de obter um procedimento sistemático para enumerar combinações viáveis. Devido a essa modelagem, a complexidade de tempo encontrada em algoritmos que usam força bruta pode ser modificada para um valor diferente, que será estudado em capítulos futuros. Ainda assim, a complexidade de espaço continua exponencial, inviabilizando sua utilização na maioria das aplicações.
 
