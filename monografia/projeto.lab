@@ -2,9 +2,10 @@
 \begin{theglossary}
   \makeatletter
   \item [SINR] Signal to Interference plus Noise Ratio, p. 
-		\hyperpage{8}
+		\hyperpage{10}
   \item [TIP] Teste de Interfer\IeC {\^e}ncia Prim\IeC {\'a}ria, p. 
-		\hyperpage{7}
+		\hyperpage{8}
   \item [TIS] Teste de Interfer\IeC {\^e}ncia Secund\IeC {\'a}ria, p. 
-		\hyperpage{9}
+		\hyperpage{10}
+  \item [WMN] Wireless Mesh Network, p. \hyperpage{1}
   \end{theglossary}

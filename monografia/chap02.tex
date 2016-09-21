@@ -1,17 +1,41 @@
 \chapter{Modelagem}
 \label{cap:modelagem}
 
-Neste capítulo, é apresentado como modelar uma rede usando grafos e como modelar as combinações de enlaces em uma árvore de combinações. 
+Neste capítulo, as redes em malha sem fio são detalhadas através da descrição dos seus componentes. Depois, é apresentado como modelar uma rede usando grafos e como modelar as combinações de enlaces em uma árvore de combinações. 
 
-Os modelos de iterferências são apresentados com o intuito de definir o teste de viabilidade e, futuramente, permitir algumas otimizações.
+Os modelos de iterferência são apresentados com o intuito de definir o teste de viabilidade e, futuramente, permitir algumas otimizações.
 
-Ao final, é apresentado um exemplo de como enumerar os conjuntos viáveis ingenuamente usando os modelos introduzidos com Busca em Largura. As vantagens e desvantagens dessa abordagem são discutidas.
+Ao final, é apresentado um exemplo de como enumerar os conjuntos viáveis ingenuamente usando os modelos introduzidos com Busca em Profundidade. As vantagens e desvantagens dessa abordagem são discutidas.
 
-\section{Modelagem Redes usando Grafos}
+\section{Redes em Malha Sem Fio}
+\label{section:mesh}
 
-Para modelar uma rede qualquer usando um grafo $G=(V,E)$, basta fazer as seguintes representações: Os nós da rede são os vértices do grafo, ou seja constituem o conjunto $V(G)$ e, por convenção, $|V|=n$. Os enlaces da rede são as arestas do grafo, ou seja constituem o conjunto $E(G)$ e, por convenção, $|E|=m$.
+No capítulo anterior, foi definido que as Redes em Malha Sem Fio (WMN) são compostas por nós que podem funcionar como hosts ou roteadores. Isso quer dizer que os nós tanto executam uma aplicação, quanto auxiliam no rorteamento de pacotes. Além disso, os nós possuem rádios que são responsáveis pela transmissão e recepção no meio sem fio. Em uma WMN $\mathcal{R}$, o conjunto de nós é denotado por $\mathcal{N}$.
 
-Para esse trabalho, é importante que as arestas de G sejam direcionadas já que os enlaces especificam a direção da comunicação. A Figura \ref{fig:grafo} mostra um exemplo de como tal modelagem pode ser feita para uma rede bem simples com $n=5$ e $m=4$.
+Nesse trabalho, é usado o modelo de propagação {\it log-distance}, no qual um sinal transmitido é atenuado por um fator que depende da distância entre o nó transmissor e o nó receptor. Todos os nós da rede transmitem a uma mesma potência de transmissão $PT$. Devido a esse modelo, o sinal transmitido por um nó $s$ é recebido em $r$ a uma potência de recepção $PR$, tal que $PR < PT$.
+
+Se $PR$ for muito baixa, significa que a distância entre os nós é muito grande e os sinais recebidos provavelmente não poderão ser decodificados. É possível, então, definir uma distância máxima $\mathcal{D}$ entre um nó transmissor e um receptor, tal que a potência de recepção é mínima para que a mensagem possa ser decodificada. Quando um determinado nó $s \in \mathcal{N}$ transmite, qualquer nó $r \in \mathcal{N}$ que esteja dentro da área de transmissão centrada em $s$ e com do raio $\mathcal{D}$ consegue receber o sinal transmitido corretamente. Portanto, é possível estabelecer um enlace entre $s$ e $r$. Define-se o conjunto $\mathcal{L}$ contendo todos os enlaces estabelecidos dessa forma. 
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=1\textwidth]{figs/grafo}
+\caption[Modelo da rede (a) usando o grafo (b).]
+{Modelo da rede (a) usando o grafo (b).}
+\label{fig:mesh}
+\end{figure}
+
+Na Figura \ref{fig:mesh}, um exemplo de uma rede simples com $|\mathcal{N}|=6$ nós e $|\mathcal{L}|=4$ enlaces é apresentado. Os nós 2, 4, e 5 estão ativos, ou seja, estão transmitindo, e os quatro enlaces são estabelecidos entre eles e os outros nós dentro de suas áreas de transmissão representadas pelo círculos sombreados. Como no caso do nó 3, é possível que nós estejam dentro de duas áreas de transmissão simultaneamente e, com isso, estejam participando de mais de um enlace como nó receptor. Simetricamente, caso mais de um nó esteja dentro da área de transmissão de um nó ativo, mais de um enlace podem ser estabelecidos, como no caso do nó 2. Não está ilustrado, mas também é possível que em um par de nós, ambos estejam ativos. Nesse caso, um enlace é definido em cada direção.
+
+Devido a característica de {\it broadcast} em comunicações sem fio, caso um nó $s$ deseje transmitir a um nó $r$, o pacote será difundido através do meio físico e será interceptado por todos os nós da rede. Cada nó receberá o sinal transmitido a uma potência $PR$ que depende da distância até $s$. Para qualquer nó $u$, tal que $u \neq s,r$, a $PR$ a qual $u$ recebe o sinal de $s$ é definida como a interferência que $s$ causa em $r$. Em cenário com diversas transmissões ocorrendo, a coexistência dos enlaces formados a partir das transmissões no mesmo intervalo de tempo pode fazer com que os nós ativos em um enlace interfiram nos demais nós da rede, podendo prejudicar a comunicação. Ainda na Figura \ref{fig:mesh}, as setas tracejadas representam a interferência exercida por um transmissor em outros nós da rede.
+
+Na seção \ref{section:interference} serão fornecidos mais detalhes sobre o modelo de propação log-distance e os modelos de interfência.
+
+\section{Modelagem em Grafos}
+\label{section:graphs}
+
+Para modelar uma rede qualquer usando um grafo $G=(V,E)$, basta fazer as seguintes representações: os nós da rede são os vértices do grafo, ou seja constituem o conjunto $V(G)$ e, por convenção, $|V(G)|=n$; e os enlaces da rede são as arestas do grafo, ou seja constituem o conjunto $E(G)$ e, por convenção, $|E(G)|=m$.
+
+Para esse trabalho, é importante que as arestas de G sejam direcionadas já que os enlaces especificam a direção da comunicação em um dado intervalo de tempo. A Figura \ref{fig:grafo} mostra um exemplo de como tal modelagem pode ser feita para a rede $\mathcal{R}$ da seção anterior usando um grafo $G=(V,E)$. Nesse caso, $\mathcal{N} \equiv V(G)$ e $\mathcal{L} \equiv E(G)$.
 
 \begin{figure}[htb]
 \centering
@@ -21,13 +45,14 @@ Para esse trabalho, é importante que as arestas de G sejam direcionadas já que
 \label{fig:grafo}
 \end{figure}
 
-Modelar uma rede como um grafo é bastante útil pois permite utilizar algumas propriedades importantes da Teoria dos Grafos e fazer diversas manipulações matemáticas. Especificamente, nesse trabalho, a abstração em grafos também ajudou muito na etapa de implementação dos algoritmos.
+Modelar uma rede como um grafo é bastante útil pois permite utilizar algumas propriedades importantes da Teoria dos Grafos e fazer diversas manipulações matemáticas. Em especial, o uso de grafos ajuda a entender o modelo de interferência primária, discutido ainda nesse capítulo, e as otimizações baseadas em acoplamentos, introduzidas no capítulo \ref{cap:resultados}. Especificamente, nesse trabalho, a abstração em grafos também ajudou muito na etapa de implementação dos algoritmos.
 
 \section{Árvore de Combinações}
+\label{section:trees}
 
-Seja um grafo direcionado $G=(V,E)$. É possível definir um conjunto $C$, tal que $C \subseteq E(G)$, isto é, $C$ é uma combinação dos enlaces de $E(G)$. Com isso, tem-se que o menor tamanho de $C$ é zero, ou seja, não há enlaces ativos ($C=\emptyset$), e o maior tamanho é o próprio $E(G)$, com todos os enlaces possíveis ativos ($C=E(G)$). Entre esses dois extremos, existem $2^m$ combinações de enlaces possíveis, que são subconjuntos de $E(G)$ definidos pela escolha de quais enlaces estão ativos.
+É possível definir um conjunto $C$, tal que $C \subseteq \mathcal{L}$, isto é, $C$ é uma combinação dos enlaces de $\mathcal{L}$. Com isso, tem-se que o menor tamanho de $C$ é zero, ou seja, não há enlaces ativos ($C=\emptyset$), e o maior tamanho é o próprio $\mathcal{L}$, com todos os enlaces possíveis ativos ($C=\mathcal{L}$). Se $|\mathcal{L}|=m$, usando a convenção da seção anterior, entre os dois extremos, existem $2^m$ combinações de enlaces possíveis, que são subconjuntos de $\mathcal{L}$ definidos pela escolha de quais enlaces estão ativos.
 
-Sobre essas combinações de enlaces é possível definir uma árvore de combinações $A=(V,E)$. Os vértices da árvore são todas as combinações possíveis dos enlaces em $E(G)$. As arestas da árvore ligam qualquer combinação em uma altura $h$ a outra em uma altura $h+1$ que pode ser obtido através da adição de um enlace de $E(G)$. Em $A$, o tamanho de um vértice C a uma altura h na árvore é tal que $|C|=h$.
+Sobre essas combinações de enlaces é possível definir uma árvore de combinações $A=(V,E)$. Os vértices da árvore são todas as combinações possíveis dos enlaces em $\mathcal{L}$. As arestas da árvore ligam qualquer combinação em uma altura $h$ a outra combinação em uma altura $h+1$ que pode ser obtido através da adição de um enlace de $E(G)$. Em $A$, o tamanho de uma combinação C a uma altura h na árvore é tal que $|C|=h$.
 
 \begin{figure}[htb]
 \centering
@@ -39,26 +64,22 @@ Sobre essas combinações de enlaces é possível definir uma árvore de combina
 
 Nessa árvore, a raiz ($h=0$) é a combinação com nenhum enlace, ou seja, $C=\emptyset$ ($(|C|=0)$). Os filhos de qualquer vértice $C$ da árvore são obtidos combinando $C$ com um enlace $i \in E(G)$, tal que $i \notin C$. Para a mesma rede modelada na Figura \ref{fig:grafo}, é ilustrada sua árvore de combinações de enlaces na Figura \ref{fig:arvore}.
 
-No contexto de árvore de combinações, é importante definir também os descendentes de um vértice. Segundo [XXX], se P(r,v) é um caminho da raiz $r$ a um vértice $v$ na árvore, $v$ é descendente de $u$ se, e somente se, $u \in P(r,v)$. 
+No contexto de árvore de combinações, é importante definir também os descendentes de um vértice. Segundo [XXX], se $P(r,v)$ é um caminho da raiz $r$ a um vértice $v$ na árvore, $v$ é descendente de $u$ se, e somente se, $u \in P(r,v)$ e $u \neq v$. Como consequência, $\forall v \in V(T)$, tal que $v \neq r$, $v$ é descendente de $r$. 
 
-A abstração de árvore de combinações permite que os conjuntos de enlaces sejam percorridos conforme a estrutura da árvore. Com isso, é possível desenvolver métodos sistemáticos para buscar e avaliar a viabilidade das combinações de enlaces. Os métodos mais famosos como Busca em Largura e Busca em Profundidade em árvores podem ser considerados nesse caso. Entretanto, sua utilização exige a construção prévia da árvore que apresenta alta complexidade tanto de tempo, quanto de espaço ($O(2^m)$ em ambos os casos).
+A abstração de árvore de combinações permite que os conjuntos de enlaces sejam percorridos conforme a estrutura da árvore. Com isso, é possível utilizar métodos sistemáticos para buscar e avaliar a viabilidade das combinações de enlaces. Os métodos mais famosos como Busca em Profundidade e Busca em Profundidade em árvores podem ser considerados nesse caso. Entretanto, sua utilização exige a construção prévia da árvore que apresenta alta complexidade tanto de tempo, quanto de espaço ($O(2^m)$ em ambos os casos).
 
-Os algoritmos que serão apresentados nos próximos capítulos apenas usam a ideia de árvore de combinações em seus projetos. Não há construção da árvore para realizar buscas e isso representa uma diminuição considerável na complexidade de espaço. Além disso, eles fazem uso da propriedade apresentada na próxima seção que, por sua vez, ajuda a reduzir a complexidade de tempo.
+Os algoritmos que serão apresentados nos próximos capítulos fazem uma busca sobre T, mas apenas usam a ideia de árvore de combinações em seus projetos. Não há construção da árvore para realizar buscas e isso representa uma diminuição considerável na complexidade de espaço. Além disso, eles fazem uso da propriedade apresentada na próxima seção que, por sua vez, ajuda a reduzir a complexidade de tempo.
 
 \section{Modelos de Interferência}
+\label{section:interference}
 
 No capítulo \ref{cap:introducao}, os testes de interferências foram descritos de maneira intuitiva e pouco detalhada. Nessa seção, eles serão definidos formalmente e uma propriedade decorrente da natureza desses testes será apresentada. Essa propriedade é importante pois permitirá o desenvolvimento de algoritmos de enumeração com melhores desempenhos.
 
-Em redes sem fio, o meio físico é compartilhado. Isso significa que, apesar das mensagens geradas pelo transmissor serem destinadas um receptor específico, elas acabam atingindo todos os nós com diferentes intensidades.
-
 \subsection{Modelo de Interferência Primária}
 
-Na modelagem de redes sem fio, os enlaces são considerados half-duplex, isto é, os rádios dos dispositivos que compõem a rede não podem transmitir e receber mensagens ao mesmo tempo. Por isso, um nó pode apenas ser transmissor ou receptor em um dado instante de tempo.
- 
-\item Enlaces dedicados: Apesar das mensagens serem transmitidas em várias direções e, portanto, alcançarem diversos nós, elas são direcionadas a um nó específico. 
+Em \cite{primary}, a modelagem de redes sem fio é feita considerando que os enlaces são {\it half-duplex}, isto é, as antenas dos rádios dos dispositivos que compõem a rede não podem transmitir e receber mensagens ao mesmo tempo. Além disso, o transceptor em um nó apenas consegue transmitir para ou receber de um outro nó.
 
-
-Ao modelar uma rede em que os enlaces possuam essas duas características, os nós apenas assumem papel de transmissor ou de receptor em, no máximo, um enlace. A figura \ref{fig:primario} ilustra essas características usando diferentes cenários.
+Em resumo, todo nó pode apenas ser transmissor ou receptor em um único enlace. Portanto, a restrição para que uma rede esteja livre de interferências primárias é que nenhum nó pode participar de mais de um enlace. Usando a abstração de grafos introduzida na seção anterior, a figura \ref{fig:primario} ilustra alguns cenários que exploram essa condição.
 
 \begin{figure}[htb]
 \centering
@@ -68,11 +89,11 @@ Ao modelar uma rede em que os enlaces possuam essas duas características, os n�
 \label{fig:primario}
 \end{figure}
 
+Na Figura \ref{fig:primario}, o cenário (a) mostra um nó transmitindo para dois outros nós ao mesmo tempo; (b) mostra um nó recebendo de dois outros nós ao mesmo tempo; (c) mostra um nó transmitindo e recebendo ao mesmo tempo; e (d), diferente dos cenários anteriores, mostra uma rede que respeita a restrição proposta.   
+
 \subsection{Teste de Interferência Primária}
 
-Seja $i$ um enlace de um conjunto $C \subset E$. O nó transmissor e o nó receptor de $i$ são, respectivamente, $s_{i}$ e $r_{i}$. $C$ passa no Teste de Interferência Primária (TIP)\abbrev{TIP}{Teste de Interferência Primária} se, e somente se, $\forall i,j \in C, s_{i} \neq s_{j} \& s_{i} \neq r_{j} \& r_{i} \neq s_{j} \& r_{i} \neq r_{j}$. 
-
-\subsubsection{Descrição do Algoritmo}
+Seja $i$ um enlace de um conjunto $C \subset \mathcal{L}$. O nó transmissor e o nó receptor de $i$ são, respectivamente, $s_{i}$ e $r_{i}$. $C$ passa no Teste de Interferência Primária (TIP)\abbrev{TIP}{Teste de Interferência Primária} se, e somente se, $\forall i,j \in C, s_{i} \neq s_{j} \& s_{i} \neq r_{j} \& r_{i} \neq s_{j} \& r_{i} \neq r_{j}$. 
 
 \begin{algorithm}[h]
 	\SetVline
@@ -99,18 +120,18 @@ Para o pior caso, $|C|=m$, então a complexidade de tempo é $O(m^2)$. A complex
 
 \subsection{Modelo de Interferência Secundária}
 
-Como mencionado no capítulo \ref{cap:introducao}, o meio de transmissão é compartilhado, então o nó transmissor em um enlace pode interferir nos nós receptores de outros enlaces. Contudo, existe um limite de interferência aceitável que é baseado na SINR ({\it Signal to Interference plus Noise Ratio}) \abbrev{SINR}{Signal to Interference plus Noise Ratio}  dos nós receptores.
+O Modelo de Interferência Secundária é definido em \cite{sinr, models}. Nesse modelo, é considerada uma grandeza chamada SINR ({\it Signal to Interference plus Noise Ratio}) \abbrev{SINR}{Signal to Interference plus Noise Ratio} que representa uma razão entre o sinal recebido e as interferências sofridas por um nó.
 
-A Potência de Recepção $RP(s,r)$ de uma transmissão entre s e r é a potência com que um sinal transmitido por um nó transmissor $s$ a uma potência de transmissão $TP$ é recebido em um nó $r$ seguindo o modelo de propagação. Matematicamente,
+Conforme discutido na Seção \ref{section:mesh}, nesse trabalho é usado o modelo de propagação {\it log-distance}. A potência de recepão $PR(s,r)$ de um sinal transmitido por $s$ e recebido por $r$ é definido como,
 
 \begin{equation}
-RP(s,r) = \frac{TP}{(\frac{d_{sr}}{d_{0}})^{\alpha}}
+PR(s,r) = \frac{PT}{(\frac{d_{sr}}{d_{0}})^{\alpha}}
 \label{eq:rp}
 \end{equation}
 
 onde $\alpha$ é o coeficiente e $d_{0}$ é a distância de referência do modelo de propagação.
 
-Com isso, dado um nó receptor $r_{i}$, consegue-se calcular a potência de recepção em $r_{i}$ em duas situações distintas:
+Para um enlace $i$, dado um nó receptor $r_{i}$, consegue-se calcular a potência de recepção em $r_{i}$ em duas situações distintas:
 
 \begin{itemize} %verificar se pode ter lista com 2 itens
 
@@ -119,16 +140,16 @@ Com isso, dado um nó receptor $r_{i}$, consegue-se calcular a potência de rece
 
 \end{itemize}
 
-Denomina-se Interferência Total $I(i,C)$ a soma das interferências que os nós transmissores de todos os outros enlaces de $C$ exercem sobre o nó receptor do enlace $i$. Ou seja,
+A interferência será analisada entre os enlaces que compõem um conjunto $C$. Com isso, denomina-se Interferência Total $I(i,C)$ a soma das interferências que os nós transmissores de todos os outros enlaces de $C$ exercem sobre o nó receptor do enlace $i$. Ou seja,
 
 \begin{equation}
-I(i,C) = \sum_{j \neq i} RP(s_{j},r_{i})
+I(i,C) = \sum_{j \neq i} PR(s_{j},r_{i})
 \end{equation}
 
-Finalmente, a $SINR(i,C)$ é a razão entre a potência de recepção em $r_{i}$ referente a transmissão no enlace $i$ e a interferência causada pelo ruído do ambiente $\gamma$ e a interferência total dos outros enlaces no conjunto $C$.
+Finalmente, a $SINR(i,C)$ é a razão entre a potência de recepção em $r_{i}$ referente a transmissão no enlace $i$ e a soma do ruído do ambiente $\gamma$ com a interferência total dos outros enlaces no conjunto $C$.
 
 \begin{equation}
-SINR(i,C) = \frac{RP(s_{i},r_{i})} {\gamma + I(i,C)}
+SINR(i,C) = \frac{PR(s_{i},r_{i})} {\gamma + I(i,C)}
 \label{eq:sinr}  
 \end{equation}
 
@@ -163,7 +184,7 @@ Como itera-se sobre todos os enlaces de C para calcular $SINR(i,C)$, sua complex
 
 \subsection{Viabilidade de Conjuntos}
 
-Dados os modelos de interferência apresentados, se um conjunto de enlace $C$ passar em ambos os testes, então diz-se que $C$ é viável. O algoritmo para testar a viabilidade de um conjunto de enlaces é simplesmente a junção dos algoritmos anteriores.
+Dados os modelos de interferência apresentados, se um conjunto de enlace $C$ passar em ambos os testes, então diz-se que $C$ é viável. Essa definição é apresentada em \cite{scheduling}. O algoritmo para testar a viabilidade de um conjunto de enlaces é simplesmente a junção dos algoritmos anteriores.
 
 \subsubsection{Descrição do Algoritmo}
 
@@ -203,10 +224,11 @@ Os dois cenários apresentados garantem a seguinte propriedade: se um conjunto $
 Devido a Inviabilidade Hereditária, no processo de busca e verificação de viabilidade de todas as combinações de enlaces de uma rede, sabe-se que, ao encontrar qualquer combinação não viável, não é necessário testar a viabilidade de nenhum de seus descendentes. O ato de não testar os descendentes de uma combinação não viável pode ser chamado de ``podar'' a árvore. 
 
 \section{Exemplo com Busca em Profundidade}
+\label{section:bp}
 
 A rede modelada na Figura \ref{fig:grafo} será utilizada para construir esse exemplo. O objetivo é encontrar os conjuntos de enlaces viáveis dessa rede. 
 
-Nesse exemplo, os nós foram distribuídos aleatoriamente em uma área quadrada de lado $2000m$. As potências de transmissão foram fixadas em $TP=350mW=24.7712dBm$ para todos os nós. Nesse cenário, $m=4$ enlaces foram definidos, $E(G)=\{A, B, C, D\}$. Uma descrição dos enlaces contendo a distância entre os nós e a potência de recepção pode ser encontrada na Tabela \ref{table:enlaces}. Os valores do coeficiente e da distância de referência do modelo de propagação utilizados foram, respectivamente, $\alpha=4,0$ e $d_0=1,0$m.
+Nesse exemplo, os nós foram distribuídos aleatoriamente em uma área quadrada de lado $2000m$. As potências de transmissão foram fixadas em $PT=350mW=24.7712dBm$ para todos os nós. Nesse cenário, $m=4$ enlaces foram definidos, $E(G)=\{A, B, C, D\}$. Uma descrição dos enlaces contendo a distância entre os nós e a potência de recepção pode ser encontrada na Tabela \ref{table:enlaces}. Os valores do coeficiente e da distância de referência do modelo de propagação utilizados foram, respectivamente, $\alpha=4,0$ e $d_0=1,0$m.
 
 \begin{table}[h]
 \centering
@@ -223,13 +245,13 @@ D=(5,6)	& $179,399$	& $28,9628$
 \end{tabular}
 \end{table}
 
-Existem $2^4 = 16$ combinações de enlaces que são representados na árvore de combinações da \ref{fig:bp}. Uma Busca em Profundidade será executada para percorrer os vértices da árvore que serão verificados usando o algoritmo VIÁVEL. A ordem em que os vértices são visitados é $\{\{\}, \{A\}, \{A,B\}, \{A,B,C\}, \{A,B,C,D\}, \{A,B,D\}, \{A,C\}, \{A,C,D\}, \{A,D\},$ $\{B\}, \{B,C\}, \{B,C,D\},$ $\{B,D\}, \{C\}, \{C,D\}, \{D\}\}$ e pode ser verificada também na Figura \ref{fig:bp}. A Tabela \ref{table:resultadoviabilidade} mostra o resultado dos testes para cada combinação. 
+Existem $2^4 = 16$ combinações de enlaces que são representados na árvore de combinações da Figura \ref{fig:bp}. Uma Busca em Profundidade será executada para percorrer os vértices da árvore que serão verificados usando o algoritmo VIÁVEL. A ordem em que os vértices são visitados é $\{\{\}, \{A\}, \{A,B\}, \{A,B,C\}, \{A,B,C,D\}, \{A,B,D\}, \{A,C\}, \{A,C,D\}, \{A,D\},$ $\{B\}, \{B,C\}, \{B,C,D\},$ $\{B,D\}, \{C\}, \{C,D\}, \{D\}\}$ e pode ser verificada também na Figura \ref{fig:bp}. A Tabela \ref{table:resultadoviabilidade} mostra o resultado dos testes para cada combinação. 
 
 \begin{figure}[htb]
 \centering
 \includegraphics[width=1\textwidth]{figs/bp}
-\caption[Busca em Largura na árvore de combinações.]
-{Busca em Largura na árvore de combinações.}
+\caption[Busca em Profundidade na árvore de combinações.]
+{Busca em Profundidade na árvore de combinações.}
 \label{fig:bp}
 \end{figure}
 
@@ -286,6 +308,7 @@ A justificativa dos resultados dos TIS realizados são mostrados na Figura \ref{
 %No Apêndice A, é apresentada a justificativa para a escolha de todos os parâmetros para o Modelo de Interferência Secundária. Os parâmetros usados para construir esse exemplo também foram utilizados na parte de implementação para gerar as redes usadas nos experimentos. 
 
 \section{Vantagens e Desvantagens}
+\label{section:complexity}
 
 No pior caso, o processo de enumeração descrito na seção anterior percorre todos os $2^m$ vértices da árvore, aplicando VIAVEL em cada conjunto de enlaces. Isso representa uma complexidade de $O(2^mm^2)$. Na prática, as redes possuem uma densidade grande. Por isso, é um exagero assumir que $2^m$ combinações serão testadas, pois certamente haverão muitos conjuntos não viáveis. 
 
@@ -296,6 +319,6 @@ Existe, então, um bom candidato a substituir a porção exponencial da complexi
 Mesmo com uma potencial redução da complexidade de tempo ao utilizar o valor $|F|$, a complexidade de espaço desse algoritmo ainda é exponencial. Isso significa que sua implementação está limitada a pequenos valores de m.
 
 \section{Conclusão}
-
-Nesse capítulo, todo o problema foi modelado usando diferentes abstrações com o intuito de obter um procedimento sistemático para enumerar combinações viáveis. Devido a essa modelagem, a complexidade de tempo encontrada em algoritmos que usam força bruta pode ser modificada para um valor diferente, que será estudado em capítulos futuros. Ainda assim, a complexidade de espaço continua exponencial, inviabilizando sua utilização na a maioria das aplicações.
+\label{section:conclusion}
+Nesse capítulo, todo o problema foi modelado usando diferentes abstrações com o intuito de obter um procedimento sistemático para enumerar combinações viáveis. Devido a essa modelagem, a complexidade de tempo encontrada em algoritmos que usam força bruta pode ser modificada para um valor diferente, que será estudado em capítulos futuros. Ainda assim, a complexidade de espaço continua exponencial, inviabilizando sua utilização na maioria das aplicações.
 

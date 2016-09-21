@@ -1,4 +1,4 @@
-\begin{thebibliography}{2}
+\begin{thebibliography}{7}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -6,19 +6,44 @@
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 \newcommand{\enquote}[1]{``#1''}
 
-\bibitem[\MakeUppercase{{Cisco}}({2014}){Cisco}]{ciscoforecast}
-\MakeUppercase{{Cisco}}.
-\newblock \enquote{Cisco Visual Networking Index: Forecast and Methodology,
-  2013–2018}. .
-\newblock
-  \url{http://www.cisco.com/c/en/us/solutions/collateral/service-provider/ip-n%
-gn-ip-next-generation-network/white_paper_c11-481360.html}, jun. {2014}.
+\bibitem[\MakeUppercase{Jun} e \MakeUppercase{Sichitiu}({2003})Jun e
+  Sichitiu]{mesh}
+\MakeUppercase{Jun, J., Sichitiu, M.~L.}
+\newblock \enquote{The nominal capacity of wireless mesh networks}. , {2003}.
 
-\bibitem[\MakeUppercase{{Instituto Nacional de Pesquisas
-  Espaciais}}(){Instituto Nacional de Pesquisas Espaciais}]{elevationdata}
-\MakeUppercase{{Instituto Nacional de Pesquisas Espaciais}}.
-\newblock \enquote{TOPODATA - Banco de Dados Geomorfométricos do Brasil}. .
-\newblock \url{http://www.dsr.inpe.br/topodata/acesso.php}.
-\newblock Acessado em fevereiro de 2015.
+\bibitem[\MakeUppercase{Marbach}\emph{ et~al.}({2007})Marbach, Eryilmaz, e
+  Ozdaglar]{primary}
+\MakeUppercase{Marbach, P., Eryilmaz, A., Ozdaglar, A.}
+\newblock \enquote{Achievable Rate Region of CSMA Schedulers in Wireless
+  Networks with Primary Interference Constraints}. , {2007}.
+
+\bibitem[\MakeUppercase{VIEIRA}\emph{ et~al.}({2016})VIEIRA, REZENDE, e
+  BARBOSA]{scheduling}
+\MakeUppercase{VIEIRA, F. R.~J., REZENDE, J.~F., BARBOSA, V.~C.}
+\newblock \enquote{Scheduling wireless links by vertex multicoloring in the
+  physical interference model}. , {2016}.
+
+\bibitem[\MakeUppercase{DEZFOULI}\emph{ et~al.}({2014})DEZFOULI, RADI,
+  WHITEHOUSE, e RAZAK]{dist-sched}
+\MakeUppercase{DEZFOULI, B., RADI, M., WHITEHOUSE, K., \MakeLowercase{et al.}}
+\newblock \enquote{DICSA: Distributed and concurrent link scheduling algorithm
+  for data gathering in wireless senso networks}. , {2014}.
+
+\bibitem[\MakeUppercase{Gandham}\emph{ et~al.}({2008})Gandham, Dawande, e
+  Prakash]{coloring}
+\MakeUppercase{Gandham, S., Dawande, M., Prakash, R.}
+\newblock \enquote{Link Scheduling in Sensor Networks: Distributed Edge
+  Coloring Revisited}. , {2008}.
+
+\bibitem[\MakeUppercase{Even}\emph{ et~al.}({2011})Even, Matsri, e
+  Medina]{sinr}
+\MakeUppercase{Even, G., Matsri, Y., Medina, M.}
+\newblock \enquote{Multi-Hop Routing and Scheduling in Wireless Networks in the
+  SINR model}. , {2011}.
+
+\bibitem[\MakeUppercase{Chafekar}\emph{ et~al.}({2011})Chafekar, Kumar,
+  Marathe, e Parthasarathy]{models}
+\MakeUppercase{Chafekar, D., Kumar, V. S.~A., Marathe, M.~V., \MakeLowercase{et
+  al.}}, {2011}.
 
 \end{thebibliography}
